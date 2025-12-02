@@ -1,0 +1,17 @@
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\bin\Debug\net8.0\Keka.Clone.Infrastructure.deps.json
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\bin\Debug\net8.0\Keka.Clone.Infrastructure.dll
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\bin\Debug\net8.0\Keka.Clone.Infrastructure.pdb
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\bin\Debug\net8.0\Keka.Clone.Application.dll
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\bin\Debug\net8.0\Keka.Clone.Domain.dll
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\bin\Debug\net8.0\Keka.Clone.Domain.pdb
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\bin\Debug\net8.0\Keka.Clone.Application.pdb
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\obj\Debug\net8.0\Keka.Clone.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\obj\Debug\net8.0\Keka.Clone.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\obj\Debug\net8.0\Keka.Clone.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\obj\Debug\net8.0\Keka.Clone.Infrastructure.AssemblyInfo.cs
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\obj\Debug\net8.0\Keka.Clone.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\obj\Debug\net8.0\Keka.Clo.1C664CE3.Up2Date
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\obj\Debug\net8.0\Keka.Clone.Infrastructure.dll
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\obj\Debug\net8.0\refint\Keka.Clone.Infrastructure.dll
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\obj\Debug\net8.0\Keka.Clone.Infrastructure.pdb
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Infrastructure\obj\Debug\net8.0\ref\Keka.Clone.Infrastructure.dll

@@ -1,0 +1,15 @@
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\bin\Debug\net8.0\Keka.Clone.Application.deps.json
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\bin\Debug\net8.0\Keka.Clone.Application.dll
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\bin\Debug\net8.0\Keka.Clone.Application.pdb
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\bin\Debug\net8.0\Keka.Clone.Domain.dll
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\bin\Debug\net8.0\Keka.Clone.Domain.pdb
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\obj\Debug\net8.0\Keka.Clone.Application.csproj.AssemblyReference.cache
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\obj\Debug\net8.0\Keka.Clone.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\obj\Debug\net8.0\Keka.Clone.Application.AssemblyInfoInputs.cache
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\obj\Debug\net8.0\Keka.Clone.Application.AssemblyInfo.cs
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\obj\Debug\net8.0\Keka.Clone.Application.csproj.CoreCompileInputs.cache
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\obj\Debug\net8.0\Keka.Clo.78D1B2F6.Up2Date
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\obj\Debug\net8.0\Keka.Clone.Application.dll
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\obj\Debug\net8.0\refint\Keka.Clone.Application.dll
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\obj\Debug\net8.0\Keka.Clone.Application.pdb
+C:\Users\PramodhA\Downloads\Sai Charan\keka-clone\Keka.Clone.Application\obj\Debug\net8.0\ref\Keka.Clone.Application.dll
