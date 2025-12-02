@@ -76,18 +76,22 @@ export class AuthService {
     return !!role && roles.includes(role);
   }
 
-  getUserId(): string | null {
-    const payload = this.decodeTokenPayload();
-    if (!payload) {
-      return null;
+  getUserId(): string {
+    const token = this.getToken();
+    if (!token) return "";
+    try {
+      const payload = token.split(".")[1];
+      const decoded = JSON.parse(atob(payload));
+      return (
+        decoded.sub ||
+        decoded[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+        ] ||
+        ""
+      );
+    } catch {
+      return "";
     }
-    return (
-      payload["employeeId"] ||
-      payload["EmployeeId"] ||
-      payload["empId"] ||
-      payload["sub"] ||
-      null
-    );
   }
 
   private decodeTokenPayload(): Record<string, any> | null {

@@ -1,5 +1,6 @@
 using Keka.Clone.Application.DTOs.Attendance;
 using Keka.Clone.Application.Helpers;
+using Keka.Clone.Application.Interfaces;
 using Keka.Clone.Domain.Entities;
 using Keka.Clone.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +8,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace Keka.Clone.Application.Services
 {
-    public class AttendanceService
-    {
+    public class AttendanceService : IAttendanceService
+    { 
         private readonly AppDbContext _db;
         private readonly IConfiguration _config;
 
