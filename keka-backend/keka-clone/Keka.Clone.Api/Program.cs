@@ -46,6 +46,7 @@ builder.Services.AddScoped<IEmployeeLeaveAllocationRepository, EmployeeLeaveAllo
 builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 // Designations
 builder.Services.AddScoped<IDesignationRepository, DesignationRepository>();

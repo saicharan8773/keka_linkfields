@@ -18,7 +18,6 @@ public class EmployeesController:ControllerBase
 
     // GET api/employees
     [HttpGet]
-    [Authorize(Roles = "Admin,HR,Manager")]
     public async Task<IActionResult> Get([FromQuery] EmployeeSearchParams query)
     {
         var (items, total) = await _service.SearchAsync(query);

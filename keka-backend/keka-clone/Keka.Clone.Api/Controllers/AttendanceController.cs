@@ -1,4 +1,5 @@
 ﻿using Keka.Clone.Application.DTOs.Attendance;
+using Keka.Clone.Application.Interfaces;
 using Keka.Clone.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,8 +10,8 @@ namespace Keka.Clone.Api.Controllers
     [Route("api/[controller]")]
     public class AttendanceController : ControllerBase
     {
-        private readonly AttendanceService _svc;
-        public AttendanceController(AttendanceService svc) { _svc = svc; }
+        private readonly IAttendanceService _svc;
+        public AttendanceController(IAttendanceService svc) { _svc = svc; }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] GeoDto dto)
