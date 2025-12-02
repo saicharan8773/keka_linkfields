@@ -1,6 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+  FormGroup,
+} from "@angular/forms";
 import { LeaveService } from "../shared/services/leave.service";
 import {
   LeaveRequest,
@@ -30,12 +35,7 @@ export class LeaveComponent implements OnInit, OnDestroy {
   leaveTypes: LeaveType[] = [];
   isLoadingLeaveTypes = false;
 
-  leaveForm = this.fb.group({
-    leaveTypeId: [null as number | null, Validators.required],
-    startDate: ["", Validators.required],
-    endDate: ["", Validators.required],
-    reason: ["", [Validators.required, Validators.minLength(5)]],
-  });
+  leaveForm!: FormGroup;
 
   myRequests: LeaveRequest[] = [];
   teamRequests: LeaveRequest[] = [];
@@ -51,14 +51,31 @@ export class LeaveComponent implements OnInit, OnDestroy {
   selectedLeaveType: LeaveTypeOption | null = null;
   // Stats for leave page
   weeklyPattern: number[] = [];
+  weeklyApproved: number[] = [];
+  weeklyLabels: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   consumedByType: { name: string; value: number }[] = [];
   monthlyStats: number[] = [];
+  monthlyApproved: number[] = [];
+  monthlyLabels: string[] = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   leaveBalancesSummary: any[] = [];
   private valueChangesSub?: Subscription;
 
-  private readonly employeeId = this.authService.getUserId();
-  readonly role = this.authService.getUserRole();
-  readonly canManageTeam = this.authService.hasRole(["Manager", "Admin"]);
+  private employeeId: any = null;
+  role: any = null;
+  canManageTeam = false;
   readonly leaveTypeOptions: LeaveTypeOption[] = [
     {
       id: 1,
@@ -125,13 +142,28 @@ export class LeaveComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // initialize auth-related fields
+    this.employeeId = this.authService.getUserId();
+    this.role = this.authService.getUserRole();
+    this.canManageTeam = this.authService.hasRole(["Manager", "Admin"]);
+
     if (!this.employeeId) {
       this.errorMessage = "Unable to read employee information from token.";
       return;
     }
+
+    // initialize reactive form
+    this.leaveForm = this.fb.group({
+      leaveTypeId: [null as number | null, Validators.required],
+      startDate: ["", Validators.required],
+      endDate: ["", Validators.required],
+      reason: ["", [Validators.required, Validators.minLength(5)]],
+    });
+
     this.valueChangesSub = this.leaveForm.valueChanges.subscribe(() => {
       this.updateDerivedMetrics();
     });
+
     this.loadLeaveTypes();
     this.loadMyRequests();
     this.loadLeaveStats();
@@ -265,14 +297,18 @@ export class LeaveComponent implements OnInit, OnDestroy {
       next: (stats) => {
         // Defensive checks and fallbacks
         this.weeklyPattern = stats?.weeklyPattern || [];
+        this.weeklyApproved = stats?.weeklyApproved || [];
         this.consumedByType = stats?.consumedByType || [];
         this.monthlyStats = stats?.monthlyStats || [];
+        this.monthlyApproved = stats?.monthlyApproved || [];
       },
       error: () => {
         console.log("Unable to load leave stats");
         this.weeklyPattern = [];
+        this.weeklyApproved = [];
         this.consumedByType = [];
         this.monthlyStats = [];
+        this.monthlyApproved = [];
       },
     });
   }
@@ -374,15 +410,33 @@ export class LeaveComponent implements OnInit, OnDestroy {
 
   private buildNotifications(requests: LeaveRequest[]): string[] {
     return requests
-      .filter((req) => req.status !== "Pending")
-      .map(
-        (req) =>
-          `Your ${req.leaveTypeName} from ${this.formatDate(
-            req.startDate
-          )} to ${this.formatDate(
-            req.endDate
-          )} was ${req.status.toLowerCase()}.`
-      );
+      .filter((req) => !this.isPendingStatus(req.status))
+      .map((req) => {
+        const label = this.getStatusLabel(req.status).toLowerCase();
+        return `Your ${req.leaveTypeName} from ${this.formatDate(
+          req.startDate
+        )} to ${this.formatDate(req.endDate)} was ${label}.`;
+      });
+  }
+
+  // Status helpers to support both string (Pending/Approved/Rejected)
+  // and numeric (0/1/2) values from the API.
+  getStatusLabel(status: any): string {
+    if (status === 1 || status === "1" || status === "Approved") {
+      return "Approved";
+    }
+    if (status === 2 || status === "2" || status === "Rejected") {
+      return "Rejected";
+    }
+    return "Pending";
+  }
+
+  getStatusClass(status: any): string {
+    return this.getStatusLabel(status).toLowerCase();
+  }
+
+  private isPendingStatus(status: any): boolean {
+    return status === 0 || status === "0" || status === "Pending";
   }
 
   // Helpers for Leave Types donuts and values

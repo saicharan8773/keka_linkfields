@@ -8,10 +8,13 @@
           <div class="stat-card">
             <div class="stat-header">
               <h4>Weekly Pattern</h4>
-              <small>Weekly Pattern</small>
+              <small>Approved Leaves by Day</small>
             </div>
             <div class="bar-row">
-              <div *ngFor="let v of weeklyPattern" class="bar" [style.height.%]="Math.min(100, (v || 0) * 8)"></div>
+              <div class="bar-group" *ngFor="let v of weeklyApproved; let i = index">
+                <div class="bar" [style.height.%]="Math.min(100, (v || 0) * 8)"></div>
+                <div class="bar-label">{{ weeklyLabels[i] }}</div>
+              </div>
             </div>
           </div>
 
@@ -34,10 +37,13 @@
           <div class="stat-card">
             <div class="stat-header">
               <h4>Monthly Stats</h4>
-              <small>Monthly Stats</small>
+              <small>Approved Leaves by Month</small>
             </div>
             <div class="bar-row">
-              <div *ngFor="let m of monthlyStats" class="bar small" [style.height.%]="Math.min(100, (m || 0) * 2)">
+              <div class="bar-group" *ngFor="let m of monthlyApproved; let i = index">
+                <div class="bar small" [style.height.%]="Math.min(100, (m || 0) * 2)">
+                </div>
+                <div class="bar-label small">{{ monthlyLabels[i] }}</div>
               </div>
             </div>
           </div>
@@ -202,8 +208,8 @@
                   {{ formatDate(request.endDate) }}
                 </td>
                 <td>
-                  <span class="status" [class]="request.status.toLowerCase()">
-                    {{ request.status }}
+                  <span class="status" [class]="getStatusClass(request.status)">
+                    {{ getStatusLabel(request.status) }}
                   </span>
                 </td>
               </tr>
@@ -251,8 +257,8 @@
                   <small>{{ request.reason }}</small>
                 </td>
                 <td>
-                  <span class="status" [class]="request.status.toLowerCase()">
-                    {{ request.status }}
+                  <span class="status" [class]="getStatusClass(request.status)">
+                    {{ getStatusLabel(request.status) }}
                   </span>
                 </td>
                 <td>
