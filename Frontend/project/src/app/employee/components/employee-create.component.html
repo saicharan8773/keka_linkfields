@@ -1,0 +1,287 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+  <main class="main-content">
+    <div class="employee-container">
+      <h1>Add New Employee</h1>
+
+      <!-- PERSONAL DETAILS -->
+      <div class="section-header" (click)="toggle('personal')">
+        <h2>Personal Details</h2>
+        <span class="toggle-icon">{{ sections.personal ? '−' : '+' }}</span>
+      </div>
+      <div *ngIf="sections.personal" class="section-body">
+
+        <div class="row">
+          <div class="col">
+            <label>Employee Code *</label>
+            <input type="text" [(ngModel)]="employee.employeeCode" name="employeeCode" required />
+          </div>
+
+          <div class="col">
+            <label>First Name *</label>
+            <input type="text" [(ngModel)]="employee.firstName" name="firstName" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Middle Name</label>
+            <input type="text" [(ngModel)]="employee.middleName" name="middleName" />
+          </div>
+
+          <div class="col">
+            <label>Last Name *</label>
+            <input type="text" [(ngModel)]="employee.lastName" name="lastName" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Work Email *</label>
+            <input type="email" [(ngModel)]="employee.workEmail" name="workEmail" required />
+          </div>
+
+          <div class="col">
+            <label>Personal Email</label>
+            <input type="email" [(ngModel)]="employee.personalEmail" name="personalEmail" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Mobile Number</label>
+            <input type="text" [(ngModel)]="employee.mobileNumber" name="mobileNumber" />
+          </div>
+
+          <div class="col">
+            <label>Date of Birth</label>
+            <input type="date" [(ngModel)]="employee.dateOfBirth" name="dateOfBirth" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Gender</label>
+            <input type="text" [(ngModel)]="employee.gender" name="gender" />
+          </div>
+
+          <div class="col">
+            <label>Marital Status</label>
+            <input type="text" [(ngModel)]="employee.maritalStatus" name="maritalStatus" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Blood Group</label>
+            <input type="text" [(ngModel)]="employee.bloodGroup" name="bloodGroup" />
+          </div>
+
+          <div class="col">
+            <label>Nationality</label>
+            <input type="text" [(ngModel)]="employee.nationality" name="nationality" />
+          </div>
+        </div>
+
+      </div>
+
+      <!-- JOB DETAILS -->
+      <div class="section-header" (click)="toggle('job')">
+        <h2>Job & Organizational Details</h2>
+        <span class="toggle-icon">{{ sections.job ? '−' : '+' }}</span>
+      </div>
+      <div *ngIf="sections.job" class="section-body">
+
+        <div class="row">
+          <div class="col">
+            <label>Joining Date *</label>
+            <input type="date" [(ngModel)]="employee.joiningDate" name="joiningDate" required />
+          </div>
+
+          <div class="col">
+            <label>Designation ID</label>
+            <input type="text" [(ngModel)]="employee.designationId" name="designationId" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Department ID</label>
+            <input type="text" [(ngModel)]="employee.departmentId" name="departmentId" />
+          </div>
+
+          <div class="col">
+            <label>Manager ID</label>
+            <input type="text" [(ngModel)]="employee.managerId" name="managerId" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Location ID</label>
+            <input type="text" [(ngModel)]="employee.locationId" name="locationId" />
+          </div>
+
+          <div class="col">
+            <label>Department Path</label>
+            <input type="text" [(ngModel)]="employee.departmentPath" name="departmentPath" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Job Title (Primary)</label>
+            <input type="text" [(ngModel)]="employee.jobTitlePrimary" name="jobTitlePrimary" />
+          </div>
+
+          <div class="col">
+            <label>Job Title (Secondary)</label>
+            <input type="text" [(ngModel)]="employee.jobTitleSecondary" name="jobTitleSecondary" />
+          </div>
+        </div>
+      </div>
+
+
+      <!-- PROBATION / CONTRACT -->
+      <div class="section-header" (click)="toggle('contract')">
+        <h2>Probation & Contract Details</h2>
+        <span class="toggle-icon">{{ sections.contract ? '−' : '+' }}</span>
+      </div>
+      <div *ngIf="sections.contract" class="section-body">
+        <div class="row">
+          <div class="col">
+            <label>Is In Probation?</label>
+            <input type="checkbox" [(ngModel)]="employee.isInProbation" name="isInProbation" />
+          </div>
+
+          <div class="col">
+            <label>Probation Start</label>
+            <input type="date" [(ngModel)]="employee.probationStartDate" name="probationStartDate" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Probation End</label>
+            <input type="date" [(ngModel)]="employee.probationEndDate" name="probationEndDate" />
+          </div>
+
+          <div class="col">
+            <label>Notice Period</label>
+            <input type="text" [(ngModel)]="employee.noticePeriod" name="noticePeriod" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Employment Type</label>
+            <input type="text" [(ngModel)]="employee.employmentType" name="employmentType" />
+          </div>
+
+          <div class="col">
+            <label>Contract Status</label>
+            <input type="text" [(ngModel)]="employee.contractStatus" name="contractStatus" />
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ATTENDANCE & POLICIES -->
+      <div class="section-header" (click)="toggle('attendance')">
+        <h2>Attendance & Policy Details</h2>
+        <span class="toggle-icon">{{ sections.attendance ? '−' : '+' }}</span>
+      </div>
+      <div *ngIf="sections.attendance" class="section-body">
+        <div class="row">
+          <div class="col">
+            <label>Shift</label>
+            <input type="text" [(ngModel)]="employee.shift" name="shift" />
+          </div>
+
+          <div class="col">
+            <label>Weekly Off Policy</label>
+            <input type="text" [(ngModel)]="employee.weeklyOffPolicy" name="weeklyOffPolicy" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Leave Plan</label>
+            <input type="text" [(ngModel)]="employee.leavePlan" name="leavePlan" />
+          </div>
+
+          <div class="col">
+            <label>Holiday Calendar</label>
+            <input type="text" [(ngModel)]="employee.holidayCalendar" name="holidayCalendar" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Attendance Number</label>
+            <input type="text" [(ngModel)]="employee.attendanceNumber" name="attendanceNumber" />
+          </div>
+
+          <div class="col">
+            <label>Disable Attendance Tracking?</label>
+            <input type="checkbox" [(ngModel)]="employee.disableAttendanceTracking" name="disableAttendanceTracking" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Attendance Capture Scheme</label>
+            <input type="text" [(ngModel)]="employee.attendanceCaptureScheme" name="attendanceCaptureScheme" />
+          </div>
+
+          <div class="col">
+            <label>Shift Weekly Off Rule</label>
+            <input type="text" [(ngModel)]="employee.shiftWeeklyOffRule" name="shiftWeeklyOffRule" />
+          </div>
+        </div>
+      </div>
+
+
+      <!-- OTHER INFO -->
+      <div class="section-header" (click)="toggle('other')">
+        <h2>Other Details</h2>
+        <span class="toggle-icon">{{ sections.other ? '−' : '+' }}</span>
+      </div>
+
+      <div *ngIf="sections.other" class="section-body">
+
+        <div class="row">
+          <div class="col">
+            <label>Photo URL</label>
+            <input type="text" [(ngModel)]="employee.photoUrl" name="photoUrl" />
+          </div>
+
+          <div class="col">
+            <label>Address</label>
+            <input type="text" [(ngModel)]="employee.address" name="address" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Custom Fields JSON</label>
+            <!-- Binding to a temp string property instead of the 'any' object directly -->
+            <input type="text" [(ngModel)]="customFieldsString" name="customFields" placeholder='{"key": "value"}' />
+          </div>
+        </div>
+
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-error">
+        {{ errorMessage }}
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading">
+          {{ isLoading ? "Creating..." : "Create Employee" }}
+        </button>
+      </div>
+    </div>
+  </main>
+</div>

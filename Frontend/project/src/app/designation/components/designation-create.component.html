@@ -1,0 +1,27 @@
+<div class="form-container">
+    <div class="form-header">
+        <h1>Add New Designation</h1>
+        <button class="btn-close" routerLink="/designations">×</button>
+    </div>
+
+    <div class="form-content">
+        <div *ngIf="errorMessage" class="alert alert-error">
+            {{ errorMessage }}
+        </div>
+
+        <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="title">Designation Title <span class="required">*</span></label>
+                <input type="text" id="title" name="title" [(ngModel)]="designation.title" required
+                    placeholder="e.g. Senior Developer">
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" routerLink="/designations">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                    {{ isLoading ? 'Creating...' : 'Create Designation' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

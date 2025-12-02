@@ -1,0 +1,49 @@
+<div class="details-container">
+    <div class="details-header">
+        <div class="header-title">
+            <h1>Salary Structure Details</h1>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary" routerLink="/salary-structures">Back to List</button>
+            <button class="btn btn-primary" [routerLink]="['/salary-structures/edit', salaryStructureId]">Edit</button>
+            <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+        </div>
+    </div>
+
+    <div class="details-content">
+        <div *ngIf="isLoading" class="loading">
+            <p>Loading details...</p>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-error">
+            {{ errorMessage }}
+        </div>
+
+        <div *ngIf="!isLoading && salaryStructure" class="details-card">
+            <div class="detail-row">
+                <div class="detail-label">Basic Salary</div>
+                <div class="detail-value">{{ salaryStructure.basic | currency:'INR' }}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">HRA</div>
+                <div class="detail-value">{{ salaryStructure.hra | currency:'INR' }}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Other Allowances</div>
+                <div class="detail-value">{{ salaryStructure.otherAllowances | currency:'INR' }}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Deductions</div>
+                <div class="detail-value">{{ salaryStructure.deductions | currency:'INR' }}</div>
+            </div>
+            <div class="detail-row total-row">
+                <div class="detail-label">Net Salary</div>
+                <div class="detail-value">{{ total | currency:'INR' }}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">ID</div>
+                <div class="detail-value">{{ salaryStructure.id }}</div>
+            </div>
+        </div>
+    </div>
+</div>

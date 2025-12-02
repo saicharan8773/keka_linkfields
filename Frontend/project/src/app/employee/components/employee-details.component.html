@@ -1,0 +1,273 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+  <main class="main-content">
+    <div class="employee-container">
+      <div class="header">
+        <div class="header-content">
+          <h1>Employee Details</h1>
+          <div class="header-actions">
+            <button class="btn btn-secondary" (click)="onBack()">
+              ← Back to List
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div *ngIf="isLoading" class="loading">
+          <p>Loading employee details...</p>
+        </div>
+
+        <div *ngIf="errorMessage && !isLoading" class="alert alert-error">
+          {{ errorMessage }}
+        </div>
+
+        <div *ngIf="employee && !isLoading" class="details-card">
+
+          <!-- ================= EMPLOYEE HEADER ================= -->
+          <div class="employee-header">
+            <div class="employee-info">
+              <h2>{{ employee.firstName }} {{ employee.lastName }}</h2>
+              <p class="position">{{ employee.jobTitlePrimary || 'No Title' }}</p>
+            </div>
+            <div class="action-buttons">
+              <button class="btn btn-primary" (click)="onEdit()">✏️ Edit</button>
+              <button class="btn btn-danger" (click)="onDelete()">🗑️ Delete</button>
+            </div>
+          </div>
+
+          <!-- ================= GRID START ================= -->
+          <div class="details-grid">
+
+            <!-- ================= PRIMARY DETAILS ================= -->
+            <div class="detail-item">
+              <label>Employee Code</label>
+              <p>{{ employee.employeeCode }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Display Name</label>
+              <p>{{ employee.displayName }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Date of Birth</label>
+              <p>{{ employee.dateOfBirth | date:'mediumDate' }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Gender</label>
+              <p>{{ employee.gender }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Marital Status</label>
+              <p>{{ employee.maritalStatus }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Blood Group</label>
+              <p>{{ employee.bloodGroup }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Physically Handicapped</label>
+              <p>{{ employee.isPhysicallyHandicapped ? 'Yes' : 'No' }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Nationality</label>
+              <p>{{ employee.nationality }}</p>
+            </div>
+
+            <!-- ================= CONTACT DETAILS ================= -->
+            <div class="detail-item">
+              <label>Work Email</label>
+              <p>{{ employee.workEmail }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Personal Email</label>
+              <p>{{ employee.personalEmail }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Mobile Number</label>
+              <p>{{ employee.mobileNumber }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Work Number</label>
+              <p>{{ employee.workNumber }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Residence Number</label>
+              <p>{{ employee.residenceNumber }}</p>
+            </div>
+
+            <!-- ================= JOB DETAILS ================= -->
+            <div class="detail-item">
+              <label>Department</label>
+              <p>{{ employee.department?.name || employee.departmentId }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Department Path</label>
+              <p>{{ employee.departmentPath }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Designation</label>
+              <p>{{ employee.designation?.name || employee.designationId }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Manager</label>
+              <p>{{ employee.manager?.displayName || 'No Manager' }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Location</label>
+              <p>{{ employee.location?.name || employee.locationId }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Joining Date</label>
+              <p>{{ employee.joiningDate | date:'mediumDate' }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Job Title (Primary)</label>
+              <p>{{ employee.jobTitlePrimary }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Job Title (Secondary)</label>
+              <p>{{ employee.jobTitleSecondary }}</p>
+            </div>
+
+            <!-- ================= EMPLOYMENT INFO ================= -->
+            <div class="detail-item">
+              <label>Employment Type</label>
+              <p>{{ employee.employmentType }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Time Type</label>
+              <p>{{ employee.timeType }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Contract Status</label>
+              <p>{{ employee.contractStatus }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Pay Band</label>
+              <p>{{ employee.payBand }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Pay Grade</label>
+              <p>{{ employee.payGrade }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Business Unit</label>
+              <p>{{ employee.businessUnit }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Cost Center</label>
+              <p>{{ employee.costCenter }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Legal Entity</label>
+              <p>{{ employee.legalEntity }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Salary Structure ID</label>
+              <p>{{ employee.salaryStructureId }}</p>
+            </div>
+
+            <!-- ================= ATTENDANCE & POLICIES ================= -->
+            <div class="detail-item">
+              <label>Shift</label>
+              <p>{{ employee.shift }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Weekly Off Policy</label>
+              <p>{{ employee.weeklyOffPolicy }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Leave Plan</label>
+              <p>{{ employee.leavePlan }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Holiday Calendar</label>
+              <p>{{ employee.holidayCalendar }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Attendance Number</label>
+              <p>{{ employee.attendanceNumber }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Disable Attendance Tracking</label>
+              <p>{{ employee.disableAttendanceTracking ? 'Yes' : 'No' }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Attendance Capture Scheme</label>
+              <p>{{ employee.attendanceCaptureScheme }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Shift Weekly Off Rule</label>
+              <p>{{ employee.shiftWeeklyOffRule }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Overtime Policy</label>
+              <p>{{ employee.overtimePolicy }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Attendance Penalisation Policy</label>
+              <p>{{ employee.attendancePenalisationPolicy }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Shift Allowance Policy</label>
+              <p>{{ employee.shiftAllowancePolicy }}</p>
+            </div>
+
+            <!-- ================= OTHER DETAILS ================= -->
+            <div class="detail-item">
+              <label>Photo URL</label>
+              <p>{{ employee.photoUrl }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Address</label>
+              <p>{{ employee.address }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Custom Fields</label>
+              <pre>{{ employee.customFieldsJson }}</pre>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

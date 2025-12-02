@@ -1,0 +1,36 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+  <main class="main-content">
+    <div class="attendance-container">
+      <div class="header">
+        <h1>Attendance</h1>
+      </div>
+      <div class="content">
+        <div class="attendance-actions">
+          <button class="btn btn-primary" (click)="punch('in')" [disabled]="isLoading">
+            {{ isLoading ? "Punching In..." : "Punch In" }}
+          </button>
+          <button class="btn btn-secondary" (click)="punch('out')" [disabled]="isLoading">
+            {{ isLoading ? "Punching Out..." : "Punch Out" }}
+          </button>
+        </div>
+        <div *ngIf="attendance" class="attendance-info">
+          <h2>Today</h2>
+          <p>
+            Status: <strong>{{ attendance.status }}</strong>
+          </p>
+          <p>Punch In: {{ attendance.punchInTime | date : "shortTime" }}</p>
+          <p>
+            Punch Out:
+            {{
+            attendance.punchOutTime
+            ? (attendance.punchOutTime | date : "shortTime")
+            : "-"
+            }}
+          </p>
+          <p>Total Hours: {{ attendance.totalHours }}</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
