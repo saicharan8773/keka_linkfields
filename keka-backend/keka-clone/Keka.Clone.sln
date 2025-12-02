@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keka.Clone.Api", "Keka.Clone.Api\Keka.Clone.Api.csproj", "{2327414D-8B18-49A8-B3CF-D6148060A58E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keka.Clone.Application", "Keka.Clone.Application\Keka.Clone.Application.csproj", "{EEF15C4E-3B58-4EC6-8AF4-C67EFDF4BB3A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keka.Clone.Domain", "Keka.Clone.Domain\Keka.Clone.Domain.csproj", "{A2D52A78-94BE-4B9E-9528-B91C11D30EF0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keka.Clone.Infrastructure", "Keka.Clone.Infrastructure\Keka.Clone.Infrastructure.csproj", "{C6106E3D-CF3A-45B8-84A5-CDCFA1B4E61C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keka.Clone.Persistence", "Keka.Clone.Persistence\Keka.Clone.Persistence.csproj", "{AD22A3E9-94E4-4F91-8099-D96188E92008}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keka.Clone.Tests", "Keka.Clone.Tests\Keka.Clone.Tests.csproj", "{6B1F6610-1219-4D20-8F6C-77DDB53866E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{66ED0469-EF6F-4B27-A4E8-398A8E877A04}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2327414D-8B18-49A8-B3CF-D6148060A58E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2327414D-8B18-49A8-B3CF-D6148060A58E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2327414D-8B18-49A8-B3CF-D6148060A58E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2327414D-8B18-49A8-B3CF-D6148060A58E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF15C4E-3B58-4EC6-8AF4-C67EFDF4BB3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF15C4E-3B58-4EC6-8AF4-C67EFDF4BB3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF15C4E-3B58-4EC6-8AF4-C67EFDF4BB3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF15C4E-3B58-4EC6-8AF4-C67EFDF4BB3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D52A78-94BE-4B9E-9528-B91C11D30EF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D52A78-94BE-4B9E-9528-B91C11D30EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D52A78-94BE-4B9E-9528-B91C11D30EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D52A78-94BE-4B9E-9528-B91C11D30EF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6106E3D-CF3A-45B8-84A5-CDCFA1B4E61C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6106E3D-CF3A-45B8-84A5-CDCFA1B4E61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6106E3D-CF3A-45B8-84A5-CDCFA1B4E61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6106E3D-CF3A-45B8-84A5-CDCFA1B4E61C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD22A3E9-94E4-4F91-8099-D96188E92008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD22A3E9-94E4-4F91-8099-D96188E92008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD22A3E9-94E4-4F91-8099-D96188E92008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD22A3E9-94E4-4F91-8099-D96188E92008}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B1F6610-1219-4D20-8F6C-77DDB53866E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B1F6610-1219-4D20-8F6C-77DDB53866E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B1F6610-1219-4D20-8F6C-77DDB53866E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B1F6610-1219-4D20-8F6C-77DDB53866E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
