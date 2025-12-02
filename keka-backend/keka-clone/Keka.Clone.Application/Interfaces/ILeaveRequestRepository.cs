@@ -10,8 +10,8 @@ namespace Keka.Clone.Application.Interfaces
         Task<LeaveRequest?> GetByRequestCodeAsync(string requestCode);
         Task<IEnumerable<LeaveRequest>> GetAllAsync();
 
-        // Updated: Get history using EmployeeCode (string)
-        Task<List<LeaveRequest>> GetEmployeeHistoryByCodeAsync(string employeeCode);
+        // Get history for a specific employee by Id
+        Task<List<LeaveRequest>> GetEmployeeHistoryAsync(Guid employeeId);
 
         Task<List<LeaveRequest>> GetPendingRequestsAsync();
 

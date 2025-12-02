@@ -19,6 +19,7 @@ namespace Keka.Clone.Persistence
         public DbSet<LeaveType> LeaveTypes => Set<LeaveType>();
         public DbSet<EmployeeLeaveAllocation> EmployeeLeaveAllocations => Set<EmployeeLeaveAllocation>();
         public DbSet<LeaveRequest> LeaveRequests => Set<LeaveRequest>();
+        public DbSet<Attendance> Attendances => Set<Attendance>();
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

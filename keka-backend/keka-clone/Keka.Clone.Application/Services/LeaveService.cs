@@ -173,9 +173,9 @@ namespace Keka.Clone.Application.Services
             await RejectLeaveAsync(request.Id);
         }
 
-        public async Task<IEnumerable<LeaveHistoryItemDto>> GetLeaveHistoryAsync(string employeeCode)
+        public async Task<IEnumerable<LeaveHistoryItemDto>> GetLeaveHistoryAsync(Guid employeeId)
         {
-            var history = await _leaveRequestRepo.GetEmployeeHistoryByCodeAsync(employeeCode);
+            var history = await _leaveRequestRepo.GetEmployeeHistoryAsync(employeeId);
 
             return history.Select(MapToHistoryItemDto);
         }

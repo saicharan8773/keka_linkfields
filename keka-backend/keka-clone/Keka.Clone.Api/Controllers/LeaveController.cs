@@ -28,42 +28,27 @@ public class LeaveController:ControllerBase
         return Ok("Leave applied successfully.");
     }
 
-    // Approve / Reject using integer request Id (internal DB key)
-
-    [HttpPost("approve/{id}")]
-    public async Task<IActionResult> Approve(int id)
-    {
-        await _service.ApproveLeaveAsync(id);
-        return Ok("Leave approved.");
-    }
-
-    [HttpPost("reject/{id}")]
-    public async Task<IActionResult> Reject(int id)
-    {
-        await _service.RejectLeaveAsync(id);
-        return Ok("Leave rejected.");
-    }
-
+    
     // Approve / Reject using public RequestCode, e.g. "LR-20251201071511-005bd7-LT1-fd75"
 
-    [HttpPost("approve/by-code/{code}")]
+    [HttpPost("approve/{code}")]
     public async Task<IActionResult> ApproveByCode(string code)
     {
         await _service.ApproveLeaveByCodeAsync(code);
         return Ok("Leave approved.");
     }
 
-    [HttpPost("reject/by-code/{code}")]
+    [HttpPost("reject/{code}")]
     public async Task<IActionResult> RejectByCode(string code)
     {
         await _service.RejectLeaveByCodeAsync(code);
         return Ok("Leave rejected.");
     }
 
-    [HttpGet("history/{empCode}")]
-    public async Task<IActionResult> History(string empCode)
+    [HttpGet("history/{empId:guid}")]
+    public async Task<IActionResult> History(Guid empId)
     {
-        var data = await _service.GetLeaveHistoryAsync(empCode);
+        var data = await _service.GetLeaveHistoryAsync(empId);
         return Ok(data);
     }
 

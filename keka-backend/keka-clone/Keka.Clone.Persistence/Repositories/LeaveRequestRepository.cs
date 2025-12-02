@@ -33,13 +33,12 @@ namespace Keka.Clone.Persistence.Repositories
             return await _db.LeaveRequests.ToListAsync();
         }
 
-        // Corrected: Renamed to match Interface and changed return type to List
-        public async Task<List<LeaveRequest>> GetEmployeeHistoryByCodeAsync(string empCode)
+        public async Task<List<LeaveRequest>> GetEmployeeHistoryAsync(Guid employeeId)
         {
             return await _db.LeaveRequests
                 .Include(x => x.Employee)
                 .Include(x => x.LeaveType)
-                .Where(x => x.Employee.EmployeeCode == empCode)
+                .Where(x => x.EmployeeId == employeeId)
                 .OrderByDescending(x => x.StartDate)
                 .ToListAsync();
         }

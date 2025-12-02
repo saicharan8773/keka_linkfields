@@ -1,14 +1,9 @@
-﻿using Keka.Clone.Application.DTOs.Attendance;
+using Keka.Clone.Application.DTOs.Attendance;
 using Keka.Clone.Application.Helpers;
 using Keka.Clone.Domain.Entities;
 using Keka.Clone.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Keka.Clone.Application.Services
 {
@@ -17,7 +12,11 @@ namespace Keka.Clone.Application.Services
         private readonly AppDbContext _db;
         private readonly IConfiguration _config;
 
-        public AttendanceService(AppDbContext db, IConfiguration config) { _db = db; _config = config; }
+        public AttendanceService(AppDbContext db, IConfiguration config)
+        {
+            _db = db;
+            _config = config;
+        }
 
         private (double lat, double lng, double radius) GetOffice()
         {
@@ -32,7 +31,7 @@ namespace Keka.Clone.Application.Services
             var (olat, olng, r) = GetOffice();
             var distance = GeoUtils.HaversineDistanceMeters(olat, olng, lat, lng);
             if (distance > r) return (false, "Outside office boundary");
-                
+
             var date = utcNow.Date;
             var att = await _db.Attendances.FirstOrDefaultAsync(a => a.UserId == userId && a.Date == date);
             if (att == null)
@@ -46,6 +45,7 @@ namespace Keka.Clone.Application.Services
                 att.LoginLat = lat;
                 att.LoginLng = lng;
             }
+
             await _db.SaveChangesAsync();
             return (true, "Login recorded");
         }
@@ -72,8 +72,8 @@ namespace Keka.Clone.Application.Services
             var start = new DateTime(year, month, 1);
             var end = start.AddMonths(1);
             var records = await _db.Attendances
-                         .Where(a => a.UserId == userId && a.Date >= start && a.Date < end)
-                         .ToListAsync();
+                .Where(a => a.UserId == userId && a.Date >= start && a.Date < end)
+                .ToListAsync();
 
             var list = new List<MonthlyAttendanceDto>();
             var daysInMonth = DateTime.DaysInMonth(year, month);
@@ -91,9 +91,20 @@ namespace Keka.Clone.Application.Services
                     else if (hours >= 4) status = "Half Day";
                     else status = "Leave";
                 }
-                list.Add(new MonthlyAttendanceDto { Date = dt, Login = rec?.LoginTimeUtc, Logout = rec?.LogoutTimeUtc, WorkedHours = hours, Status = status });
+
+                list.Add(new MonthlyAttendanceDto
+                {
+                    Date = dt,
+                    Login = rec?.LoginTimeUtc,
+                    Logout = rec?.LogoutTimeUtc,
+                    WorkedHours = hours,
+                    Status = status
+                });
             }
+
             return list;
         }
     }
 }
+
+

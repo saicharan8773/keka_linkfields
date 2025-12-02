@@ -2,7 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Keka.Clone.Domain\Keka.Clone.Domain.csproj" />
-	<ProjectReference Include="..\Keka.Clone.Application\Keka.Clone.Application.csproj" />
+    <ProjectReference Include="..\Keka.Clone.Application\Keka.Clone.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <PropertyGroup>
