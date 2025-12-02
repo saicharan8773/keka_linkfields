@@ -1,1 +1,83 @@
+## Visual Studio
 .vs/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+## Build results
+bin/
+obj/
+out/
+Debug/
+Release/
+Generated\ Files/
+
+## ASP.NET Core published output
+wwwroot/
+!wwwroot/Templates/
+
+## Do not ignore Email Templates folder
+wwwroot/EmailTemplates/*.html
+
+## Logs
+*.log
+Logs/
+
+## NuGet packages
+*.nupkg
+*.snupkg
+packages/
+*.nuget.props
+*.nuget.targets
+project.assets.json
+project.nuget.cache
+
+## EF Core
+Migrations/obj/
+
+## Transient files
+*.tmp
+*.temp
+*.cache
+*.dbmdl
+
+## Rider / JetBrains
+.idea/
+*.ipr
+*.iws
+*.sln.iml
+
+## Docker
+docker-compose.override.yml
+**/Dockerfile.develop
+
+## Test output
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+## Node (if Angular inside same repo)
+node_modules/
+dist/
+.angular/
+
+## Secrets (IMPORTANT)
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+
+## Ignore sensitive files
+*.pfx
+*.key
+*.cer
+
+## ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+## Others
+Thumbs.db
+Desktop.ini
+*.DS_Store
