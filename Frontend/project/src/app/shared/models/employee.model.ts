@@ -101,7 +101,6 @@ export interface Employee {
   tenantId: string;
   photoUrl: string | null;
   address: string | null;
-  customFieldsJson: string | null;
 
   directReports: Employee[];
 
@@ -113,56 +112,20 @@ export interface Employee {
 export interface EmployeeCreatePayload {
   employeeCode: string;
   firstName: string;
-  middleName: string | null;
   lastName: string;
-  displayName: string | null;
+  displayName: string;
   workEmail: string;
-  personalEmail: string | null;
-  mobileNumber: string | null;
-  workNumber: string | null;
-  residenceNumber: string | null;
-  dateOfBirth: string | null;
-  gender: string | null;
-  maritalStatus: string | null;
-  bloodGroup: string | null;
-  isPhysicallyHandicapped: boolean | null;
-  nationality: string | null;
+  mobileNumber: string;
+  dateOfBirth: string;
+  gender: string;
+  nationality: string;
   joiningDate: string;
-  designationId: string | null;
-  departmentId: string | null;
-  departmentPath: string | null;
-  managerId: string | null;
-  locationId: string | null;
-  jobTitlePrimary: string | null;
-  jobTitleSecondary: string | null;
-  isInProbation: boolean | null;
-  probationStartDate: string | null;
-  probationEndDate: string | null;
-  noticePeriod: string | null;
+  designationId: string;
+  departmentId: string;
+  managerId: string;
+  locationId: string;
   employmentType: string;
-  timeType: string | null;
-  contractStatus: string | null;
-  payBand: string | null;
-  payGrade: string | null;
-  businessUnit: string | null;
-  costCenter: string | null;
-  legalEntity: string | null;
-  salaryStructureId: string | null;
-  shift: string | null;
-  weeklyOffPolicy: string | null;
-  leavePlan: string | null;
-  holidayCalendar: string | null;
-  attendanceNumber: string | null;
-  disableAttendanceTracking: boolean;
-  attendanceCaptureScheme: string | null;
-  shiftWeeklyOffRule: string | null;
-  overtimePolicy: string | null;
-  attendancePenalisationPolicy: string | null;
-  shiftAllowancePolicy: string | null;
-  photoUrl: string | null;
-  address: string | null;
-  // Kept as 'any' to allow JSON object
-  customFields: any | null;
+  timeType: string;
 }
 
 // Update Payload matching C# UpdateEmployeeRequest DTO
@@ -217,5 +180,4 @@ export interface EmployeeUpdatePayload {
   shiftAllowancePolicy?: string | null;
   photoUrl?: string | null;
   address?: string | null;
-  customFields?: any | null; // C#: object?
 }

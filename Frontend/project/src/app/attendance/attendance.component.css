@@ -1,10 +1,18 @@
+
+.punch-btn-icon {
+  vertical-align: middle;
+  margin-right: 6px;
+}
 .attendance-actions-row {
   display: flex;
   gap: 16px;
   align-items: center;
   margin-bottom: 16px;
 }
-
+.punch{
+  font-weight: 700;
+  font-size: 9px;
+}
 .leave-form-container {
   position: absolute;
   top: 120px;
@@ -79,7 +87,7 @@
 .form-group select {
   -webkit-appearance: none;
   -moz-appearance: none;
-   appearance: none;
+  appearance: none;
   background: #f7f9fb
     url('data:image/svg+xml;utf8,<svg fill="%23283a4d" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7.293 7.293a1 1 0 011.414 0L10 8.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z"/></svg>')
     no-repeat right 10px center/18px 18px;
@@ -208,7 +216,7 @@ button:disabled {
 }
 
 label {
-  color: #ffd166;
+  color: #060606;
   font-weight: 500;
   margin-right: 8px;
 }
@@ -216,9 +224,9 @@ label {
 input[type="month"] {
   padding: 8px 12px;
   border-radius: 6px;
-  border: 1px solid #ffd166;
-  background: #2e4157;
-  color: #ffd166;
+  border: 1px solid #000000;
+  background: #ffffff;
+  color: #000000;
   font-size: 1rem;
   margin-left: 4px;
 }
@@ -268,4 +276,252 @@ td {
 .status-failed {
   color: #c33;
   font-weight: 600;
+}
+
+/* Attendance Dashboard Layout */
+.attendance-dashboard-container {
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.attendance-cards-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 8px;
+}
+
+.attendance-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(40, 58, 77, 0.08);
+  padding: 28px 32px 24px 32px;
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid #e5e7eb;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #232e3c;
+  margin-bottom: 18px;
+}
+.card-icon {
+  font-size: 1.5rem;
+}
+
+.clock-time {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a2332;
+  margin-bottom: 4px;
+}
+.clock-date {
+  color: #64748b;
+  font-size: 1.05rem;
+  margin-bottom: 18px;
+}
+.clock-actions {
+  display: flex;
+  gap: 12px;
+}
+.small-sec {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #64748b;
+  margin-left: 6px;
+}
+.clock-actions button {
+  padding: 8px 24px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #232e3c;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.clock-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.clock-actions button:hover:not(:disabled) {
+  background: #1a2332;
+}
+
+.stats-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 8px;
+}
+.stat-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 80px;
+}
+.stat-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a2332;
+}
+.stat-label {
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.leave-card .leave-desc {
+  color: #64748b;
+  font-size: 1rem;
+  margin-bottom: 18px;
+}
+.leave-btn {
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #232e3c;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.leave-btn:hover {
+  background: #1a2332;
+}
+
+.attendance-records-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(40, 58, 77, 0.08);
+  padding: 32px 32px 24px 32px;
+  border: 1px solid #e5e7eb;
+}
+.records-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.records-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a2332;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.attendance-table th,
+.attendance-table td {
+  padding: 14px 18px;
+  text-align: center;
+  font-size: 1rem;
+}
+.attendance-table th {
+  background: #f7f9fb;
+  color: #232e3c;
+  font-weight: 700;
+  border-bottom: 2px solid #e5e7eb;
+}
+.attendance-table tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+.attendance-table tr:last-child {
+  border-bottom: none;
+}
+.attendance-table td {
+  color: #223047;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: #232e3c;
+}
+.status-badge.present {
+  background: #232e3c;
+}
+.status-badge.weekend {
+  background: #64748b;
+}
+.status-badge.halfday {
+  background: #ffd166;
+  color: #232e3c;
+}
+.status-badge.leave {
+  background: #ef476f;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.pagination-controls button {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #f7f9fb;
+  color: #232e3c;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pagination-controls button.active,
+.pagination-controls button:focus {
+  background: #232e3c;
+  color: #fff;
+}
+.pagination-controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1100px) {
+  .attendance-cards-row {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .attendance-card {
+    min-width: 0;
+    width: 100%;
+  }
+}
+@media (max-width: 700px) {
+  .attendance-dashboard-container {
+    padding: 0 2vw;
+  }
+  .attendance-records-card,
+  .attendance-card {
+    padding: 16px 8px;
+  }
+  .records-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }

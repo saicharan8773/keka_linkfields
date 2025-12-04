@@ -1,80 +1,95 @@
-.employee-container {
-  min-height: 100%;
-  background: linear-gradient(135deg, #e9f0fb 0%, #f4f6fa 100%);
-  display: flex;
-  flex-direction: column;
-}
-
-.header {
-  background: linear-gradient(135deg, #283a4d 0%, #2e4157 100%);
-  color: #ffd166;
-  padding: 12px 12px;
-  box-shadow: 0 2px 12px rgba(40, 58, 77, 0.08);
-  flex-shrink: 0;
-}
-
-.header-content {
-  max-width: 1200px;
-  margin: 0 auto;
+/* Search and Add Employee Row */
+.search-add-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 0 20px;
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.header-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  width: 100%;
-  flex: 1;
-}
-
-.loading,
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.loading p,
-.empty-state p {
-  color: #666;
-  font-size: 16px;
   margin-bottom: 20px;
+  gap: 16px;
 }
 
-.alert {
-  padding: 15px 20px;
+.btn-add-gold {
+  background: #ffd166;
+  color: #283a4d;
+  padding: 12px 20px;
+  border: none;
   border-radius: 8px;
-  margin-bottom: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(40, 58, 77, 0.08);
+  transition: background 0.2s;
+}
+.btn-add-gold:hover {
+  background: #ffce5c;
+}
+/* PAGE WRAPPER */
+.employee-container {
+  padding: 30px;
+  font-family: Inter, sans-serif;
 }
 
-.alert-error {
-  background-color: #fee;
-  color: #c33;
-  border: 1px solid #fcc;
+/* HEADER */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
 }
 
-.table-container {
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin-top: 4px;
+  color: #6c757d;
+}
+
+/* ADD EMPLOYEE BUTTON */
+.btn-add {
+  background: #283a4d;
+  color: #fff;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.2s ease;
+}
+
+.btn-add:hover {
+  background: #1f2e3b;
+}
+
+/* SEARCH BOX */
+.search-box {
+  margin-bottom: 5px;
+}
+
+.search-box input {
+  width: 400px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid #d8d8d8;
+  font-size: 15px;
+  background: #f9fbfd;
+}
+.plus-sign {
+  font-size: 18px;
+  font-weight: bold;
+}
+/* TABLE */
+.table-wrapper {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
 
@@ -84,115 +99,127 @@
 }
 
 .employee-table thead {
-  background-color: #f8f9fa;
-  border-bottom: 2px solid #e0e0e0;
+  background: #f4f6f8;
 }
 
 .employee-table th {
   padding: 16px;
-  text-align: left;
-  font-weight: 600;
-  color: #333;
-  font-size: 14px;
+  font-size: 13px;
+  color: #7a7a7a;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
 .employee-table td {
-  padding: 16px;
-  color: #555;
-  font-size: 14px;
-  border-bottom: 1px solid #f0f0f0;
+  width: 96px;
+  height: 85px;
+  padding: 18px;
+  border-bottom: 1px solid #f1f1f1;
+  vertical-align: middle;
 }
 
-.employee-table tbody tr:hover {
-  background-color: #f8f9fa;
-}
-
-.actions {
+/* AVATAR + NAME + EMAIL */
+.emp-profile {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
 }
 
-.btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #f7d794;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #283a4d;
+}
+
+.emp-info .name {
   font-weight: 600;
+  font-size: 15px;
+}
+
+.emp-info .email {
+  font-size: 13px;
+  color: #7d7d7d;
+}
+
+/* CODE TAG */
+.code-tag {
+  background: #f0f4ff;
+  color: #283a4d;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* TYPE TAG */
+.type-tag {
+  background: #e0f7ff;
+  color: #0096c7;
+  padding: 5px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* ACTION BUTTONS */
+.action-col {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  border: none;
+  background: none;
   cursor: pointer;
-  transition: all 0.3s;
-  text-decoration: none;
-  display: inline-block;
+  padding: 6px;
+  font-size: 18px;
+  transition: 0.2s;
 }
 
-.btn-primary {
-  background-color: #283a4d;
-  color: #ffd166;
+.icon-btn:hover {
+  transform: scale(1.15);
 }
 
-.btn-primary:hover {
-  background-color: #2e4157;
-  color: #fff;
-  transform: translateY(-1px);
+.delete:hover {
+  color: #c0392b;
 }
 
-.btn-secondary {
-  background-color: #ffd166;
-  color: #283a4d;
-  border: 2px solid #ffd166;
+/* EMPTY STATE */
+.empty-state {
+  margin-top: 50px;
+  text-align: center;
+  color: #777;
+}
+.action-col {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.btn-secondary:hover {
-  background-color: #ffe9b3;
-  color: #283a4d;
-}
-
-.btn-icon {
+.icon-btn {
   background: none;
   border: none;
+  padding: 6px;
   cursor: pointer;
-  padding: 6px 10px;
-  border-radius: 6px;
-  transition: background 0.2s, transform 0.1s;
+  transition: 0.2s;
   display: flex;
   align-items: center;
 }
 
-.btn-icon svg {
-  display: block;
+.icon-btn:hover {
+  transform: scale(1.15);
 }
 
-.btn-icon:hover {
-  background-color: #e9f0fb;
-  transform: scale(1.1);
+.icon-btn.delete:hover svg {
+  stroke: #ff3b30;
 }
 
-.btn-delete:hover {
-  background-color: #fee;
-}
-
-@media (max-width: 768px) {
-  .header-content {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
-
-  .header-actions {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .header-actions .btn {
-    width: 100%;
-  }
-
-  .table-container {
-    overflow-x: auto;
-  }
-
-  .employee-table {
-    min-width: 800px;
-  }
+.icon-btn:hover svg {
+  stroke: #1e2d3d;
 }

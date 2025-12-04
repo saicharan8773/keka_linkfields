@@ -1,104 +1,69 @@
-import { Component } from "@angular/core";
+import { Component, Output, EventEmitter } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterModule } from "@angular/router";
 import { EmployeeCreatePayload } from "../../shared/models/employee.model";
 import { EmployeeService } from "../../shared/services/employee.service";
-import { SidebarComponent } from "../../shared/components/sidebar.component";
+import { DropdownService } from "../../shared/services/dropdown.service";
 
 @Component({
   selector: "app-employee-create",
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SidebarComponent],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: "./employee-create.component.html",
   styleUrls: ["./employee-create.component.css"],
 })
 export class EmployeeCreateComponent {
+  @Output() closeModal = new EventEmitter<void>();
+  @Output() employeeAdded = new EventEmitter<void>();
+
+  designations: any[] = [];
+  departments: any[] = [];
+  locations: any[] = [];
+  users: any[] = [];
   isLoading = false;
   errorMessage: string | null = null;
-
-  // Helper property for the Custom Fields text input
-  customFieldsString: string = "";
-
-  // Visibility toggles
-  sections = {
-    personal: true,
-    job: false,
-    contract: false,
-    attendance: false,
-    other: false,
-  };
 
   // Initialize the model with default values
   employee: EmployeeCreatePayload = {
     employeeCode: "",
     firstName: "",
-    middleName: null,
     lastName: "",
-    displayName: null,
+    displayName: "",
     workEmail: "",
-    personalEmail: null,
-    mobileNumber: null,
-    workNumber: null,
-    residenceNumber: null,
-    dateOfBirth: null,
-    gender: null,
-    maritalStatus: null,
-    bloodGroup: null,
-    isPhysicallyHandicapped: false,
-    nationality: null,
+    mobileNumber: "",
+    dateOfBirth: "",
+    gender: "",
+    nationality: "",
     joiningDate: "",
-    designationId: null,
-    departmentId: null,
-    departmentPath: null,
-    managerId: null,
-    locationId: null,
-    jobTitlePrimary: null,
-    jobTitleSecondary: null,
-    isInProbation: false,
-    probationStartDate: null,
-    probationEndDate: null,
-    noticePeriod: null,
-    employmentType: "Full-Time",
-    timeType: null,
-    contractStatus: null,
-    payBand: null,
-    payGrade: null,
-    businessUnit: null,
-    costCenter: null,
-    legalEntity: null,
-    salaryStructureId: null,
-    shift: null,
-    weeklyOffPolicy: null,
-    leavePlan: null,
-    holidayCalendar: null,
-    attendanceNumber: null,
-    disableAttendanceTracking: false,
-    attendanceCaptureScheme: null,
-    shiftWeeklyOffRule: null,
-    overtimePolicy: null,
-    attendancePenalisationPolicy: null,
-    shiftAllowancePolicy: null,
-    photoUrl: null,
-    address: null,
-    customFields: null,
+    designationId: "",
+    departmentId: "",
+    managerId: "",
+    locationId: "",
+    employmentType: "",
+    timeType: "",
   };
 
-  toggle(sectionName: keyof typeof this.sections) {
-    this.sections[sectionName] = !this.sections[sectionName];
-  }
-
   onCancel() {
-    // Navigate away or reset form
-    console.log("Cancelled");
+    this.closeModal.emit();
     this.errorMessage = null;
   }
 
   constructor(
     private employeeService: EmployeeService,
-    private router: Router
+    private router: Router,
+    private master: DropdownService
   ) {}
 
+  ngOnInit() {
+    this.loadMasters();
+  }
+  loadMasters() {
+    this.master.getDepartments().subscribe((res) => (this.departments = res));
+    this.master.getDesignations().subscribe((res) => (this.designations = res));
+    this.master.getLocations().subscribe((res) => (this.locations = res));
+    this.master.getManagers().subscribe((res) => (this.users = res));
+  }
   onSubmit() {
     this.isLoading = true;
     this.errorMessage = null;
@@ -114,26 +79,14 @@ export class EmployeeCreateComponent {
       this.isLoading = false;
       return;
     }
-
-    // Process Custom Fields JSON
-    if (this.customFieldsString) {
-      try {
-        this.employee.customFields = JSON.parse(this.customFieldsString);
-      } catch (e) {
-        this.errorMessage = "Invalid JSON format in Custom Fields.";
-        this.isLoading = false;
-        return;
-      }
-    }
-
-    // Call API via EmployeeService
     console.log("Submitting Payload:", this.employee);
 
     this.employeeService.createEmployee(this.employee).subscribe({
-      next: (created) => {
-        this.isLoading = false;
-        // Navigate to employees list so it reloads and shows the new entry
-        this.router.navigate(["/employees"]);
+      next: (res: any) => {
+        if (res && res.message === "Employee created successfully") {
+          this.isLoading = false;
+          this.employeeAdded.emit();
+        }
       },
       error: (err) => {
         console.error("Create employee failed", err);

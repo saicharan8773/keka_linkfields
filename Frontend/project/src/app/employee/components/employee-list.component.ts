@@ -4,11 +4,19 @@ import { Router, RouterModule } from "@angular/router";
 import { EmployeeService } from "../../shared/services/employee.service";
 import { Employee } from "../../shared/models/employee.model";
 import { SidebarComponent } from "../../shared/components/sidebar.component";
+import { FormsModule } from "@angular/forms";
+import { EmployeeCreateComponent } from "./employee-create.component";
 
 @Component({
   selector: "app-employee-list",
   standalone: true,
-  imports: [CommonModule, RouterModule, SidebarComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    SidebarComponent,
+    FormsModule,
+    EmployeeCreateComponent,
+  ],
   templateUrl: "./employee-list.component.html",
   styleUrls: ["./employee-list.component.css"],
 })
@@ -16,6 +24,10 @@ export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];
   isLoading: boolean = false;
   errorMessage: string = "";
+  searchText: string = "";
+  showAddEmployeeModal = false;
+
+
 
   constructor(
     private employeeService: EmployeeService,
@@ -24,6 +36,13 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEmployees();
+  }
+  onEmployeeAdded() {
+    this.showAddEmployeeModal = false;
+    this.loadEmployees();
+  }
+  onSearch(): void {
+    this.searchText = this.searchText.toLowerCase();
   }
 
   loadEmployees(): void {

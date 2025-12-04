@@ -15,7 +15,7 @@ import { AuthService } from "./auth.service";
 export class LeaveService {
   private readonly API_URL = "https://localhost:7225/api/Leave";
   private readonly LEAVE_REQUESTS_URL =
-    "https://localhost:7225/api/Leave/Apply";
+    "https://localhost:7225/api/Leave/apply";
   private readonly EMPLOYEE_URL = "https://localhost:7225/api/Employee";
 
   constructor(private http: HttpClient, private authService: AuthService) {}

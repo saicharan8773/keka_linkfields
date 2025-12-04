@@ -1,7 +1,9 @@
 <div class="dashboard-container">
   <app-sidebar></app-sidebar>
+
   <main class="main-content">
     <div class="employee-container">
+
       <div class="header">
         <div class="header-content">
           <h1>Edit Employee</h1>
@@ -10,233 +12,132 @@
 
       <div class="content">
 
-        <!-- ===== Loading ===== -->
+        <!-- Loading -->
         <div *ngIf="isLoading" class="loading">
-          <p>Loading employee details...</p>
+          Loading employee details...
         </div>
 
-        <!-- ===== FORM START ===== -->
+        <!-- Form -->
         <div *ngIf="!isLoading && employee" class="form-card">
           <form (ngSubmit)="onSubmit()" class="employee-form">
 
-            <!-- ==================== PRIMARY DETAILS ==================== -->
+            <!-- Primary Details -->
             <h3 class="section-title">Primary Details</h3>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="firstName">First Name *</label>
-                <input id="firstName" type="text" name="firstName" [(ngModel)]="employee.firstName" required
-                  class="form-control" />
+                <label>Employee Code *</label>
+                <input type="text" [(ngModel)]="employee.employeeCode" name="employeeCode" required class="form-control" />
               </div>
 
               <div class="form-group">
-                <label for="middleName">Middle Name</label>
-                <input id="middleName" type="text" name="middleName" [(ngModel)]="employee.middleName"
-                  class="form-control" />
+                <label>First Name *</label>
+                <input type="text" [(ngModel)]="employee.firstName" name="firstName" required class="form-control" />
               </div>
 
               <div class="form-group">
-                <label for="lastName">Last Name *</label>
-                <input id="lastName" type="text" name="lastName" [(ngModel)]="employee.lastName" required
-                  class="form-control" />
+                <label>Last Name *</label>
+                <input type="text" [(ngModel)]="employee.lastName" name="lastName" required class="form-control" />
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="displayName">Display Name</label>
-                <input id="displayName" type="text" name="displayName" [(ngModel)]="employee.displayName"
-                  class="form-control" />
+                <label>Display Name</label>
+                <input type="text" [(ngModel)]="employee.displayName" name="displayName" class="form-control" />
               </div>
 
               <div class="form-group">
-                <label for="dateOfBirth">Date of Birth</label>
-                <input id="dateOfBirth" type="date" name="dateOfBirth" [(ngModel)]="employee.dateOfBirth"
-                  class="form-control" />
+                <label>Date of Birth</label>
+                <input type="date" [(ngModel)]="employee.dateOfBirth" name="dateOfBirth" class="form-control" />
               </div>
 
               <div class="form-group">
-                <label for="gender">Gender</label>
-                <input id="gender" type="text" name="gender" [(ngModel)]="employee.gender" class="form-control" />
+                <label>Gender</label>
+                <input type="text" [(ngModel)]="employee.gender" name="gender" class="form-control" />
               </div>
             </div>
 
-
-            <!-- ==================== CONTACT DETAILS ==================== -->
-            <h3 class="section-title">Contact Information</h3>
+            <!-- Contact -->
+            <h3 class="section-title">Contact</h3>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="workEmail">Work Email *</label>
-                <input id="workEmail" type="email" name="workEmail" [(ngModel)]="employee.workEmail" required
-                  class="form-control" />
+                <label>Work Email *</label>
+                <input type="email" [(ngModel)]="employee.workEmail" name="workEmail" required class="form-control" />
               </div>
 
               <div class="form-group">
-                <label for="personalEmail">Personal Email</label>
-                <input id="personalEmail" type="email" name="personalEmail" [(ngModel)]="employee.personalEmail"
-                  class="form-control" />
+                <label>Mobile Number</label>
+                <input type="text" [(ngModel)]="employee.mobileNumber" name="mobileNumber" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label>Nationality</label>
+                <input type="text" [(ngModel)]="employee.nationality" name="nationality" class="form-control" />
+              </div>
+            </div>
+
+            <!-- Org Details -->
+            <h3 class="section-title">Organization</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Department</label>
+                <select [(ngModel)]="employee.departmentId" name="departmentId" class="form-control">
+                  <option *ngFor="let d of departments" [value]="d.id">{{ d.name }}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Designation</label>
+                <select [(ngModel)]="employee.designationId" name="designationId" class="form-control">
+                  <option *ngFor="let d of designations" [value]="d.id">{{ d.title }}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Manager</label>
+                <select [(ngModel)]="employee.managerId" name="managerId" class="form-control">
+                  <option value="">-- None --</option>
+                  <option *ngFor="let m of managers" [value]="m.id">{{ m.displayName }}</option>
+                </select>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="mobileNumber">Mobile Number</label>
-                <input id="mobileNumber" type="tel" name="mobileNumber" [(ngModel)]="employee.mobileNumber"
-                  class="form-control" />
+                <label>Location</label>
+                <select [(ngModel)]="employee.locationId" name="locationId" class="form-control">
+                  <option *ngFor="let l of locations" [value]="l.id">{{ l.city }}</option>
+                </select>
               </div>
 
               <div class="form-group">
-                <label for="workNumber">Work Number</label>
-                <input id="workNumber" type="tel" name="workNumber" [(ngModel)]="employee.workNumber"
-                  class="form-control" />
+                <label>Employment Type *</label>
+                <input type="text" [(ngModel)]="employee.employmentType" name="employmentType" class="form-control" required />
               </div>
 
               <div class="form-group">
-                <label for="residenceNumber">Residence Number</label>
-                <input id="residenceNumber" type="tel" name="residenceNumber" [(ngModel)]="employee.residenceNumber"
-                  class="form-control" />
+                <label>Time Type</label>
+                <input type="text" [(ngModel)]="employee.timeType" name="timeType" class="form-control" />
               </div>
             </div>
 
-
-            <!-- ==================== JOB & ORGANIZATION ==================== -->
-            <h3 class="section-title">Organization Details</h3>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="departmentId">Department ID</label>
-                <input id="departmentId" type="text" name="departmentId" [(ngModel)]="employee.departmentId"
-                  class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="designationId">Designation ID</label>
-                <input id="designationId" type="text" name="designationId" [(ngModel)]="employee.designationId"
-                  class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="managerId">Manager ID</label>
-                <input id="managerId" type="text" name="managerId" [(ngModel)]="employee.managerId"
-                  class="form-control" />
-              </div>
-            </div>
-
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="locationId">Location ID</label>
-                <input id="locationId" type="text" name="locationId" [(ngModel)]="employee.locationId"
-                  class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="jobTitlePrimary">Job Title (Primary)</label>
-                <input id="jobTitlePrimary" type="text" name="jobTitlePrimary" [(ngModel)]="employee.jobTitlePrimary"
-                  class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="jobTitleSecondary">Job Title (Secondary)</label>
-                <input id="jobTitleSecondary" type="text" name="jobTitleSecondary"
-                  [(ngModel)]="employee.jobTitleSecondary" class="form-control" />
-              </div>
-            </div>
-
-
-            <!-- ==================== EMPLOYMENT INFO ==================== -->
-            <h3 class="section-title">Employment Info</h3>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="joiningDate">Joining Date *</label>
-                <input id="joiningDate" type="date" name="joiningDate" [(ngModel)]="employee.joiningDate" required
-                  class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="employmentType">Employment Type *</label>
-                <input id="employmentType" type="text" name="employmentType" [(ngModel)]="employee.employmentType"
-                  required class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="timeType">Time Type</label>
-                <input id="timeType" type="text" name="timeType" [(ngModel)]="employee.timeType" class="form-control" />
-              </div>
-            </div>
-
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="contractStatus">Contract Status</label>
-                <input id="contractStatus" type="text" name="contractStatus" [(ngModel)]="employee.contractStatus"
-                  class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="payBand">Pay Band</label>
-                <input id="payBand" type="text" name="payBand" [(ngModel)]="employee.payBand" class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="payGrade">Pay Grade</label>
-                <input id="payGrade" type="text" name="payGrade" [(ngModel)]="employee.payGrade" class="form-control" />
-              </div>
-            </div>
-
-
-            <!-- ==================== SALARY ==================== -->
-            <h3 class="section-title">Salary & Structure</h3>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="salaryStructureId">Salary Structure ID</label>
-                <input id="salaryStructureId" type="text" name="salaryStructureId"
-                  [(ngModel)]="employee.salaryStructureId" class="form-control" />
-              </div>
-            </div>
-
-
-            <!-- ==================== OTHER DETAILS ==================== -->
-            <h3 class="section-title">Additional Details</h3>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="photoUrl">Photo URL</label>
-                <input id="photoUrl" type="text" name="photoUrl" [(ngModel)]="employee.photoUrl" class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="address">Address</label>
-                <input id="address" type="text" name="address" [(ngModel)]="employee.address" class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="customFieldsJson">Custom Fields JSON</label>
-                <textarea id="customFieldsJson" name="customFieldsJson" [(ngModel)]="employee.customFieldsJson"
-                  class="form-control" rows="3"></textarea>
-              </div>
-            </div>
-
-            <!-- ==================== ERRORS ==================== -->
             <div *ngIf="errorMessage" class="alert alert-error">
               {{ errorMessage }}
             </div>
 
-            <!-- ==================== ACTIONS ==================== -->
             <div class="form-actions">
-              <button type="button" class="btn btn-secondary" (click)="onCancel()">
-                Cancel
-              </button>
+              <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
               <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-                {{ isLoading ? "Updating..." : "Update Employee" }}
+                {{ isLoading ? 'Updating...' : 'Update Employee' }}
               </button>
             </div>
 
           </form>
         </div>
+
       </div>
     </div>
   </main>
