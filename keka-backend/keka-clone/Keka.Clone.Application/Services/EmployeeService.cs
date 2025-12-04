@@ -7,6 +7,7 @@ using Keka.Clone.Application.DTOs.Employee;
 using Keka.Clone.Application.Interfaces;
 using Keka.Clone.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace Keka.Clone.Application.Services
 {
@@ -19,6 +20,7 @@ namespace Keka.Clone.Application.Services
         private readonly PasswordHasher<User> _passwordHasher = new();
         private const string DefaultPassword = "Passw0rd!";
         private readonly IMapper _mapper;
+        private readonly ILogger<EmployeeService> _logger;
         private static readonly IReadOnlyDictionary<string, int> DefaultLeaveAllocations =
             new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
             {
@@ -36,13 +38,15 @@ namespace Keka.Clone.Application.Services
             IEmployeeLeaveAllocationRepository allocationRepo,
             ILeaveTypeRepository leaveTypeRepo,
             IUserRepository userRepo,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<EmployeeService> logger)
         {
             _repo = repo;
             _allocationRepo = allocationRepo;
             _leaveTypeRepo = leaveTypeRepo;
             _userRepo = userRepo;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<EmployeeDto> CreateAsync(CreateEmployeeRequest request)
@@ -50,6 +54,15 @@ namespace Keka.Clone.Application.Services
             var exists = await _repo.GetByWorkEmailAsync(request.WorkEmail);
             if (exists != null)
                 throw new Exception("Employee with this email already exists.");
+            
+            if (request.ManagerId.HasValue)
+            {
+                var manager = await _userRepo.GetByIdAsync(request.ManagerId.Value);
+                if (manager == null)
+                {
+                    throw new ArgumentException($"Manager with ID '{request.ManagerId.Value}' not found. Please provide a valid ManagerId.", nameof(request.ManagerId));
+                }
+            }
 
             var employee = _mapper.Map<Employee>(request);
             employee.Id = Guid.NewGuid();
@@ -75,6 +88,10 @@ namespace Keka.Clone.Application.Services
         public async Task<EmployeeDto?> GetByIdAsync(Guid id)
         {
             var emp = await _repo.GetByIdAsync(id);
+            if (emp != null)
+            {
+                _logger.LogInformation($"Employee fetched: {emp.Id}, Dept: {emp.Department != null}, Desig: {emp.Designation != null}, Mgr: {emp.Manager != null}, Loc: {emp.Location != null}");
+            }
             return emp == null ? null : _mapper.Map<EmployeeDto>(emp);
         }
 

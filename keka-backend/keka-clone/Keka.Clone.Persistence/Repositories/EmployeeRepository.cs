@@ -39,9 +39,7 @@ public class EmployeeRepository:IEmployeeRepository
         return await _db.Employees
             .Include(e => e.Department)
             .Include(e => e.Designation)
-            .Include(e => e.SalaryStructure)
             .Include(e => e.Manager)
-            .ThenInclude(m => m.Manager)
             .Include(e => e.Location)
             .FirstOrDefaultAsync(e => e.Id == id);
     }
@@ -107,13 +105,12 @@ public class EmployeeRepository:IEmployeeRepository
 
         var items = await q
             .Include(e => e.Department)
+            .Include(e => e.Designation)
             .Include(e => e.Manager)
-            .ThenInclude(m => m.Manager)
             .Include(e => e.Location)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
-        //Task SaveChangesAsync();
 
         return (items, total);
     }
