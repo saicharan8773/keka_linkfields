@@ -1,5 +1,7 @@
 export interface SalaryStructure {
     id: string;
+    title: string;
+    description: string;
     basic: number;
     hra: number;
     otherAllowances: number;
@@ -7,6 +9,8 @@ export interface SalaryStructure {
 }
 
 export interface SalaryStructureCreatePayload {
+    title: string;
+    description: string;
     basic: number;
     hra: number;
     otherAllowances: number;
@@ -14,6 +18,8 @@ export interface SalaryStructureCreatePayload {
 }
 
 export interface SalaryStructureUpdatePayload {
+    title?: string;
+    description?: string;
     basic?: number;
     hra?: number;
     otherAllowances?: number;

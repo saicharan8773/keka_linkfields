@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { SidebarComponent } from "../shared/components/sidebar.component";
+// import { WeeklyPatternChartComponent } from "../shared/components/weekly-pattern-chart.component";
 import { LeaveService } from "../shared/services/leave.service";
 import { EmployeeService } from "../shared/services/employee.service";
 

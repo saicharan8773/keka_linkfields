@@ -10,7 +10,7 @@ using Keka.Clone.Domain.Entities;
 
 namespace Keka.Clone.Application.Services;
 
-public class DesignationService:IDesignationService
+public class DesignationService : IDesignationService
 {
     private readonly IDesignationRepository _repo;
     private readonly IMapper _mapper;
@@ -32,7 +32,9 @@ public class DesignationService:IDesignationService
         var entity = new Designation
         {
             Id = Guid.NewGuid(),
-            Title = request.Title
+            Title = request.Title,
+            Description = request.Description,
+            DepartmentId = request.DepartmentId
         };
 
         await _repo.AddAsync(entity);

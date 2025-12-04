@@ -55,6 +55,17 @@ export class LeaveService {
   }
 
   /**
+   * Fetch leave types using an explicit policy/company GUID.
+   * Example: GET /api/Leave/types/{policyGuid}
+   */
+  getLeaveTypesByGuid(policyId: string): Observable<LeaveType[]> {
+    if (!policyId) {
+      return this.getLeaveTypes();
+    }
+    return this.http.get<LeaveType[]>(`${this.API_URL}/types/${policyId}`);
+  }
+
+  /**
    * Get leave history for an employee by empiid (path param expected by API as empCode)
    * GET /api/Leave/history/{empiid}
    */
@@ -74,6 +85,22 @@ export class LeaveService {
       return this.http.get<any>(`${this.API_URL}/balances`);
     }
     return this.http.get<any>(`${this.API_URL}/balances/${id}`);
+  }
+
+  /**
+   * Returns remaining/pending balance for a specific leave type for an employee.
+   * Endpoint: GET /api/Leave/balance/{empId}/{leaveTypeId}
+   */
+  getLeaveBalanceForType(
+    empId: string,
+    leaveTypeId: number
+  ): Observable<number> {
+    console.log("Getting balance for type:", leaveTypeId);
+    console.log("Employee ID:", empId);
+    console.log("API URL:", `${this.API_URL}/balance/${empId}/${leaveTypeId}`);
+    return this.http.get<number>(
+      `${this.API_URL}/balance/${empId}/${leaveTypeId}`
+    );
   }
 
   /**

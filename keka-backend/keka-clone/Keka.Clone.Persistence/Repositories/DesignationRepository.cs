@@ -17,7 +17,7 @@ public class DesignationRepository:IDesignationRepository
 
     public async Task<IEnumerable<Designation>> GetAllAsync()
     {
-        return await _db.Designations.ToListAsync();
+        return await _db.Designations.Include(d => d.Department).ToListAsync();
     }
 
     public async Task AddAsync(Designation designation)

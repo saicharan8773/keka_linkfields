@@ -51,6 +51,16 @@ public class EmployeeRepository:IEmployeeRepository
         _db.Employees.Update(employee);
     }
 
+    public async Task<IEnumerable<Employee>> GetByDepartmentIdAsync(Guid departmentId)
+    {
+        return await _db.Employees
+            .Where(e => e.DepartmentId == departmentId)
+            .Include(e => e.Department)
+            .Include(e => e.Designation)
+            .Include(e => e.Manager)
+            .ToListAsync();
+    }
+
     public async Task<(IEnumerable<Employee> Items, int Total)> SearchAsync(
         string? query,
         Guid? departmentId,

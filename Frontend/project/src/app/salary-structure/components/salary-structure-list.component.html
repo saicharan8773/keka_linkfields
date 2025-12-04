@@ -33,6 +33,8 @@
                     <table class="employee-table">
                         <thead>
                             <tr>
+                                <th>Title</th>
+                                <th>Description</th>
                                 <th>Basic</th>
                                 <th>HRA</th>
                                 <th>Other Allowances</th>
@@ -43,6 +45,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let structure of salaryStructures">
+                                <td><strong>{{ structure.title }}</strong></td>
+                                <td>{{ structure.description }}</td>
                                 <td>{{ structure.basic | currency:'INR' }}</td>
                                 <td>{{ structure.hra | currency:'INR' }}</td>
                                 <td>{{ structure.otherAllowances | currency:'INR' }}</td>

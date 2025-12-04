@@ -22,8 +22,18 @@ public class DepartmentService:IDepartmentService
         return _mapper.Map<IEnumerable<DepartmentDto>>(entities);
     }
 
+    public async Task<DepartmentDto?> GetByIdAsync(Guid id)
+    {
+        var entity = await _repo.GetByIdAsync(id);
+        return entity == null ? null : _mapper.Map<DepartmentDto>(entity);
+    }
+
     public async Task<DepartmentDto> CreateAsync(CreateDepartmentRequest request)
     {
+        var existing = await _repo.GetByCodeAsync(request.Code);
+        if (existing != null)
+            throw new Exception("Department with this code already exists.");
+
         var entity = new Department
         {
             Id = Guid.NewGuid(),

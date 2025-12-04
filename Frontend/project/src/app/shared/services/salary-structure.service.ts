@@ -13,9 +13,7 @@ export class SalaryStructureService {
     constructor(private http: HttpClient) { }
 
     getAllSalaryStructures(): Observable<SalaryStructure[]> {
-        return this.http
-            .get<{ items: SalaryStructure[] }>(this.API_URL)
-            .pipe(map((res) => res.items));
+        return this.http.get<SalaryStructure[]>(this.API_URL);
     }
 
     getSalaryStructureById(id: string): Observable<SalaryStructure> {

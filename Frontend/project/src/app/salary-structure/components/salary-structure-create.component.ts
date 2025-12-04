@@ -14,6 +14,8 @@ import { SalaryStructureCreatePayload } from '../../shared/models/salary-structu
 })
 export class SalaryStructureCreateComponent {
     salaryStructure: SalaryStructureCreatePayload = {
+        title: '',
+        description: '',
         basic: 0,
         hra: 0,
         otherAllowances: 0,

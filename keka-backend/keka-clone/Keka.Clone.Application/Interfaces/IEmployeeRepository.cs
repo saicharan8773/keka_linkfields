@@ -21,6 +21,8 @@ namespace Keka.Clone.Application.Interfaces
             bool sortDesc
         );
 
+        Task<IEnumerable<Employee>> GetByDepartmentIdAsync(Guid departmentId);
+
         Task SaveChangesAsync(); // ✅ required
     }
 }

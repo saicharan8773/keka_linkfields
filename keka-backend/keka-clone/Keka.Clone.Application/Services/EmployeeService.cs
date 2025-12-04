@@ -78,6 +78,12 @@ namespace Keka.Clone.Application.Services
             return emp == null ? null : _mapper.Map<EmployeeDto>(emp);
         }
 
+        public async Task<IEnumerable<EmployeeDto>> GetByDepartmentIdAsync(Guid departmentId)
+        {
+            var employees = await _repo.GetByDepartmentIdAsync(departmentId);
+            return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
+        }
+
         public async Task<(IEnumerable<EmployeeDto> Items, int Total)> SearchAsync(
             EmployeeSearchParams searchParams)
         {

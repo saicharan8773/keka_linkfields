@@ -72,6 +72,15 @@ export class LeaveComponent implements OnInit, OnDestroy {
   ];
   leaveBalancesSummary: any[] = [];
   private valueChangesSub?: Subscription;
+  // Palette reused for stats donut
+  private readonly statsColors: string[] = [
+    "#8e7cc3",
+    "#f6a623",
+    "#50e3c2",
+    "#4a90e2",
+    "#d0021b",
+    "#7ed321",
+  ];
 
   private employeeId: any = null;
   role: any = null;
@@ -139,7 +148,7 @@ export class LeaveComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private leaveService: LeaveService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // initialize auth-related fields
@@ -166,7 +175,6 @@ export class LeaveComponent implements OnInit, OnDestroy {
 
     this.loadLeaveTypes();
     this.loadMyRequests();
-    this.loadLeaveStats();
     this.loadLeaveBalancesSummary();
   }
 
@@ -241,6 +249,7 @@ export class LeaveComponent implements OnInit, OnDestroy {
         console.log("My leave history loaded:", requests);
         this.myRequests = requests || [];
         this.notifications = this.buildNotifications(this.myRequests);
+        this.recalculateLeaveStatsFromHistory();
         this.isLoadingMy = false;
       },
       error: () => {
@@ -276,41 +285,122 @@ export class LeaveComponent implements OnInit, OnDestroy {
   }
 
   private loadLeaveTypes(): void {
-    if (!this.employeeId) {
-      return;
-    }
+    // Prefer calling the policy GUID endpoint to retrieve leave types
+    // Fallback to employee-scoped endpoint when GUID is not set or request fails.
+    const POLICY_GUID = "A9BB5F91-26B2-4F69-BF53-C039B9EC8838";
     this.isLoadingLeaveTypes = true;
-    this.leaveService.getLeaveTypes().subscribe({
+    this.leaveService.getLeaveTypesByGuid(POLICY_GUID).subscribe({
       next: (types) => {
-        this.leaveTypes = types;
+        // The API returns an array matching the LeaveType interface
+        this.leaveTypes = types || [];
+        // Recalculate consumed leave types donut purely from this data
+        this.recalculateConsumedFromLeaveTypes();
         this.isLoadingLeaveTypes = false;
       },
       error: () => {
-        this.errorMessage = "Unable to load leave types at the moment.";
-        this.isLoadingLeaveTypes = false;
+        // fallback to existing behavior: try employee-specific types
+        if (this.employeeId) {
+          this.leaveService.getLeaveTypes().subscribe({
+            next: (types) => {
+              this.leaveTypes = types || [];
+              this.isLoadingLeaveTypes = false;
+            },
+            error: () => {
+              this.errorMessage = "Unable to load leave types at the moment.";
+              this.isLoadingLeaveTypes = false;
+            },
+          });
+        } else {
+          this.errorMessage = "Unable to load leave types at the moment.";
+          this.isLoadingLeaveTypes = false;
+        }
       },
     });
   }
 
-  private loadLeaveStats(): void {
-    this.leaveService.getLeaveStats().subscribe({
-      next: (stats) => {
-        // Defensive checks and fallbacks
-        this.weeklyPattern = stats?.weeklyPattern || [];
-        this.weeklyApproved = stats?.weeklyApproved || [];
-        this.consumedByType = stats?.consumedByType || [];
-        this.monthlyStats = stats?.monthlyStats || [];
-        this.monthlyApproved = stats?.monthlyApproved || [];
-      },
-      error: () => {
-        console.log("Unable to load leave stats");
-        this.weeklyPattern = [];
-        this.weeklyApproved = [];
-        this.consumedByType = [];
-        this.monthlyStats = [];
-        this.monthlyApproved = [];
-      },
+  /**
+   * Recalculate weekly/monthly patterns and consumed leave types
+   * based purely on the employee's leave history (myRequests).
+   *
+   * - Weekly pattern: number of approved leave days taken on each weekday
+   * - Monthly pattern: number of approved leave days taken in each month
+   * - Consumed leave types: total approved leave days per leave type
+   *
+   * Days are counted per calendar day between start and end date (inclusive).
+   */
+  private recalculateLeaveStatsFromHistory(): void {
+    // Always initialise with all days/months so charts show 0 bars when empty
+    const weeklyApproved = new Array(7).fill(0); // Mon..Sun
+    const monthlyApproved = new Array(12).fill(0); // Jan..Dec
+    const typeTotals = new Map<string, number>();
+
+    if (!this.myRequests || this.myRequests.length === 0) {
+      this.weeklyApproved = weeklyApproved;
+      this.monthlyApproved = monthlyApproved;
+      this.consumedByType = [];
+      return;
+    }
+
+    const approvedRequests = this.myRequests.filter(
+      (req) => this.getStatusLabel(req.status) === "Approved"
+    );
+
+    for (const req of approvedRequests) {
+      const start = new Date(req.startDate);
+      const end = new Date(req.endDate);
+
+      if (isNaN(start.getTime()) || isNaN(end.getTime()) || end < start) {
+        continue;
+      }
+
+      // Walk each calendar day in the approved leave range
+      for (
+        let d = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        d <= end;
+        d.setDate(d.getDate() + 1)
+      ) {
+        // Convert JS getDay() (Sun=0..Sat=6) to Mon=0..Sun=6
+        const dow = (d.getDay() + 6) % 7;
+        weeklyApproved[dow] = (weeklyApproved[dow] || 0) + 1;
+
+        const monthIdx = d.getMonth(); // 0..11
+        monthlyApproved[monthIdx] = (monthlyApproved[monthIdx] || 0) + 1;
+
+        const typeName = req.leaveTypeName || `Type ${req.leaveTypeId}`;
+        typeTotals.set(typeName, (typeTotals.get(typeName) || 0) + 1);
+      }
+    }
+
+    this.weeklyApproved = weeklyApproved;
+    this.monthlyApproved = monthlyApproved;
+    this.consumedByType = Array.from(typeTotals.entries()).map(
+      ([name, value]) => ({ name, value })
+    );
+  }
+
+  /**
+   * Recalculate consumed leave types (for the pie/donut chart)
+   * using ONLY the data coming from the policy GUID types API:
+   *   GET /api/Leave/types/A9BB5F91-26B2-4F69-BF53-C039B9EC8838
+   *
+   * For each leave type we derive "consumed days" using getConsumedDays,
+   * then aggregate by leave type name for the donut.
+   */
+  private recalculateConsumedFromLeaveTypes(): void {
+    if (!this.leaveTypes || this.leaveTypes.length === 0) {
+      this.consumedByType = [];
+      return;
+    }
+
+    const totals = this.leaveTypes.map((lt: any) => {
+      const consumed = this.getConsumedDays(lt);
+      return {
+        name: lt.leaveTypeName || `Type ${lt.leaveTypeId}`,
+        value: typeof consumed === "number" ? consumed : 0,
+      };
     });
+
+    this.consumedByType = totals.filter((t) => t.value >= 0);
   }
 
   private loadLeaveBalancesSummary(): void {
@@ -446,9 +536,12 @@ export class LeaveComponent implements OnInit, OnDestroy {
   }
 
   getAvailableDays(leaveType: any): number | string {
+    console.log("Available days:", leaveType.remainingDays);
     if (leaveType.isUnlimited) return "∞";
-    if (typeof leaveType.remainingDays === "number")
+    if (typeof leaveType.remainingDays === "number") {
+      console.log("Remaining days:", leaveType.remainingDays);
       return leaveType.remainingDays;
+    }
     if (typeof leaveType.available === "number") return leaveType.available;
     return 0;
   }
@@ -462,8 +555,8 @@ export class LeaveComponent implements OnInit, OnDestroy {
       typeof leaveType.remainingDays === "number"
         ? leaveType.remainingDays
         : typeof leaveType.available === "number"
-        ? leaveType.available
-        : null;
+          ? leaveType.available
+          : null;
     if (defaultDays !== null && typeof remaining === "number") {
       return Math.max(0, defaultDays - remaining);
     }
@@ -504,5 +597,49 @@ export class LeaveComponent implements OnInit, OnDestroy {
     return {
       background: `conic-gradient(${fill} ${percent}%, ${empty} ${percent}%)`,
     };
+  }
+
+  // ===== Consumed leave types donut (stats header card) =====
+
+  getConsumedDonutStyle(): any {
+    if (!this.consumedByType || this.consumedByType.length === 0) {
+      return { background: "#f7f3ff" };
+    }
+
+    const total = this.consumedByType.reduce(
+      (sum, t) => sum + (typeof t.value === "number" ? t.value : 0),
+      0
+    );
+
+    if (!total || total <= 0) {
+      return { background: "#f7f3ff" };
+    }
+
+    let current = 0;
+    const segments: string[] = [];
+
+    this.consumedByType.forEach((t, index) => {
+      const v = typeof t.value === "number" ? t.value : 0;
+      if (v <= 0) {
+        return;
+      }
+      const start = (current / total) * 100;
+      current += v;
+      const end = (current / total) * 100;
+      const color = this.statsColors[index % this.statsColors.length];
+      segments.push(`${color} ${start}% ${end}%`);
+    });
+
+    if (segments.length === 0) {
+      return { background: "#f7f3ff" };
+    }
+
+    return {
+      background: `conic-gradient(${segments.join(", ")})`,
+    };
+  }
+
+  getConsumedTypeColor(index: number): string {
+    return this.statsColors[index % this.statsColors.length];
   }
 }

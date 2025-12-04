@@ -14,6 +14,16 @@ public class DepartmentRepository:IDepartmentRepository
         return await _db.Departments.ToListAsync();
     }
 
+    public async Task<Department?> GetByIdAsync(Guid id)
+    {
+        return await _db.Departments.FindAsync(id);
+    }
+
+    public async Task<Department?> GetByCodeAsync(string code)
+    {
+        return await _db.Departments.FirstOrDefaultAsync(d => d.Code == code);
+    }
+
     public async Task AddAsync(Department department)
     {
         await _db.Departments.AddAsync(department);

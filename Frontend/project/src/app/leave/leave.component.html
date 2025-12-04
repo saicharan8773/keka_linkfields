@@ -23,12 +23,12 @@
               <h4>Consumed Leave Types</h4>
               <small>Consumed Leave Types</small>
             </div>
-            <div class="donut-placeholder">
+            <div class="donut-placeholder" [ngStyle]="getConsumedDonutStyle()">
               <div class="donut-center">Leave<br />Types</div>
             </div>
             <ul class="consumed-list">
-              <li *ngFor="let t of consumedByType">
-                <span class="dot"></span>
+              <li *ngFor="let t of consumedByType; let i = index">
+                <span class="dot" [style.background]="getConsumedTypeColor(i)"></span>
                 {{ t.name }} <strong>{{ t.value }}</strong>
               </li>
             </ul>

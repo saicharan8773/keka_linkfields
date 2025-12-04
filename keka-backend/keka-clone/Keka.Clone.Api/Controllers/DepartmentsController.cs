@@ -12,10 +12,12 @@ namespace Keka.Clone.Api.Controllers;
 public class DepartmentsController:ControllerBase
 {
     private readonly IDepartmentService _service;
+    private readonly IEmployeeService _employeeService;
 
-    public DepartmentsController(IDepartmentService service)
+    public DepartmentsController(IDepartmentService service, IEmployeeService employeeService)
     {
         _service = service;
+        _employeeService = employeeService;
     }
 
     [HttpGet]
@@ -25,10 +27,25 @@ public class DepartmentsController:ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _service.GetByIdAsync(id);
+        if (result == null) return NotFound();
+        return Ok(result);
+    }
+
+    [HttpGet("{id}/employees")]
+    public async Task<IActionResult> GetEmployees(Guid id)
+    {
+        var employees = await _employeeService.GetByDepartmentIdAsync(id);
+        return Ok(employees);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateDepartmentRequest request)
     {
         var created = await _service.CreateAsync(request);
-        return CreatedAtAction(nameof(GetAll), new { id = created.Id }, created);
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 }

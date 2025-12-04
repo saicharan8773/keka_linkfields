@@ -22,7 +22,7 @@ export class DepartmentListComponent implements OnInit {
     private departmentService: DepartmentService,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadDepartments();
@@ -32,6 +32,54 @@ export class DepartmentListComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = "";
 
+    // Hardcoded data as requested
+    const hardcodedDepartments = [
+      {
+        "id": "d1000000-0000-0000-0000-000000000001",
+        "name": "Human Resources",
+        "code": "HR"
+      },
+      {
+        "id": "d1000000-0000-0000-0000-000000000002",
+        "name": "Financial Accounting",
+        "code": "FA"
+      },
+      {
+        "id": "d1000000-0000-0000-0000-000000000003",
+        "name": "Marketing and Sales",
+        "code": "M&S"
+      },
+      {
+        "id": "d1000000-0000-0000-0000-000000000004",
+        "name": "Operations management",
+        "code": "OM"
+      },
+      {
+        "id": "d1000000-0000-0000-0000-000000000005",
+        "name": "Research and development",
+        "code": "R&D"
+      },
+      {
+        "id": "d1000000-0000-0000-0000-000000000006",
+        "name": "Customer service",
+        "code": "CS"
+      },
+      {
+        "id": "d1000000-0000-0000-0000-000000000007",
+        "name": "Information Technology",
+        "code": "IT"
+      },
+      {
+        "id": "d1000000-0000-0000-0000-000000000008",
+        "name": "IT Support",
+        "code": "ITS"
+      }
+    ];
+
+    this.departments = hardcodedDepartments;
+    this.isLoading = false;
+
+    /*
     this.departmentService.getAllDepartments().subscribe({
       next: (data) => {
         this.departments = data;
@@ -42,6 +90,7 @@ export class DepartmentListComponent implements OnInit {
         this.isLoading = false;
       },
     });
+    */
   }
 
   onDelete(id: string | undefined): void {

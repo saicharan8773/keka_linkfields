@@ -32,6 +32,8 @@ public class SalaryStructureService:ISalaryStructureService
         var entity = new SalaryStructure
         {
             Id = Guid.NewGuid(),
+            Title = request.Title,
+            Description = request.Description,
             Basic = request.Basic,
             HRA = request.HRA,
             OtherAllowances = request.OtherAllowances,

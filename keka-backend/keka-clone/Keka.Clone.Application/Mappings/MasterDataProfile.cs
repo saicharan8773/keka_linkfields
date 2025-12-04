@@ -12,7 +12,9 @@ public class MasterDataProfile:Profile
     public MasterDataProfile()
     {
         CreateMap<Department, DepartmentDto>();
-        CreateMap<Designation, DesignationDto>();
+        CreateMap<Designation, DesignationDto>()
+            .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name))
+            .ForMember(dest => dest.DepartmentCode, opt => opt.MapFrom(src => src.Department.Code));
         CreateMap<SalaryStructure, SalaryStructureDto>();
     }
 }

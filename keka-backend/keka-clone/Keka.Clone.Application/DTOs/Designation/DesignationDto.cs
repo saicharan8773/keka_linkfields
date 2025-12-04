@@ -10,4 +10,8 @@ public class DesignationDto
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = null!;
+    public string? Description { get; set; }
+    public Guid DepartmentId { get; set; }
+    public string? DepartmentName { get; set; }
+    public string? DepartmentCode { get; set; }
 }

@@ -22,6 +22,47 @@ namespace Keka.Clone.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Keka.Clone.Domain.Entities.Attendance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("LoginLat")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("LoginLng")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("LoginTimeUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("LogoutLat")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("LogoutLng")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("LogoutTimeUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double?>("WorkedHours")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Attendances");
+                });
+
             modelBuilder.Entity("Keka.Clone.Domain.Entities.Department", b =>
                 {
                     b.Property<Guid>("Id")
@@ -39,6 +80,56 @@ namespace Keka.Clone.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Departments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d1000000-0000-0000-0000-000000000001"),
+                            Code = "HR",
+                            Name = "Human Resources"
+                        },
+                        new
+                        {
+                            Id = new Guid("d1000000-0000-0000-0000-000000000002"),
+                            Code = "FA",
+                            Name = "Financial Accounting"
+                        },
+                        new
+                        {
+                            Id = new Guid("d1000000-0000-0000-0000-000000000003"),
+                            Code = "M&S",
+                            Name = "Marketing and Sales"
+                        },
+                        new
+                        {
+                            Id = new Guid("d1000000-0000-0000-0000-000000000004"),
+                            Code = "OM",
+                            Name = "Operations management"
+                        },
+                        new
+                        {
+                            Id = new Guid("d1000000-0000-0000-0000-000000000005"),
+                            Code = "R&D",
+                            Name = "Research and development"
+                        },
+                        new
+                        {
+                            Id = new Guid("d1000000-0000-0000-0000-000000000006"),
+                            Code = "CS",
+                            Name = "Customer service"
+                        },
+                        new
+                        {
+                            Id = new Guid("d1000000-0000-0000-0000-000000000007"),
+                            Code = "IT",
+                            Name = "Information Technology"
+                        },
+                        new
+                        {
+                            Id = new Guid("d1000000-0000-0000-0000-000000000008"),
+                            Code = "ITS",
+                            Name = "IT Support"
+                        });
                 });
 
             modelBuilder.Entity("Keka.Clone.Domain.Entities.Designation", b =>
@@ -47,13 +138,191 @@ namespace Keka.Clone.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DepartmentId");
+
                     b.ToTable("Designations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000001"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000001"),
+                            Description = "HR Executive",
+                            Title = "HR Executive"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000002"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000001"),
+                            Description = "HR Manager",
+                            Title = "HR Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000003"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000001"),
+                            Description = "Talent Acquisition Specialist",
+                            Title = "Talent Acquisition Specialist"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000004"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000002"),
+                            Description = "Accountant",
+                            Title = "Accountant"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000005"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000002"),
+                            Description = "Senior Accounts Manager",
+                            Title = "Senior Accounts Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000006"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000002"),
+                            Description = "Financial Analyst",
+                            Title = "Financial Analyst"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000007"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000003"),
+                            Description = "Sales Executive",
+                            Title = "Sales Executive"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000008"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000003"),
+                            Description = "Marketing Manager",
+                            Title = "Marketing Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000009"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000003"),
+                            Description = "Business Development Executive",
+                            Title = "Business Development Executive"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000010"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000004"),
+                            Description = "Operations Manager",
+                            Title = "Operations Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000011"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000004"),
+                            Description = "Supply Chain Coordinator",
+                            Title = "Supply Chain Coordinator"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000012"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000004"),
+                            Description = "Production Supervisor",
+                            Title = "Production Supervisor"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000013"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000005"),
+                            Description = "R&D Engineer",
+                            Title = "R&D Engineer"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000014"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000005"),
+                            Description = "Research Scientist",
+                            Title = "Research Scientist"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000015"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000005"),
+                            Description = "Product Development Specialist",
+                            Title = "Product Development Specialist"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000016"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000006"),
+                            Description = "Customer Support Executive",
+                            Title = "Customer Support Executive"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000017"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000006"),
+                            Description = "Customer Success Manager",
+                            Title = "Customer Success Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000018"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000006"),
+                            Description = "Call Center Representative",
+                            Title = "Call Center Representative"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000019"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000007"),
+                            Description = "Software Developer",
+                            Title = "Software Developer"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000020"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000007"),
+                            Description = "IT Administrator",
+                            Title = "IT Administrator"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000021"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000007"),
+                            Description = "Systems Analyst",
+                            Title = "Systems Analyst"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000022"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000008"),
+                            Description = "IT Support Technician",
+                            Title = "IT Support Technician"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000023"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000008"),
+                            Description = "Help Desk Specialist",
+                            Title = "Help Desk Specialist"
+                        },
+                        new
+                        {
+                            Id = new Guid("de000000-0000-0000-0000-000000000024"),
+                            DepartmentId = new Guid("d1000000-0000-0000-0000-000000000008"),
+                            Description = "Desktop Support Engineer",
+                            Title = "Desktop Support Engineer"
+                        });
                 });
 
             modelBuilder.Entity("Keka.Clone.Domain.Entities.Employee", b =>
@@ -486,6 +755,10 @@ namespace Keka.Clone.Persistence.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("HRA")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -494,9 +767,115 @@ namespace Keka.Clone.Persistence.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("SalaryStructures");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            Basic = 100000m,
+                            Deductions = 10000m,
+                            Description = "Level 1 - Top Tier",
+                            HRA = 50000m,
+                            OtherAllowances = 20000m,
+                            Title = "L1"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            Basic = 80000m,
+                            Deductions = 8000m,
+                            Description = "Level 2",
+                            HRA = 40000m,
+                            OtherAllowances = 15000m,
+                            Title = "L2"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                            Basic = 60000m,
+                            Deductions = 6000m,
+                            Description = "Level 3",
+                            HRA = 30000m,
+                            OtherAllowances = 10000m,
+                            Title = "L3"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
+                            Basic = 50000m,
+                            Deductions = 5000m,
+                            Description = "Consultant 1",
+                            HRA = 25000m,
+                            OtherAllowances = 8000m,
+                            Title = "C1"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
+                            Basic = 40000m,
+                            Deductions = 4000m,
+                            Description = "Consultant 2",
+                            HRA = 20000m,
+                            OtherAllowances = 6000m,
+                            Title = "C2"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-6666-6666-6666-666666666666"),
+                            Basic = 30000m,
+                            Deductions = 3000m,
+                            Description = "Consultant 3",
+                            HRA = 15000m,
+                            OtherAllowances = 5000m,
+                            Title = "C3"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-7777-7777-7777-777777777777"),
+                            Basic = 90000m,
+                            Deductions = 9000m,
+                            Description = "Manager 1",
+                            HRA = 45000m,
+                            OtherAllowances = 18000m,
+                            Title = "M1"
+                        },
+                        new
+                        {
+                            Id = new Guid("88888888-8888-8888-8888-888888888888"),
+                            Basic = 70000m,
+                            Deductions = 7000m,
+                            Description = "Manager 2",
+                            HRA = 35000m,
+                            OtherAllowances = 12000m,
+                            Title = "M2"
+                        },
+                        new
+                        {
+                            Id = new Guid("99999999-9999-9999-9999-999999999999"),
+                            Basic = 20000m,
+                            Deductions = 2000m,
+                            Description = "Entry Level 1",
+                            HRA = 10000m,
+                            OtherAllowances = 2000m,
+                            Title = "E1"
+                        },
+                        new
+                        {
+                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                            Basic = 15000m,
+                            Deductions = 1500m,
+                            Description = "Entry Level 2",
+                            HRA = 7500m,
+                            OtherAllowances = 1000m,
+                            Title = "E2"
+                        });
                 });
 
             modelBuilder.Entity("Keka.Clone.Domain.Entities.User", b =>
@@ -535,17 +914,28 @@ namespace Keka.Clone.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Keka.Clone.Domain.Entities.Designation", b =>
+                {
+                    b.HasOne("Keka.Clone.Domain.Entities.Department", "Department")
+                        .WithMany("Designations")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("Keka.Clone.Domain.Entities.Employee", b =>
                 {
                     b.HasOne("Keka.Clone.Domain.Entities.Department", "Department")
                         .WithMany("Employees")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Keka.Clone.Domain.Entities.Designation", "Designation")
                         .WithMany("Employees")
                         .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Keka.Clone.Domain.Entities.Location", "Location")
                         .WithMany("Employees")
@@ -616,6 +1006,8 @@ namespace Keka.Clone.Persistence.Migrations
 
             modelBuilder.Entity("Keka.Clone.Domain.Entities.Department", b =>
                 {
+                    b.Navigation("Designations");
+
                     b.Navigation("Employees");
                 });
 

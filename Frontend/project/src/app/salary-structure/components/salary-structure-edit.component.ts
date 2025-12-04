@@ -43,6 +43,8 @@ export class SalaryStructureEditComponent implements OnInit {
         this.salaryStructureService.getSalaryStructureById(this.salaryStructureId).subscribe({
             next: (data) => {
                 this.salaryStructure = {
+                    title: data.title,
+                    description: data.description,
                     basic: data.basic,
                     hra: data.hra,
                     otherAllowances: data.otherAllowances,

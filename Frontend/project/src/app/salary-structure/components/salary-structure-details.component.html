@@ -21,6 +21,14 @@
 
         <div *ngIf="!isLoading && salaryStructure" class="details-card">
             <div class="detail-row">
+                <div class="detail-label">Title</div>
+                <div class="detail-value">{{ salaryStructure.title }}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Description</div>
+                <div class="detail-value">{{ salaryStructure.description }}</div>
+            </div>
+            <div class="detail-row">
                 <div class="detail-label">Basic Salary</div>
                 <div class="detail-value">{{ salaryStructure.basic | currency:'INR' }}</div>
             </div>
