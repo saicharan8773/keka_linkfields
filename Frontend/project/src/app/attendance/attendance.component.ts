@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { AttendanceService } from "../shared/services/attendance.service";
@@ -13,7 +13,7 @@ import { SidebarComponent } from "../shared/components/sidebar.component";
   templateUrl: "./attendance.component.html",
   styleUrls: ["./attendance.component.css"],
 })
-export class AttendanceComponent implements OnInit {
+export class AttendanceComponent implements OnInit, OnDestroy {
   userId = this.authService.getUserId();
   month = new Date().toISOString().slice(0, 7);
   monthlyData: any[] = [];
@@ -22,6 +22,22 @@ export class AttendanceComponent implements OnInit {
   logoutSuccess = false;
   toastMessage = "";
   toastType: string = "";
+  now: Date = new Date();
+  presentDays = 0;
+  leaveDays = 0;
+  totalHours = 0;
+  avgHours = 0;
+  private timer: any;
+
+  page = 1;
+  pageSize = 10;
+  get pagedData() {
+    const start = (this.page - 1) * this.pageSize;
+    return this.monthlyData.slice(start, start + this.pageSize);
+  }
+  get totalPages() {
+    return Math.ceil(this.monthlyData.length / this.pageSize) || 1;
+  }
 
   showLeaveForm = false;
   leaveRequest: CreateRequest = {
@@ -36,17 +52,6 @@ export class AttendanceComponent implements OnInit {
 
   Managers: any[] = [];
 
-  // Pagination
-  page = 1;
-  pageSize = 10;
-  get pagedData() {
-    const start = (this.page - 1) * this.pageSize;
-    return this.monthlyData.slice(start, start + this.pageSize);
-  }
-  get totalPages() {
-    return Math.ceil(this.monthlyData.length / this.pageSize);
-  }
-
   constructor(
     private svc: AttendanceService,
     private authService: AuthService
@@ -54,6 +59,13 @@ export class AttendanceComponent implements OnInit {
 
   ngOnInit() {
     this.loadMonthly();
+    this.timer = setInterval(() => {
+      this.now = new Date();
+    }, 1000);
+  }
+
+  ngOnDestroy() {
+    if (this.timer) clearInterval(this.timer);
   }
 
   private getLocationAndCall(action: "login" | "logout") {
@@ -120,11 +132,40 @@ export class AttendanceComponent implements OnInit {
     this.svc.monthly(this.userId, this.month).subscribe({
       next: (res: any) => {
         this.monthlyData = res;
-        this.page = 1; // Reset to first page on reload
+        this.page = 1;
+        this.updateStats();
       },
       error: (err) =>
         this.showToast("Failed to load monthly data: " + err.message, "error"),
     });
+  }
+
+  updateStats() {
+    let present = 0,
+      leave = 0,
+      totalHrs = 0,
+      daysWithHours = 0;
+    for (const r of this.monthlyData) {
+      if (r.status === "Present") present++;
+      if (r.status === "Leave") leave++;
+      if (r.workedHours) {
+        const [h, m] = r.workedHours.split(":").map(Number);
+        totalHrs += h + (m ? m / 60 : 0);
+        daysWithHours++;
+      }
+    }
+    this.presentDays = present;
+    this.leaveDays = leave;
+    this.totalHours = totalHrs;
+    this.avgHours = daysWithHours
+      ? parseFloat((totalHrs / daysWithHours).toFixed(1))
+      : 0;
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.page = page;
+    }
   }
 
   OnRequestSubmit() {
@@ -152,11 +193,5 @@ export class AttendanceComponent implements OnInit {
     });
     const selectedManagerId = event.target.value;
     this.leaveRequest.managerId = selectedManagerId;
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.page = page;
-    }
   }
 }

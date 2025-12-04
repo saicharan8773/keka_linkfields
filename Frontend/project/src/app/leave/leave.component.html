@@ -118,7 +118,7 @@
 
           <div class="form-actions">
             <button class="ghost" type="button" (click)="resetForm()">Reset</button>
-            <button class="primary" type="submit" [disabled]="isSubmitting">
+            <button class="primary" type="submit" [disabled]="isSubmitting" (click)="submitRequest()">
               {{ isSubmitting ? "Submitting..." : "Request Leave" }}
             </button>
           </div>

@@ -75,7 +75,6 @@ export class EmployeeEditComponent implements OnInit {
     tenantId: "",
     photoUrl: "",
     address: "",
-    customFieldsJson: "",
     directReports: [],
     leaveRequests: [],
   };
@@ -121,7 +120,6 @@ export class EmployeeEditComponent implements OnInit {
 
     const updatePayload: EmployeeUpdatePayload = {
       ...this.employee,
-      customFields: this.employee.customFieldsJson,
     };
 
     this.employeeService
