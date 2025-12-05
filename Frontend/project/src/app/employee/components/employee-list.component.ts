@@ -6,6 +6,8 @@ import { Employee } from "../../shared/models/employee.model";
 import { SidebarComponent } from "../../shared/components/sidebar.component";
 import { FormsModule } from "@angular/forms";
 import { EmployeeCreateComponent } from "./employee-create.component";
+import { EmployeeEditModalComponent } from "./employee-edit-modal/employee-edit-modal.component";
+import { EmployeeDetailsModalComponent } from "./employee-details-modal/employee-details-modal.component";
 
 @Component({
   selector: "app-employee-list",
@@ -16,6 +18,8 @@ import { EmployeeCreateComponent } from "./employee-create.component";
     SidebarComponent,
     FormsModule,
     EmployeeCreateComponent,
+    EmployeeEditModalComponent,
+    EmployeeDetailsModalComponent,
   ],
   templateUrl: "./employee-list.component.html",
   styleUrls: ["./employee-list.component.css"],
@@ -26,8 +30,9 @@ export class EmployeeListComponent implements OnInit {
   errorMessage: string = "";
   searchText: string = "";
   showAddEmployeeModal = false;
-
-
+  showEditEmployeeModal = false;
+  showDetailsEmployeeModal = false;
+  selectedEmployeeId: string = "";
 
   constructor(
     private employeeService: EmployeeService,
@@ -59,6 +64,26 @@ export class EmployeeListComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  showDetailsModal(employeeId: string): void {
+    this.selectedEmployeeId = employeeId;
+    this.showDetailsEmployeeModal = true;
+  }
+
+  showEditModal(employeeId: string): void {
+    this.selectedEmployeeId = employeeId;
+    this.showEditEmployeeModal = true;
+  }
+
+  showEditModalFromDetails(employeeId: string): void {
+    this.showDetailsEmployeeModal = false;
+    this.showEditModal(employeeId);
+  }
+
+  onEmployeeUpdated(): void {
+    this.showEditEmployeeModal = false;
+    this.loadEmployees();
   }
 
   onDelete(id: string | undefined): void {

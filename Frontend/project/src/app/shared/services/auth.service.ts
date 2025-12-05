@@ -11,7 +11,6 @@ import {
   providedIn: "root",
 })
 export class AuthService {
-  // Backend exposes auth endpoints at /auth (not /api/auth) — adjust base to match backend
   private readonly AUTH_API = "https://localhost:7225/auth";
   private readonly TOKEN_KEY = "authToken";
 

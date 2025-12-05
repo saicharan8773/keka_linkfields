@@ -8,7 +8,7 @@ import { Designation, DesignationCreatePayload, DesignationUpdatePayload } from 
     providedIn: "root",
 })
 export class DesignationService {
-    private readonly API_URL = "https://localhost:7225/api/Designations";
+    private API_URL = "https://localhost:7225/api/Designations";
 
     constructor(private http: HttpClient) { }
 
