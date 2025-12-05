@@ -3,8 +3,6 @@ import { LoginComponent } from "./auth/components/login.component";
 import { SignupComponent } from "./auth/components/signup.component";
 import { EmployeeListComponent } from "./employee/components/employee-list.component";
 import { EmployeeCreateComponent } from "./employee/components/employee-create.component";
-import { EmployeeEditComponent } from "./employee/components/employee-edit.component";
-import { EmployeeDetailsComponent } from "./employee/components/employee-details.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { AttendanceComponent } from "./attendance/attendance.component";
@@ -37,16 +35,6 @@ export const routes: Routes = [
   {
     path: "employees/create",
     component: EmployeeCreateComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "employees/edit/:id",
-    component: EmployeeEditComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "employees/details/:id",
-    component: EmployeeDetailsComponent,
     canActivate: [AuthGuard],
   },
   // Department Routes

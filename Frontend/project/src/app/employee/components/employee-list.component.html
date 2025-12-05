@@ -24,15 +24,6 @@
         <button class="btn-add-gold" (click)="showAddEmployeeModal = true">
           <span class="plus-sign">+</span> Add Employee
         </button>
-        <!-- Add Employee Modal Popup -->
-        <div *ngIf="showAddEmployeeModal" class="modal-overlay">
-          <div class="modal-card">
-            <app-employee-create
-              (closeModal)="showAddEmployeeModal = false"
-              (employeeAdded)="onEmployeeAdded()"
-            ></app-employee-create>
-          </div>
-        </div>
       </div>
 
       <!-- Table -->
@@ -83,7 +74,7 @@
               <td class="action-col">
                 <button
                   class="icon-btn"
-                  [routerLink]="['/employees/details', employee.id]"
+                  (click)="showDetailsModal(employee.id!)"
                   title="View"
                 >
                   <svg
@@ -105,7 +96,7 @@
 
                 <button
                   class="icon-btn"
-                  [routerLink]="['/employees/edit', employee.id]"
+                  (click)="showEditModal(employee.id!)"
                   title="Edit"
                 >
                   <svg
@@ -155,6 +146,35 @@
 
       <div *ngIf="employees.length === 0" class="empty-state">
         <p>No employees found.</p>
+      </div>
+    </div>
+    <!-- Add Employee Modal Popup -->
+    <div *ngIf="showAddEmployeeModal" class="modal-overlay">
+      <div class="modal-card">
+        <app-employee-create
+          (closeModal)="showAddEmployeeModal = false"
+          (employeeAdded)="onEmployeeAdded()"
+        ></app-employee-create>
+      </div>
+    </div>
+
+    <!-- Edit Employee Modal -->
+    <div *ngIf="showEditEmployeeModal" class="modal-overlay">
+      <div class="modal-card">
+        <app-employee-edit-modal
+          [employeeId]="selectedEmployeeId"
+          (closeModal)="showEditEmployeeModal = false"
+          (employeeUpdated)="onEmployeeUpdated()"
+        ></app-employee-edit-modal>
+      </div>
+    </div>
+    <div *ngIf="showDetailsEmployeeModal" class="modal-overlay">
+      <div class="modal-card">
+        <app-employee-details-modal
+          [employeeId]="selectedEmployeeId"
+          (closeModal)="showDetailsEmployeeModal = false"
+          (editEmployee)="showEditModalFromDetails($event)"
+        ></app-employee-details-modal>
       </div>
     </div>
   </main>

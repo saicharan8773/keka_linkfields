@@ -7,7 +7,7 @@ namespace Keka.Clone.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin,HR")]
+[Authorize(Roles = "Admin,HR,Manager")]
 public class DesignationsController:ControllerBase
 {
     private readonly IDesignationService _service;

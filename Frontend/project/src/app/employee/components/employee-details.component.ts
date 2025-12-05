@@ -10,7 +10,7 @@ import { SidebarComponent } from "../../shared/components/sidebar.component";
   standalone: true,
   imports: [CommonModule, RouterModule, SidebarComponent],
   templateUrl: "./employee-details.component.html",
-  styleUrls: ["./employee-details.component.css"],
+  styleUrls: [],
 })
 export class EmployeeDetailsComponent implements OnInit {
   employee: Employee | null = null;

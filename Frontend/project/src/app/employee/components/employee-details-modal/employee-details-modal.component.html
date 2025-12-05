@@ -1,0 +1,117 @@
+<div class="modal-header">
+  <h2>Employee Details</h2>
+  <button class="close-btn" (click)="onCancel()">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div *ngIf="isLoading" class="loading">Loading employee details...</div>
+
+  <div *ngIf="errorMessage && !isLoading" class="alert alert-error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="employee && !isLoading" class="details-card">
+    <!-- Header -->
+    <div class="employee-header">
+      <div class="employee-info">
+        <h2>{{ employee.firstName }} {{ employee.lastName }}</h2>
+        <p class="position">{{ employee.designationTitle || "No Title" }}</p>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="details-grid">
+      <div class="detail-item">
+        <label>Employee Code</label>
+        <p>{{ employee.employeeCode }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Display Name</label>
+        <p>{{ employee.displayName }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Work Email</label>
+        <p>{{ employee.workEmail }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Mobile Number</label>
+        <p>{{ employee.mobileNumber }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Date of Birth</label>
+        <p>{{ employee.dateOfBirth | date : "mediumDate" }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Gender</label>
+        <p>{{ employee.gender }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Nationality</label>
+        <p>{{ employee.nationality }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Joining Date</label>
+        <p>{{ employee.joiningDate | date : "mediumDate" }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Department</label>
+        <p>{{ employee.departmentName }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Designation</label>
+        <p>{{ employee.designationTitle }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Manager</label>
+        <p>{{ employee.managerName || "No Manager" }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Location</label>
+        <p>{{ employee.locationName }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Employment Type</label>
+        <p>{{ employee.employmentType }}</p>
+      </div>
+
+      <div class="detail-item">
+        <label>Time Type</label>
+        <p>{{ employee.timeType }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="onCancel()">
+    Close
+  </button>
+  <button type="button" class="btn btn-primary" (click)="onEdit()">
+    Edit
+  </button>
+</div>
