@@ -18,6 +18,11 @@ namespace Keka.Clone.Persistence.Repositories
             return await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<User?> GetByIdAsync(Guid id)
+        {
+            return await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
         public async Task AddAsync(User user)
         {
             await _db.Users.AddAsync(user);

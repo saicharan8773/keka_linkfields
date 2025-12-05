@@ -40,7 +40,7 @@ public class EmployeesController:ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateEmployeeRequest request)
     {
         var created = await _service.CreateAsync(request);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, new { message = "Employee created successfully" });
     }
 
     // PUT api/employees/{id}
@@ -62,3 +62,4 @@ public class EmployeesController:ControllerBase
     }
 
 }
+ 
