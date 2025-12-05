@@ -28,20 +28,17 @@ public class LeaveController:ControllerBase
         return Ok("Leave applied successfully.");
     }
 
-    
-    // Approve / Reject using public RequestCode, e.g. "LR-20251201071511-005bd7-LT1-fd75"
-
-    [HttpPost("approve/{code}")]
-    public async Task<IActionResult> ApproveByCode(string code)
+    [HttpPost("approve/{leaveId}")]
+    public async Task<IActionResult> ApproveByCode(string leaveid)
     {
-        await _service.ApproveLeaveByCodeAsync(code);
+        await _service.ApproveLeaveByCodeAsync(leaveid);
         return Ok("Leave approved.");
     }
 
-    [HttpPost("reject/{code}")]
-    public async Task<IActionResult> RejectByCode(string code)
+    [HttpPost("reject/{leaveId}")]
+    public async Task<IActionResult> RejectByCode(string leaveid)
     {
-        await _service.RejectLeaveByCodeAsync(code);
+        await _service.RejectLeaveByCodeAsync(leaveid);
         return Ok("Leave rejected.");
     }
 
