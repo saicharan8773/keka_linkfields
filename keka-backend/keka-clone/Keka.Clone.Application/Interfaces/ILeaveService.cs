@@ -1,5 +1,6 @@
 ﻿using Keka.Clone.Application.DTOs;
 using Keka.Clone.Domain.Entities;
+using System.Collections.Generic;
 
 public interface ILeaveService
 {
@@ -13,4 +14,9 @@ public interface ILeaveService
     Task ApproveLeaveByCodeAsync(string requestCode);
     Task RejectLeaveByCodeAsync(string requestCode);
     Task<int> GetRemainingLeavesAsync(Guid employeeId, int leaveTypeId);
+    
+    // Analytics
+    Task<List<int>> GetWeeklyApprovedPatternsAsync(Guid employeeId);
+    Task<Dictionary<string, int>> GetConsumedLeaveTypesStatsAsync(Guid employeeId);
+    Task<List<int>> GetMonthlyApprovedStatsAsync(Guid employeeId);
 }

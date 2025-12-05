@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -240,6 +240,67 @@ namespace Keka.Clone.Application.Services
                 LeaveStatus.Rejected when request.ActionDate.HasValue => $"Rejected on {request.ActionDate:dd MMM yyyy}",
                 _ => $"Requested on {request.RequestedOn:dd MMM yyyy}"
             };
+
+        public async Task<List<int>> GetWeeklyApprovedPatternsAsync(Guid employeeId)
+        {
+            var history = await _leaveRequestRepo.GetEmployeeHistoryAsync(employeeId);
+            var approved = history.Where(x => x.Status == LeaveStatus.Approved);
+
+            var weeklyCounts = new int[7]; // 0=Mon, ... 6=Sun
+
+            foreach (var req in approved)
+            {
+                for (var date = req.StartDate; date <= req.EndDate; date = date.AddDays(1))
+                {
+                    // DayOfWeek: Sunday=0, Monday=1, ..., Saturday=6
+                    // We want Mon=0, ..., Sun=6
+                    int dayIndex = (int)date.DayOfWeek; 
+                    int adjustedIndex = (dayIndex == 0) ? 6 : dayIndex - 1;
+                    weeklyCounts[adjustedIndex]++;
+                }
+            }
+
+            return weeklyCounts.ToList();
+        }
+
+        public async Task<Dictionary<string, int>> GetConsumedLeaveTypesStatsAsync(Guid employeeId)
+        {
+            var history = await _leaveRequestRepo.GetEmployeeHistoryAsync(employeeId);
+            var approved = history.Where(x => x.Status == LeaveStatus.Approved);
+            
+            var stats = new Dictionary<string, int>();
+
+            foreach (var req in approved)
+            {
+                var typeName = req.LeaveType?.Name ?? $"Type {req.LeaveTypeId}";
+                int days = (req.EndDate - req.StartDate).Days + 1;
+                
+                if (stats.ContainsKey(typeName))
+                    stats[typeName] += days;
+                else
+                    stats[typeName] = days;
+            }
+
+            return stats;
+        }
+
+        public async Task<List<int>> GetMonthlyApprovedStatsAsync(Guid employeeId)
+        {
+            var history = await _leaveRequestRepo.GetEmployeeHistoryAsync(employeeId);
+            var approved = history.Where(x => x.Status == LeaveStatus.Approved);
+
+            var monthlyCounts = new int[12]; // 0=Jan
+
+            foreach (var req in approved)
+            {
+                for (var date = req.StartDate; date <= req.EndDate; date = date.AddDays(1))
+                {
+                    monthlyCounts[date.Month - 1]++;
+                }
+            }
+
+            return monthlyCounts.ToList();
+        }
 
         private static string GenerateRequestCode(Guid employeeId, int leaveTypeId)
         {

@@ -176,6 +176,7 @@ export class LeaveComponent implements OnInit, OnDestroy {
     this.loadLeaveTypes();
     this.loadMyRequests();
     this.loadLeaveBalancesSummary();
+    this.loadAnalytics();
   }
 
   ngOnDestroy(): void {
@@ -249,7 +250,9 @@ export class LeaveComponent implements OnInit, OnDestroy {
         console.log("My leave history loaded:", requests);
         this.myRequests = requests || [];
         this.notifications = this.buildNotifications(this.myRequests);
-        this.recalculateLeaveStatsFromHistory();
+        this.notifications = this.buildNotifications(this.myRequests);
+        // this.recalculateLeaveStatsFromHistory(); // Removed in favor of backend API
+        this.isLoadingMy = false;
         this.isLoadingMy = false;
       },
       error: () => {
@@ -294,7 +297,9 @@ export class LeaveComponent implements OnInit, OnDestroy {
         // The API returns an array matching the LeaveType interface
         this.leaveTypes = types || [];
         // Recalculate consumed leave types donut purely from this data
-        this.recalculateConsumedFromLeaveTypes();
+        // Recalculate consumed leave types donut purely from this data
+        // this.recalculateConsumedFromLeaveTypes(); // Removed in favor of backend API
+        this.isLoadingLeaveTypes = false;
         this.isLoadingLeaveTypes = false;
       },
       error: () => {
@@ -641,5 +646,39 @@ export class LeaveComponent implements OnInit, OnDestroy {
 
   getConsumedTypeColor(index: number): string {
     return this.statsColors[index % this.statsColors.length];
+  }
+  protected readonly Math = Math;
+
+  loadAnalytics(): void {
+    if (!this.employeeId) {
+      console.warn("No employee ID found, skipping analytics load.");
+      return;
+    }
+
+    console.log("Loading analytics for employee:", this.employeeId);
+
+    this.leaveService.getWeeklyApprovedPatterns(this.employeeId).subscribe({
+      next: (data) => {
+        console.log("Weekly stats loaded:", data);
+        this.weeklyApproved = data || new Array(7).fill(0);
+      },
+      error: (err) => console.error("Failed to load weekly stats", err)
+    });
+
+    this.leaveService.getConsumedLeaveTypesStats(this.employeeId).subscribe({
+      next: (data) => {
+        console.log("Consumed types loaded:", data);
+        this.consumedByType = data || [];
+      },
+      error: (err) => console.error("Failed to load consumed types", err)
+    });
+
+    this.leaveService.getMonthlyApprovedStats(this.employeeId).subscribe({
+      next: (data) => {
+        console.log("Monthly stats loaded:", data);
+        this.monthlyApproved = data || new Array(12).fill(0);
+      },
+      error: (err) => console.error("Failed to load monthly stats", err)
+    });
   }
 }

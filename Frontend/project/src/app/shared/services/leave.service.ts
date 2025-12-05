@@ -17,8 +17,21 @@ export class LeaveService {
   private readonly LEAVE_REQUESTS_URL =
     "https://localhost:7225/api/Leave/apply";
   private readonly EMPLOYEE_URL = "https://localhost:7225/api/Employee";
+  private readonly ANALYTICS_URL = "https://localhost:7225/api/Analytics";
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
+
+  getWeeklyApprovedPatterns(employeeId: string): Observable<number[]> {
+    return this.http.get<number[]>(`${this.ANALYTICS_URL}/weekly-approved/${employeeId}`);
+  }
+
+  getConsumedLeaveTypesStats(employeeId: string): Observable<{ name: string; value: number }[]> {
+    return this.http.get<{ name: string; value: number }[]>(`${this.ANALYTICS_URL}/consumed-leave-types/${employeeId}`);
+  }
+
+  getMonthlyApprovedStats(employeeId: string): Observable<number[]> {
+    return this.http.get<number[]>(`${this.ANALYTICS_URL}/monthly-stats/${employeeId}`);
+  }
 
   applyLeave(payload: LeaveApplicationPayload): Observable<void> {
     return this.http.post<void>(this.LEAVE_REQUESTS_URL, payload);
