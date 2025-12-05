@@ -67,15 +67,16 @@
                         <span class="sidebar-icon">
                             <svg width="20" height="20" fill="none" stroke="#ffd166" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="14" height="13" rx="2" />
-                                <path d="M8 2v4" />
-                                <path d="M12 2v4" />
-                                <path d="M3 9h14" />
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
                             </svg>
                         </span>
-                        <span class="sidebar-label" *ngIf="isOpen">Leave</span>
+                        <span class="sidebar-label" *ngIf="isOpen">Leaves</span>
                     </a>
                 </li>
+
 
                 <li class="icons" *ngIf="canManageOrg">
                     <a routerLink="/departments" routerLinkActive="active">

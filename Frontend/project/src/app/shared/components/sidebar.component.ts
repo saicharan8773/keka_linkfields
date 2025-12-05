@@ -24,11 +24,11 @@ export class SidebarComponent implements OnInit {
     return !this.isOpen;
   }
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     // Check if user has Admin or Manager role
-    this.canManageOrg = this.authService.hasRole(["Admin", "Manager"]);
+    this.canManageOrg = this.authService.hasRole(["Admin", "Manager", "HR"]);
   }
 
   toggleSidebar(): void {

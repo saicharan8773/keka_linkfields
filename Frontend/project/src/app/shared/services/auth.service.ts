@@ -15,7 +15,7 @@ export class AuthService {
   private readonly AUTH_API = "https://localhost:7225/auth";
   private readonly TOKEN_KEY = "authToken";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<AuthResponse> {
     const loginData: LoginRequest = { email, password };
@@ -85,10 +85,22 @@ export class AuthService {
       return (
         decoded.sub ||
         decoded[
-          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
         ] ||
         ""
       );
+    } catch {
+      return "";
+    }
+  }
+
+  getEmployeeId(): string {
+    const token = this.getToken();
+    if (!token) return "";
+    try {
+      const payload = token.split(".")[1];
+      const decoded = JSON.parse(atob(payload));
+      return decoded["EmployeeId"] || decoded["employeeId"] || "";
     } catch {
       return "";
     }

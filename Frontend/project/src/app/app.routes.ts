@@ -28,12 +28,7 @@ export const routes: Routes = [
     component: AttendanceComponent,
     canActivate: [AuthGuard],
   },
-  {
-    path: "leave",
-    loadComponent: () =>
-      import("./leave/leave.component").then((m) => m.LeaveComponent),
-    canActivate: [AuthGuard],
-  },
+
   {
     path: "employees",
     component: EmployeeListComponent,
@@ -115,6 +110,11 @@ export const routes: Routes = [
   {
     path: "salary-structures/details/:id",
     loadComponent: () => import('./salary-structure/components/salary-structure-details.component').then(m => m.SalaryStructureDetailsComponent),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "leave",
+    loadComponent: () => import('./features/leave/leave.component').then(m => m.LeaveComponent),
     canActivate: [AuthGuard],
   },
   { path: "**", redirectTo: "/login" },

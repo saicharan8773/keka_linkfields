@@ -33,4 +33,36 @@ export interface LeaveType {
   remainingDays: number;
   isSelectable: boolean;
   isUnlimited: boolean;
+  // Alias for easier usage if needed, or stick to backend names
+  id?: number;
+  name?: string;
+}
+
+export interface LeaveTypeAvailabilityDto {
+  leaveTypeId: number;
+  leaveTypeName: string;
+  availabilityLabel: string;
+  remainingDays: number;
+  isUnlimited: boolean;
+  isSelectable: boolean;
+  // UI specific fields
+  consumed?: number;
+  accrued?: number;
+  annualQuota?: number | string;
+}
+
+export interface LeaveHistoryItemDto {
+  requestId: number;
+  requestCode: string;
+  leaveType: string;
+  leaveTypeNote: string;
+  startDate: string; // ISO string
+  endDate: string;   // ISO string
+  totalDays: number;
+  status: string;
+  statusDetail: string;
+  requestedBy: string;
+  requestedOn: string;
+  actionedOn?: string;
+  note: string;
 }

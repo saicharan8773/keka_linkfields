@@ -1,0 +1,58 @@
+<div class="leave-modal-overlay" *ngIf="isOpen" (click)="close()">
+    <div class="leave-modal" (click)="$event.stopPropagation()">
+
+        <div class="leave-modal-header">
+            <span>Request Leave</span>
+            <button class="leave-modal-close" (click)="close()">×</button>
+        </div>
+
+        <form (ngSubmit)="submit()">
+
+            <div class="date-row">
+                <div class="date-box">
+                    <label>From</label>
+                    <input type="date" name="startDate" [(ngModel)]="startDate" (change)="calculateDays()"
+                        placeholder="Select date">
+                </div>
+
+                <div class="days-badge">
+                    {{ totalDays }} Days
+                </div>
+
+                <div class="date-box">
+                    <label>To</label>
+                    <input type="date" name="endDate" [(ngModel)]="endDate" (change)="calculateDays()"
+                        placeholder="Select date">
+                </div>
+            </div>
+
+            <label class="leave-label">Select type of leave you want to apply</label>
+            <select name="leaveTypeId" [(ngModel)]="leaveTypeId">
+                <option [ngValue]="null" disabled selected>Select</option>
+                <option *ngFor="let type of leaveTypes" [ngValue]="type.leaveTypeId">
+                    {{ type.leaveTypeName }}
+                </option>
+            </select>
+
+            <label class="leave-label">Note</label>
+            <textarea name="reason" [(ngModel)]="reason" placeholder="Type here"></textarea>
+
+            <div class="error-msg" *ngIf="errorMessage">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd" />
+                </svg>
+                {{ errorMessage }}
+            </div>
+
+            <div class="leave-modal-footer">
+                <button type="button" class="btn-cancel" (click)="close()">Cancel</button>
+                <button type="button" class="btn-request" (click)="submit()" [disabled]="isSubmitting">
+                    {{ isSubmitting ? 'Requesting...' : 'Request' }}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

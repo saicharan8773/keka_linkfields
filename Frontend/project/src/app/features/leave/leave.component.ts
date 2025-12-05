@@ -1,0 +1,298 @@
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Chart, registerables } from 'chart.js';
+import { LeaveService } from '../../shared/services/leave.service';
+import { AuthService } from '../../shared/services/auth.service';
+import { LeaveRequestModalComponent } from './leave-request-modal/leave-request-modal.component';
+import { SidebarComponent } from '../../shared/components/sidebar.component';
+import { LeaveTypeAvailabilityDto, LeaveHistoryItemDto } from '../../shared/models/leave.model';
+
+Chart.register(...registerables);
+
+@Component({
+    selector: 'app-leave',
+    standalone: true,
+    imports: [CommonModule, FormsModule, LeaveRequestModalComponent, SidebarComponent],
+    templateUrl: './leave.component.html',
+    styleUrls: ['./leave.component.css']
+})
+export class LeaveComponent implements OnInit, AfterViewInit {
+    @ViewChild('weeklyChart') weeklyChartRef!: ElementRef<HTMLCanvasElement>;
+    @ViewChild('consumedChart') consumedChartRef!: ElementRef<HTMLCanvasElement>;
+    @ViewChild('monthlyChart') monthlyChartRef!: ElementRef<HTMLCanvasElement>;
+    @ViewChild('requestModal') requestModal!: LeaveRequestModalComponent;
+
+    // Helper for template
+    Math = Math;
+
+    employeeId: string = '';
+    leaveBalances: LeaveTypeAvailabilityDto[] = [];
+    leaveHistory: LeaveHistoryItemDto[] = [];
+    filteredHistory: LeaveHistoryItemDto[] = [];
+
+    // Chart instances (to destroy them before redrawing if needed)
+    private weeklyChartInstance: any = null;
+    private consumedChartInstance: any = null;
+    private monthlyChartInstance: any = null;
+
+    // Filters and Pagination
+    selectedTypeFilter: string = 'All';
+    selectedStatusFilter: string = 'All';
+    searchTerm: string = '';
+    currentPage: number = 1;
+    itemsPerPage: number = 7;
+    totalPages: number = 1;
+
+    constructor(
+        private leaveService: LeaveService,
+        private authService: AuthService,
+        private route: ActivatedRoute
+    ) { }
+
+    ngOnInit(): void {
+        this.employeeId = this.authService.getEmployeeId() || '';
+        this.loadLeaveBalances();
+        this.loadLeaveHistory();
+    }
+
+    ngAfterViewInit(): void {
+        // We load charts here because the canvas elements need to be in the DOM
+        this.loadCharts();
+
+        // Check URL for action=apply to auto-open the modal
+        this.route.queryParams.subscribe(params => {
+            if (params['action'] === 'apply') {
+                setTimeout(() => {
+                    this.openRequestModal();
+                });
+            }
+        });
+    }
+
+    loadLeaveBalances() {
+        if (!this.employeeId) return;
+        this.leaveService.getLeaveTypes().subscribe({
+            next: (data: any) => {
+                this.leaveBalances = data.map((item: any) => {
+                    const quota = this.getLeaveQuota(item.leaveTypeName);
+                    // Calculate consumed: Quota - Remaining (if not unlimited)
+                    // If remaining > quota (e.g. carry forward), consumed is 0 for this logic, or we can just show 0.
+                    const consumed = item.isUnlimited ? 0 : Math.max(0, quota - item.remainingDays);
+
+                    return {
+                        ...item,
+                        consumed: consumed,
+                        accrued: item.remainingDays,
+                        annualQuota: item.isUnlimited ? '∞' : quota
+                    };
+                });
+
+                // Ensure Comp Offs exists for UI demo if not in backend
+                if (!this.leaveBalances.find(b => b.leaveTypeName === 'Comp Offs')) {
+                    this.leaveBalances.push({
+                        leaveTypeName: 'Comp Offs',
+                        remainingDays: 0,
+                        leaveTypeId: 999,
+                        isUnlimited: false,
+                        consumed: 0,
+                        accrued: 0,
+                        annualQuota: 15
+                    } as any);
+                }
+            },
+            error: (err) => console.error('Error loading balances', err)
+        });
+    }
+
+    getLeaveQuota(typeName: string): number {
+        const name = (typeName || '').toLowerCase();
+        if (name.includes('casual')) return 8;
+        if (name.includes('comp') || name.includes('compensatory')) return 15;
+        if (name.includes('earned') || name.includes('privilege')) return 15;
+        if (name.includes('floater')) return 3;
+        if (name.includes('maternity')) return 182;
+        if (name.includes('sick')) return 10;
+        if (name.includes('paternity')) return 14;
+        return 0;
+    }
+
+    getBalanceColor(type: string): string {
+        if (type.toLowerCase().includes('casual')) return '#d0c9ea';
+        if (type.toLowerCase().includes('earned') || type.toLowerCase().includes('privilege')) return '#e2e8c0';
+        if (type.toLowerCase().includes('sick')) return '#fcd34d';
+        return '#e5e7eb';
+    }
+
+    loadCharts() {
+        if (!this.employeeId) return;
+
+        const kekaPurple = '#9b88cd';
+        const kekaPurpleLight = '#b9aadd';
+
+        // 1. Weekly Pattern (API returns: [0, 0, 0, 0, 1, 0, 0])
+        this.leaveService.getWeeklyApprovedPatterns(this.employeeId).subscribe({
+            next: (data) => {
+                if (this.weeklyChartRef && this.weeklyChartRef.nativeElement) {
+                    // Destroy existing if re-loading
+                    if (this.weeklyChartInstance) this.weeklyChartInstance.destroy();
+
+                    this.weeklyChartInstance = new Chart(this.weeklyChartRef.nativeElement, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                            datasets: [{
+                                data: data, // Using real API data
+                                backgroundColor: kekaPurple,
+                                borderRadius: 2,
+                                barThickness: 25,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { display: false, beginAtZero: true },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: {
+                                        color: '#6b7280',
+                                        font: { size: 11 },
+                                        maxRotation: 90,
+                                        minRotation: 90
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: (err) => console.error('Failed to load weekly stats', err)
+        });
+
+        // 2. Consumed Leave Types (API returns: [{ "name": "Casual Leave", "value": 1 }])
+        this.leaveService.getConsumedLeaveTypesStats(this.employeeId).subscribe({
+            next: (data) => {
+                if (this.consumedChartRef && this.consumedChartRef.nativeElement) {
+                    if (this.consumedChartInstance) this.consumedChartInstance.destroy();
+
+                    // Extract labels and values
+                    const labels = data.map(d => d.name);
+                    const values = data.map(d => d.value);
+
+                    // Colors palette
+                    const donutColors = ['#c8bfae', '#9b88cd', '#e2e8c0', '#fcd34d', '#f472b6'];
+
+                    this.consumedChartInstance = new Chart(this.consumedChartRef.nativeElement, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: values, // Using real API data
+                                backgroundColor: donutColors,
+                                borderWidth: 0,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '65%',
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    enabled: true,
+                                    callbacks: {
+                                        label: (context) => {
+                                            const label = context.label || '';
+                                            const val = context.raw || 0;
+                                            return `${label}: ${val} days`;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: (err) => console.error('Failed to load consumed stats', err)
+        });
+
+        // 3. Monthly Stats (API returns: [0, 0, ..., 1])
+        this.leaveService.getMonthlyApprovedStats(this.employeeId).subscribe({
+            next: (data) => {
+                if (this.monthlyChartRef && this.monthlyChartRef.nativeElement) {
+                    if (this.monthlyChartInstance) this.monthlyChartInstance.destroy();
+
+                    this.monthlyChartInstance = new Chart(this.monthlyChartRef.nativeElement, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                            datasets: [{
+                                data: data, // Using real API data
+                                backgroundColor: kekaPurple,
+                                borderRadius: 2,
+                                barThickness: 20
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { display: false, beginAtZero: true },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: {
+                                        color: '#6b7280',
+                                        font: { size: 10 }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: (err) => console.error('Failed to load monthly stats', err)
+        });
+    }
+
+    loadLeaveHistory() {
+        if (!this.employeeId) return;
+        this.leaveService.getLeaveHistory(this.employeeId).subscribe({
+            next: (data: any) => {
+                this.leaveHistory = data;
+                this.applyFilters();
+            },
+            error: (err) => console.error('Error loading history', err)
+        });
+    }
+
+    applyFilters() {
+        this.filteredHistory = this.leaveHistory.filter(item => {
+            const matchesStatus = this.selectedStatusFilter === 'All' || item.status === this.selectedStatusFilter;
+            return matchesStatus;
+        });
+        this.totalPages = Math.ceil(this.filteredHistory.length / this.itemsPerPage);
+        this.currentPage = 1;
+    }
+
+    get paginatedHistory() {
+        const start = (this.currentPage - 1) * this.itemsPerPage;
+        return this.filteredHistory.slice(start, start + this.itemsPerPage);
+    }
+
+    prevPage() { if (this.currentPage > 1) this.currentPage--; }
+    nextPage() { if (this.currentPage < this.totalPages) this.currentPage++; }
+
+    openRequestModal() {
+        this.requestModal.open();
+    }
+
+    onRequestSubmitted() {
+        this.loadLeaveBalances();
+        this.loadLeaveHistory();
+        this.loadCharts();
+    }
+}
