@@ -1,6 +1,6 @@
 <div class="modal-header">
-  <h2>Add New Department</h2>
-  <button class="close-btn" (click)="onCancel()">
+  <h2>Edit Department</h2>
+  <button class="close-btn" (click)="onClose()">
     <i class="bi bi-x-lg"></i>
   </button>
 </div>
@@ -9,6 +9,10 @@
   <div class="modal-body">
     <div *ngIf="errorMessage" class="alert alert-error">
       {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading && !department.name" class="loading">
+      Loading...
     </div>
 
     <div class="form-group">
@@ -24,9 +28,9 @@
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+    <button type="button" class="btn btn-secondary" (click)="onClose()">Cancel</button>
     <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-      {{ isLoading ? 'Creating...' : 'Create Department' }}
+      {{ isLoading ? 'Saving...' : 'Save Changes' }}
     </button>
   </div>
 </form>

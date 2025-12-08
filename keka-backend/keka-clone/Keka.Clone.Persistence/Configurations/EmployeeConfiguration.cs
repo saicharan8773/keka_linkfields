@@ -31,11 +31,16 @@ public class EmployeeConfiguration:IEntityTypeConfiguration<Employee>
         builder.HasOne(e => e.Designation)
             .WithMany(d => d.Employees)
             .HasForeignKey(e => e.DesignationId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(e => e.Location)
             .WithMany(l => l.Employees)
             .HasForeignKey(e => e.LocationId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasMany(e => e.LeaveAllocations)
+            .WithOne(la => la.Employee)
+            .HasForeignKey(la => la.EmployeeId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

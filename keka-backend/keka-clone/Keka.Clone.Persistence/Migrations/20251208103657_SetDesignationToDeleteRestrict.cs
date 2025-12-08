@@ -5,20 +5,20 @@
 namespace Keka.Clone.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class updateentity : Migration
+    public partial class SetDesignationToDeleteRestrict : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Employees_Employees_ManagerId",
+                name: "FK_Employees_Designations_DesignationId",
                 table: "Employees");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Employees_Users_ManagerId",
+                name: "FK_Employees_Designations_DesignationId",
                 table: "Employees",
-                column: "ManagerId",
-                principalTable: "Users",
+                column: "DesignationId",
+                principalTable: "Designations",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -27,16 +27,15 @@ namespace Keka.Clone.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Employees_Users_ManagerId",
+                name: "FK_Employees_Designations_DesignationId",
                 table: "Employees");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Employees_Employees_ManagerId",
+                name: "FK_Employees_Designations_DesignationId",
                 table: "Employees",
-                column: "ManagerId",
-                principalTable: "Employees",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                column: "DesignationId",
+                principalTable: "Designations",
+                principalColumn: "Id");
         }
     }
 }

@@ -26,41 +26,6 @@ namespace Keka.Clone.Persistence
         {
             // Apply entity configurations from this assembly
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-
-            // -------------------------
-            // EMPLOYEE & DESIGNATION RELATIONSHIPS
-            // -------------------------
-            modelBuilder.Entity<Employee>()
-                .HasOne(e => e.Designation)
-                .WithMany(d => d.Employees)
-                .HasForeignKey(e => e.DesignationId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Employee>()
-                .HasOne(e => e.Department)
-                .WithMany(d => d.Employees)
-                .HasForeignKey(e => e.DepartmentId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Designation>()
-                .HasOne(d => d.Department)
-                .WithMany(dep => dep.Designations)
-                .HasForeignKey(d => d.DepartmentId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // -------------------------
-            // LEAVE RELATIONSHIPS
-            // -------------------------
-            modelBuilder.Entity<LeaveRequest>()
-                .HasOne(l => l.Employee)
-                .WithMany(e => e.LeaveRequests)
-                .HasForeignKey(l => l.EmployeeId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<LeaveRequest>()
-                .HasOne(l => l.LeaveType)
-                .WithMany()
-                .HasForeignKey(l => l.LeaveTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<SalaryStructure>(entity =>
             {
                 entity.Property(x => x.Basic).HasPrecision(18, 2);
@@ -68,13 +33,6 @@ namespace Keka.Clone.Persistence
                 entity.Property(x => x.OtherAllowances).HasPrecision(18, 2);
                 entity.Property(x => x.Deductions).HasPrecision(18, 2);
             });
-
-            modelBuilder.Entity<EmployeeLeaveAllocation>()
-                .HasOne(a => a.Employee)
-                .WithMany(e => e.LeaveAllocations)
-                .HasForeignKey(a => a.EmployeeId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             // Seed default leave types
             modelBuilder.Entity<LeaveType>().HasData(
                 new LeaveType { Id = 1, Code = "CL", Name = "Casual Leave", DefaultDays = 8, IsUnlimited = false },

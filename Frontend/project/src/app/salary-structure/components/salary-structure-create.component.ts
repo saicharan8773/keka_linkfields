@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SalaryStructureService } from '../../shared/services/salary-structure.service';
 import { SalaryStructureCreatePayload } from '../../shared/models/salary-structure.model';
@@ -8,11 +7,14 @@ import { SalaryStructureCreatePayload } from '../../shared/models/salary-structu
 @Component({
     selector: 'app-salary-structure-create',
     standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule],
+    imports: [CommonModule, FormsModule],
     templateUrl: './salary-structure-create.component.html',
     styleUrls: ['./salary-structure-create.component.css']
 })
 export class SalaryStructureCreateComponent {
+    @Output() closeModal = new EventEmitter<void>();
+    @Output() salaryStructureAdded = new EventEmitter<void>();
+
     salaryStructure: SalaryStructureCreatePayload = {
         title: '',
         description: '',
@@ -25,10 +27,11 @@ export class SalaryStructureCreateComponent {
     isLoading: boolean = false;
     errorMessage: string = '';
 
-    constructor(
-        private salaryStructureService: SalaryStructureService,
-        private router: Router
-    ) { }
+    constructor(private salaryStructureService: SalaryStructureService) { }
+
+    onCancel() {
+        this.closeModal.emit();
+    }
 
     get total(): number {
         return (this.salaryStructure.basic || 0) +
@@ -44,7 +47,8 @@ export class SalaryStructureCreateComponent {
         this.salaryStructureService.createSalaryStructure(this.salaryStructure).subscribe({
             next: () => {
                 this.isLoading = false;
-                this.router.navigate(['/salary-structures']);
+                this.salaryStructureAdded.emit();
+                this.closeModal.emit();
             },
             error: (error) => {
                 this.isLoading = false;

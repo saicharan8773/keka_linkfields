@@ -1,80 +1,111 @@
 <div class="dashboard-container">
-    <app-sidebar></app-sidebar>
-    <main class="main-content">
-        <div class="employee-container">
-            <div class="header">
-                <div class="header-content">
-                    <h1>Designation Management</h1>
-                    <div class="header-actions">
-                        <button class="btn btn-primary" routerLink="/designations/create">
-                            + Add Designation
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <app-sidebar></app-sidebar>
 
-            <div class="content">
-                <div *ngIf="isLoading" class="loading">
-                    <p>Loading designations...</p>
-                </div>
-
-                <div *ngIf="errorMessage && !isLoading" class="alert alert-error">
-                    {{ errorMessage }}
-                </div>
-
-                <div *ngIf="!isLoading && !errorMessage" class="table-container">
-                    <table class="employee-table">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Department Name</th>
-                                <th>Department Code</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngIf="designations.length === 0">
-                                <td colspan="2" class="empty-row">
-                                    No designations found. Add your first designation to get started.
-                                </td>
-                            </tr>
-                            <tr *ngFor="let designation of designations">
-                                <td>{{ designation.title }}</td>
-                                <td>{{ designation.departmentName }}</td>
-                                <td>{{ designation.departmentCode }}</td>
-
-
-                                <td class="actions">
-                                    <button class="btn-icon btn-view"
-                                        [routerLink]="['/designations/details', designation.id]" title="View Details">
-                                        <svg width="20" height="20" fill="none" stroke="#283a4d" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="10" cy="10" r="8" />
-                                            <circle cx="10" cy="10" r="3" />
-                                        </svg>
-                                    </button>
-                                    <button class="btn-icon btn-edit"
-                                        [routerLink]="['/designations/edit', designation.id]" title="Edit">
-                                        <svg width="20" height="20" fill="none" stroke="#ffd166" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 4l4 4L8 16H4v-4L12 4z" />
-                                        </svg>
-                                    </button>
-                                    <button class="btn-icon btn-delete" (click)="onDelete(designation.id)"
-                                        title="Delete">
-                                        <svg width="20" height="20" fill="none" stroke="#c33" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="6" width="14" height="12" rx="2" />
-                                            <path d="M8 10v4M12 10v4" />
-                                            <path d="M5 6V4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" />
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <main class="main-content">
+    <div class="employee-container">
+      <!-- Header -->
+      <div class="page-header">
+        <div>
+          <h1>Designations</h1>
+          <p class="subtitle">Manage your organization’s designations</p>
         </div>
-    </main>
+      </div>
+
+      <!-- Search and Add Button Row -->
+      <div class="search-add-row">
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Search designations…"
+            [(ngModel)]="searchText"
+            (input)="onSearch()"
+          />
+        </div>
+        <button class="btn-add-gold" (click)="showAddDesignationModal = true">
+          <span class="plus-sign">+</span> Add Designation
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrapper" *ngIf="designations.length > 0">
+        <table class="employee-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Department</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let designation of designations">
+              <td data-label="Title">{{ designation.title }}</td>
+              <td data-label="Department">{{ designation.departmentName }}</td>
+              <td data-label="Actions" class="action-col">
+                <button
+                  class="icon-btn"
+                  (click)="showDetailsModal(designation.id!)"
+                  title="View"
+                >
+                  <i class="bi bi-eye-fill" style="font-size:18px"></i>
+                </button>
+
+                <button
+                  class="icon-btn"
+                  (click)="showEditModal(designation.id!)"
+                  title="Edit"
+                >
+                 <i class="bi bi-pencil-square" style="font-size:18px"></i>
+                </button>
+
+                <button
+                  class="icon-btn delete"
+                  (click)="onDelete(designation.id)"
+                  title="Delete"
+                >
+                  <i class="bi bi-trash-fill" style="font-size:18px; color: #c33;"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="designations.length === 0" class="empty-state">
+        <p>No designations found.</p>
+      </div>
+    </div>
+
+    <!-- Add Designation Modal -->
+    <div *ngIf="showAddDesignationModal" class="modal-overlay">
+      <div class="modal-card">
+        <app-designation-create
+          (closeModal)="showAddDesignationModal = false"
+          (designationAdded)="onDesignationAdded()"
+        ></app-designation-create>
+      </div>
+    </div>
+
+    <!-- Edit Designation Modal -->
+    <div *ngIf="showEditDesignationModal" class="modal-overlay">
+      <div class="modal-card">
+        <app-designation-edit-modal
+          [designationId]="selectedDesignationId"
+          (closeModal)="showEditDesignationModal = false"
+          (designationUpdated)="onDesignationUpdated()"
+        ></app-designation-edit-modal>
+      </div>
+    </div>
+
+    <!-- Details Designation Modal -->
+    <div *ngIf="showDetailsDesignationModal" class="modal-overlay">
+      <div class="modal-card">
+        <app-designation-details-modal
+          [designationId]="selectedDesignationId"
+          (closeModal)="showDetailsDesignationModal = false"
+          (editDesignation)="showEditModalFromDetails($event)"
+        ></app-designation-details-modal>
+      </div>
+    </div>
+  </main>
 </div>

@@ -93,8 +93,8 @@
         </button>
       </div>
 
-      <!-- Table -->
-      <div class="table-wrapper" *ngIf="employees.length > 0">
+      <!-- Table: Always visible -->
+      <div class="table-wrapper">
         <table class="employee-table">
           <thead>
             <tr>
@@ -107,7 +107,6 @@
               <th>Actions</th>
             </tr>
           </thead>
-
           <tbody>
             <tr *ngFor="let employee of employees">
               <!-- PROFILE + NAME + EMAIL -->
@@ -124,19 +123,15 @@
                   </div>
                 </div>
               </td>
-
               <td data-label="Code">
                 <span class="code-tag">{{ employee.employeeCode }}</span>
               </td>
-
               <td data-label="Department">{{ employee.departmentName }}</td>
               <td data-label="Designation">{{ employee.designationTitle }}</td>
               <td data-label="Location">{{ employee.locationName }}</td>
-
               <td data-label="Type">
                 <span class="type-tag">Full-time</span>
               </td>
-
               <!-- ACTIONS -->
               <td data-label="Actions" class="action-col">
                 <button class="icon-btn" (click)="showDetailsModal(employee.id!)" title="View">
@@ -152,12 +147,28 @@
                 </button>
               </td>
             </tr>
+            <tr *ngIf="employees.length === 0">
+              <td colspan="7" class="empty-state">No employees found.</td>
+            </tr>
           </tbody>
         </table>
       </div>
 
-      <div *ngIf="employees.length === 0" class="empty-state">
-        <p>No employees found.</p>
+      <!-- Pagination: Always visible -->
+      <div class="pagination-controls">
+        <button
+          (click)="onPageChange(currentPage - 1)"
+          [disabled]="currentPage === 1"
+        >
+          &laquo; Previous
+        </button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button
+          (click)="onPageChange(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+        >
+          Next &raquo;
+        </button>
       </div>
     </div>
     <!-- Add Employee Modal Popup -->

@@ -1,30 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DesignationService } from '../../shared/services/designation.service';
 import { DesignationCreatePayload } from '../../shared/models/designation.model';
+import { DropdownService } from '../../shared/services/dropdown.service';
+
 
 @Component({
     selector: 'app-designation-create',
     standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule],
+    imports: [CommonModule, FormsModule],
     templateUrl: './designation-create.component.html',
     styleUrls: ['./designation-create.component.css']
 })
 export class DesignationCreateComponent {
-    designation: DesignationCreatePayload = {
-        title: ''
-    };
+    @Output() closeModal = new EventEmitter<void>();
+    @Output() designationAdded = new EventEmitter<void>();
 
+    designation: DesignationCreatePayload = {
+        title: '',
+        departmentId:''
+    };
+    departments:any[]=[]
     isLoading: boolean = false;
     errorMessage: string = '';
 
     constructor(
         private designationService: DesignationService,
-        private router: Router
+        private dropDownService:DropdownService
     ) { }
+    ngOnInit(){
+        this.getDepartments()
+    }
 
+    onCancel() {
+        this.closeModal.emit();
+    }
+    getDepartments(){
+        this.dropDownService.getDepartments().subscribe(res=>{
+            this.departments = res
+        })
+    }
     onSubmit(): void {
         if (!this.designation.title) {
             this.errorMessage = 'Please fill in all required fields.';
@@ -37,7 +53,8 @@ export class DesignationCreateComponent {
         this.designationService.createDesignation(this.designation).subscribe({
             next: () => {
                 this.isLoading = false;
-                this.router.navigate(['/designations']);
+                this.designationAdded.emit();
+                this.closeModal.emit();
             },
             error: (error) => {
                 this.isLoading = false;

@@ -1,3 +1,14 @@
+/* Bootstrap Icon Styles for Employee List Actions */
+.icon-btn .bi-eye-fill,
+.icon-btn .bi-pencil-square {
+  font-size: 18px;
+  color: #283a4d;
+}
+.icon-btn.delete .bi-trash-fill {
+  font-size: 18px;
+  color: #c33;
+}
+/* Search and Add Employee Row */
 .search-add-row {
     display: flex;
     justify-content: space-between;
@@ -196,6 +207,32 @@
     display: flex;
     align-items: center;
     gap: 16px;
+}
+.pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.pagination-controls button {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #f7f9fb;
+  color: #232e3c;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pagination-controls button.active,
+.pagination-controls button:focus {
+  background: #232e3c;
+  color: #fff;
+}
+.pagination-controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .icon-btn {

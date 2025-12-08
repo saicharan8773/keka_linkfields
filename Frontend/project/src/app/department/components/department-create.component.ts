@@ -1,49 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DepartmentService } from '../../shared/services/department.service';
 import { DepartmentCreatePayload } from '../../shared/models/department.model';
 
 @Component({
-    selector: 'app-department-create',
-    standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule],
-    templateUrl: './department-create.component.html',
-    styleUrls: ['./department-create.component.css']
+  selector: 'app-department-create',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './department-create.component.html',
+  styleUrls: ['./department-create.component.css']
 })
 export class DepartmentCreateComponent {
-    department: DepartmentCreatePayload = {
-        name: '',
-        code: ''
-    };
+  @Output() closeModal = new EventEmitter<void>();
+  @Output() departmentAdded = new EventEmitter<void>();
 
-    isLoading: boolean = false;
-    errorMessage: string = '';
+  department: DepartmentCreatePayload = {
+    name: '',
+    code: ''
+  };
 
-    constructor(
-        private departmentService: DepartmentService,
-        private router: Router
-    ) { }
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
-    onSubmit(): void {
-        if (!this.department.name || !this.department.code) {
-            this.errorMessage = 'Please fill in all required fields.';
-            return;
-        }
+  constructor(private departmentService: DepartmentService) { }
 
-        this.isLoading = true;
-        this.errorMessage = '';
+  onCancel() {
+    this.closeModal.emit();
+  }
 
-        this.departmentService.createDepartment(this.department).subscribe({
-            next: () => {
-                this.isLoading = false;
-                this.router.navigate(['/departments']);
-            },
-            error: (error) => {
-                this.isLoading = false;
-                this.errorMessage = 'Failed to create department. Please try again.';
-            }
-        });
+  onSubmit(): void {
+    if (!this.department.name || !this.department.code) {
+      this.errorMessage = 'Please fill in all required fields.';
+      return;
     }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.departmentService.createDepartment(this.department).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.departmentAdded.emit();
+        this.closeModal.emit();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = 'Failed to create department. Please try again.';
+      }
+    });
+  }
 }

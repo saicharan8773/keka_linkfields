@@ -27,6 +27,7 @@ import { DropdownService } from "../../shared/services/dropdown.service";
 })
 export class EmployeeListComponent implements OnInit {
   allEmployees: Employee[] = [];
+  filteredEmployees: Employee[] = [];
   employees: Employee[] = [];
   isLoading: boolean = false;
   errorMessage: string = "";
@@ -39,7 +40,7 @@ export class EmployeeListComponent implements OnInit {
   showFilterPanel = false;
 
   currentPage: number = 1;
-  itemsPerPage: number = 8;
+  itemsPerPage: number = 5;
 
   // Filter Data
   departments: any[] = [];
@@ -91,9 +92,13 @@ export class EmployeeListComponent implements OnInit {
     this.showAddEmployeeModal = false;
     this.loadEmployees();
   }
+  get totalPages(): number {
+    return Math.ceil(this.filteredEmployees.length / this.itemsPerPage);
+  }
   onSearch(): void {
     this.currentPage = 1;
-    this.loadEmployees();
+    this.filterEmployees();
+    this.updatePaginatedEmployees();
   }
 
   loadEmployees(): void {
@@ -112,6 +117,7 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.getAllEmployees(filters).subscribe({
       next: (data) => {
         this.allEmployees = data;
+        this.filterEmployees();
         this.updatePaginatedEmployees();
         this.isLoading = false;
       },
@@ -122,33 +128,19 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
+  filterEmployees(): void {
+    this.filteredEmployees = this.allEmployees.filter(
+      (employee) =>
+        employee.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        employee.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        employee.workEmail.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+  }
+
   updatePaginatedEmployees(): void {
-    // Client-side pagination only, as filtering is done on backend
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.employees = this.allEmployees.slice(startIndex, endIndex);
-  }
-
-  toggleFilterPanel() {
-    this.showFilterPanel = !this.showFilterPanel;
-  }
-
-  applyFilters() {
-    this.currentPage = 1;
-    this.loadEmployees();
-    this.showFilterPanel = false;
-  }
-
-  clearFilters() {
-    this.filterDepartmentId = "";
-    this.filterDesignationId = "";
-    this.filterLocationId = "";
-    this.filterEmploymentType = "";
-    this.departmentId = null;
-
-    this.currentPage = 1;
-    this.loadEmployees();
-    this.showFilterPanel = false;
+    this.employees = this.filteredEmployees.slice(startIndex, endIndex);
   }
 
   onPageChange(page: number): void {

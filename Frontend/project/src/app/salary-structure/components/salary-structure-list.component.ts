@@ -2,30 +2,55 @@ import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router, RouterModule } from "@angular/router";
 import { SalaryStructureService } from "../../shared/services/salary-structure.service";
-import { AuthService } from "../../shared/services/auth.service";
 import { SalaryStructure } from "../../shared/models/salary-structure.model";
 import { SidebarComponent } from "../../shared/components/sidebar.component";
+import { FormsModule } from "@angular/forms";
+import { SalaryStructureCreateComponent } from "./salary-structure-create.component";
+import { SalaryStructureDetailsModalComponent } from "./salary-structure-details-modal/salary-structure-details-modal.component";
+import { SalaryStructureEditModalComponent } from "./salary-structure-edit-modal/salary-structure-edit-modal.component";
 
 @Component({
   selector: "app-salary-structure-list",
   standalone: true,
-  imports: [CommonModule, RouterModule, SidebarComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    SidebarComponent,
+    FormsModule,
+    SalaryStructureCreateComponent,
+    SalaryStructureDetailsModalComponent,
+    SalaryStructureEditModalComponent,
+  ],
   templateUrl: "./salary-structure-list.component.html",
   styleUrls: ["./salary-structure-list.component.css"],
 })
 export class SalaryStructureListComponent implements OnInit {
+  allSalaryStructures: SalaryStructure[] = [];
   salaryStructures: SalaryStructure[] = [];
   isLoading: boolean = false;
   errorMessage: string = "";
+  searchText: string = "";
+  showAddSalaryStructureModal = false;
+  showEditSalaryStructureModal = false;
+  showDetailsSalaryStructureModal = false;
+  selectedSalaryStructureId: string = "";
 
   constructor(
     private salaryStructureService: SalaryStructureService,
-    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadSalaryStructures();
+  }
+
+  onSalaryStructureAdded() {
+    this.showAddSalaryStructureModal = false;
+    this.loadSalaryStructures();
+  }
+
+  onSearch(): void {
+    this.updateSalaryStructures();
   }
 
   loadSalaryStructures(): void {
@@ -34,15 +59,23 @@ export class SalaryStructureListComponent implements OnInit {
 
     this.salaryStructureService.getAllSalaryStructures().subscribe({
       next: (data) => {
-        this.salaryStructures = data;
+        this.allSalaryStructures = data;
+        this.updateSalaryStructures();
         this.isLoading = false;
       },
       error: (error) => {
-        this.errorMessage =
-          "Failed to load salary structures. Please try again.";
+        this.errorMessage = "Failed to load salary structures. Please try again.";
         this.isLoading = false;
       },
     });
+  }
+
+  updateSalaryStructures(): void {
+    const filteredSalaryStructures = this.allSalaryStructures.filter(
+      (structure) =>
+        structure.title.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+    this.salaryStructures = filteredSalaryStructures;
   }
 
   calculateTotal(structure: SalaryStructure): number {
@@ -52,6 +85,26 @@ export class SalaryStructureListComponent implements OnInit {
       (structure.otherAllowances || 0) -
       (structure.deductions || 0)
     );
+  }
+
+  showDetailsModal(salaryStructureId: string): void {
+    this.selectedSalaryStructureId = salaryStructureId;
+    this.showDetailsSalaryStructureModal = true;
+  }
+
+  showEditModal(salaryStructureId: string): void {
+    this.selectedSalaryStructureId = salaryStructureId;
+    this.showEditSalaryStructureModal = true;
+  }
+
+  showEditModalFromDetails(salaryStructureId: string): void {
+    this.showDetailsSalaryStructureModal = false;
+    this.showEditModal(salaryStructureId);
+  }
+
+  onSalaryStructureUpdated(): void {
+    this.showEditSalaryStructureModal = false;
+    this.loadSalaryStructures();
   }
 
   onDelete(id: string | undefined): void {
@@ -67,10 +120,5 @@ export class SalaryStructureListComponent implements OnInit {
         },
       });
     }
-  }
-
-  onLogout(): void {
-    this.authService.logout();
-    this.router.navigate(["/login"]);
   }
 }

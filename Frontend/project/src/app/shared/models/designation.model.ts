@@ -8,6 +8,7 @@ export interface Designation {
 }
 
 export interface DesignationCreatePayload {
+    departmentId: string;
     title: string;
 }
 

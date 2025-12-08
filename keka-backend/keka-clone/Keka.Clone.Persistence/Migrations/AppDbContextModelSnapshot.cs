@@ -806,7 +806,7 @@ namespace Keka.Clone.Persistence.Migrations
                     b.HasOne("Keka.Clone.Domain.Entities.Department", "Department")
                         .WithMany("Designations")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -817,7 +817,7 @@ namespace Keka.Clone.Persistence.Migrations
                     b.HasOne("Keka.Clone.Domain.Entities.Department", "Department")
                         .WithMany("Employees")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Keka.Clone.Domain.Entities.Designation", "Designation")
                         .WithMany("Employees")
@@ -852,7 +852,7 @@ namespace Keka.Clone.Persistence.Migrations
                     b.HasOne("Keka.Clone.Domain.Entities.Employee", "Employee")
                         .WithMany("LeaveAllocations")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -863,13 +863,13 @@ namespace Keka.Clone.Persistence.Migrations
                     b.HasOne("Keka.Clone.Domain.Entities.Employee", "Employee")
                         .WithMany("LeaveRequests")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Keka.Clone.Domain.Entities.LeaveType", "LeaveType")
                         .WithMany()
                         .HasForeignKey("LeaveTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");

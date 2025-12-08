@@ -2,87 +2,65 @@ import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router, RouterModule } from "@angular/router";
 import { DepartmentService } from "../../shared/services/department.service";
-import { AuthService } from "../../shared/services/auth.service";
 import { Department } from "../../shared/models/department.model";
 import { SidebarComponent } from "../../shared/components/sidebar.component";
+import { FormsModule } from "@angular/forms";
+import { DepartmentCreateComponent } from "./department-create.component";
+import { DepartmentDetailsModalComponent } from "./department-details-modal/department-details-modal.component";
+import { DepartmentEditModalComponent } from "./department-edit-modal/department-edit-modal.component";
 
 @Component({
   selector: "app-department-list",
   standalone: true,
-  imports: [CommonModule, RouterModule, SidebarComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    SidebarComponent,
+    FormsModule,
+    DepartmentCreateComponent,
+    DepartmentDetailsModalComponent,
+    DepartmentEditModalComponent,
+  ],
   templateUrl: "./department-list.component.html",
   styleUrls: ["./department-list.component.css"],
 })
 export class DepartmentListComponent implements OnInit {
+  allDepartments: Department[] = [];
   departments: Department[] = [];
   isLoading: boolean = false;
   errorMessage: string = "";
+  searchText: string = "";
+  showAddDepartmentModal = false;
+  showEditDepartmentModal = false;
+  showDetailsDepartmentModal = false;
+  selectedDepartmentId: string = "";
 
   constructor(
     private departmentService: DepartmentService,
-    private authService: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadDepartments();
+  }
+
+  onDepartmentAdded() {
+    this.showAddDepartmentModal = false;
+    this.loadDepartments();
+  }
+
+  onSearch(): void {
+    this.updateDepartments();
   }
 
   loadDepartments(): void {
     this.isLoading = true;
     this.errorMessage = "";
 
-    // Hardcoded data as requested
-    const hardcodedDepartments = [
-      {
-        "id": "d1000000-0000-0000-0000-000000000001",
-        "name": "Human Resources",
-        "code": "HR"
-      },
-      {
-        "id": "d1000000-0000-0000-0000-000000000002",
-        "name": "Financial Accounting",
-        "code": "FA"
-      },
-      {
-        "id": "d1000000-0000-0000-0000-000000000003",
-        "name": "Marketing and Sales",
-        "code": "M&S"
-      },
-      {
-        "id": "d1000000-0000-0000-0000-000000000004",
-        "name": "Operations management",
-        "code": "OM"
-      },
-      {
-        "id": "d1000000-0000-0000-0000-000000000005",
-        "name": "Research and development",
-        "code": "R&D"
-      },
-      {
-        "id": "d1000000-0000-0000-0000-000000000006",
-        "name": "Customer service",
-        "code": "CS"
-      },
-      {
-        "id": "d1000000-0000-0000-0000-000000000007",
-        "name": "Information Technology",
-        "code": "IT"
-      },
-      {
-        "id": "d1000000-0000-0000-0000-000000000008",
-        "name": "IT Support",
-        "code": "ITS"
-      }
-    ];
-
-    this.departments = hardcodedDepartments;
-    this.isLoading = false;
-
-    /*
     this.departmentService.getAllDepartments().subscribe({
       next: (data) => {
-        this.departments = data;
+        this.allDepartments = data;
+        this.updateDepartments();
         this.isLoading = false;
       },
       error: (error) => {
@@ -90,7 +68,35 @@ export class DepartmentListComponent implements OnInit {
         this.isLoading = false;
       },
     });
-    */
+  }
+
+  updateDepartments(): void {
+    const filteredDepartments = this.allDepartments.filter(
+      (department) =>
+        department.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        department.code.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+    this.departments = filteredDepartments;
+  }
+
+  showDetailsModal(departmentId: string): void {
+    this.selectedDepartmentId = departmentId;
+    this.showDetailsDepartmentModal = true;
+  }
+
+  showEditModal(departmentId: string): void {
+    this.selectedDepartmentId = departmentId;
+    this.showEditDepartmentModal = true;
+  }
+
+  showEditModalFromDetails(departmentId: string): void {
+    this.showDetailsDepartmentModal = false;
+    this.showEditModal(departmentId);
+  }
+
+  onDepartmentUpdated(): void {
+    this.showEditDepartmentModal = false;
+    this.loadDepartments();
   }
 
   onDelete(id: string | undefined): void {
@@ -106,10 +112,5 @@ export class DepartmentListComponent implements OnInit {
         },
       });
     }
-  }
-
-  onLogout(): void {
-    this.authService.logout();
-    this.router.navigate(["/login"]);
   }
 }
