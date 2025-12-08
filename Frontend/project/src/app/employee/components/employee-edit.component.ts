@@ -12,8 +12,8 @@ import { SidebarComponent } from "../../shared/components/sidebar.component";
 @Component({
   selector: "app-employee-edit",
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SidebarComponent],
-  templateUrl: "./employee-edit.component.html",
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: "./employee-edit-modal/employee-edit-modal.component.html",
   styleUrls: [],
 })
 export class EmployeeEditComponent implements OnInit {

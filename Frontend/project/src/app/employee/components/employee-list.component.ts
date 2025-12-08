@@ -25,6 +25,7 @@ import { EmployeeDetailsModalComponent } from "./employee-details-modal/employee
   styleUrls: ["./employee-list.component.css"],
 })
 export class EmployeeListComponent implements OnInit {
+  allEmployees: Employee[] = [];
   employees: Employee[] = [];
   isLoading: boolean = false;
   errorMessage: string = "";
@@ -33,6 +34,9 @@ export class EmployeeListComponent implements OnInit {
   showEditEmployeeModal = false;
   showDetailsEmployeeModal = false;
   selectedEmployeeId: string = "";
+
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
 
   constructor(
     private employeeService: EmployeeService,
@@ -47,7 +51,8 @@ export class EmployeeListComponent implements OnInit {
     this.loadEmployees();
   }
   onSearch(): void {
-    this.searchText = this.searchText.toLowerCase();
+    this.currentPage = 1;
+    this.updatePaginatedEmployees();
   }
 
   loadEmployees(): void {
@@ -56,7 +61,8 @@ export class EmployeeListComponent implements OnInit {
 
     this.employeeService.getAllEmployees().subscribe({
       next: (data) => {
-        this.employees = data;
+        this.allEmployees = data;
+        this.updatePaginatedEmployees();
         this.isLoading = false;
       },
       error: (error) => {
@@ -64,6 +70,24 @@ export class EmployeeListComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  updatePaginatedEmployees(): void {
+    const filteredEmployees = this.allEmployees.filter(
+      (employee) =>
+        employee.firstName.toLowerCase().includes(this.searchText) ||
+        employee.lastName.toLowerCase().includes(this.searchText) ||
+        employee.workEmail.toLowerCase().includes(this.searchText)
+    );
+
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.employees = filteredEmployees.slice(startIndex, endIndex);
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.updatePaginatedEmployees();
   }
 
   showDetailsModal(employeeId: string): void {

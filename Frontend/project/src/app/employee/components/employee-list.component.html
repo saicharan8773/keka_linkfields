@@ -1,3 +1,10 @@
+<head>
+   <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+/>
+</head>
+
 <div class="dashboard-container">
   <app-sidebar></app-sidebar>
 
@@ -44,7 +51,7 @@
           <tbody>
             <tr *ngFor="let employee of employees">
               <!-- PROFILE + NAME + EMAIL -->
-              <td>
+              <td data-label="Employee">
                 <div class="emp-profile">
                   <div class="avatar">
                     {{ employee.firstName[0] }}{{ employee.lastName[0] }}
@@ -58,40 +65,26 @@
                 </div>
               </td>
 
-              <td>
+              <td data-label="Code">
                 <span class="code-tag">{{ employee.employeeCode }}</span>
               </td>
 
-              <td>{{ employee.departmentName }}</td>
-              <td>{{ employee.designationTitle }}</td>
-              <td>{{ employee.locationName }}</td>
+              <td data-label="Department">{{ employee.departmentName }}</td>
+              <td data-label="Designation">{{ employee.designationTitle }}</td>
+              <td data-label="Location">{{ employee.locationName }}</td>
 
-              <td>
+              <td data-label="Type">
                 <span class="type-tag">Full-time</span>
               </td>
 
               <!-- ACTIONS -->
-              <td class="action-col">
+              <td data-label="Actions" class="action-col">
                 <button
                   class="icon-btn"
                   (click)="showDetailsModal(employee.id!)"
                   title="View"
                 >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#283a4d"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path
-                      d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"
-                    ></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
+                  <i class="bi bi-eye-fill" style="font-size:18px"></i>
                 </button>
 
                 <button
@@ -99,21 +92,7 @@
                   (click)="showEditModal(employee.id!)"
                   title="Edit"
                 >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#283a4d"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M12 20h9"></path>
-                    <path
-                      d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"
-                    ></path>
-                  </svg>
+                 <i class="bi bi-pencil-square" style="font-size:18px"></i>
                 </button>
 
                 <button
@@ -121,22 +100,7 @@
                   (click)="onDelete(employee.id)"
                   title="Delete"
                 >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#c33"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6l-1 14H6L5 6"></path>
-                    <path d="M10 11v6"></path>
-                    <path d="M14 11v6"></path>
-                    <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"></path>
-                  </svg>
+                  <i class="bi bi-trash-fill" style="font-size:18px; color: #c33;"></i>
                 </button>
               </td>
             </tr>
