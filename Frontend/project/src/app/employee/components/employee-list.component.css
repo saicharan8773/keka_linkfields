@@ -49,25 +49,6 @@
   color: #6c757d;
 }
 
-/* ADD EMPLOYEE BUTTON */
-.btn-add {
-  background: #283a4d;
-  color: #fff;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: 0.2s ease;
-}
-
-.btn-add:hover {
-  background: #1f2e3b;
-}
-
 /* SEARCH BOX */
 .search-box {
   margin-bottom: 5px;
@@ -96,26 +77,30 @@
 .employee-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 800px;
 }
 
 .employee-table thead {
-  background: #f4f6f8;
+  background: #fafafa;
 }
 
 .employee-table th {
   padding: 16px;
   font-size: 13px;
-  color: #7a7a7a;
+  color: #666;
   text-transform: uppercase;
   font-weight: 600;
+  text-align: left;
 }
 
 .employee-table td {
-  width: 96px;
-  height: 85px;
   padding: 18px;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
+}
+
+.employee-table tbody tr:hover {
+  background-color: #f9f9f9;
 }
 
 /* AVATAR + NAME + EMAIL */
@@ -126,8 +111,8 @@
 }
 
 .avatar {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: #f7d794;
   display: flex;
@@ -135,23 +120,24 @@
   justify-content: center;
   font-weight: 700;
   color: #283a4d;
+  font-size: 16px;
 }
 
 .emp-info .name {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 15px;
 }
 
 .emp-info .email {
   font-size: 13px;
-  color: #7d7d7d;
+  color: #999;
 }
 
 /* CODE TAG */
 .code-tag {
   background: #f0f4ff;
-  color: #283a4d;
-  padding: 4px 10px;
+  color: #4a6ee0;
+  padding: 6px 12px;
   font-size: 12px;
   border-radius: 6px;
   font-weight: 600;
@@ -161,7 +147,7 @@
 .type-tag {
   background: #e0f7ff;
   color: #0096c7;
-  padding: 5px;
+  padding: 6px 12px;
   border-radius: 6px;
   font-weight: 600;
   font-size: 12px;
@@ -170,36 +156,8 @@
 /* ACTION BUTTONS */
 .action-col {
   display: flex;
-  gap: 10px;
-}
-
-.icon-btn {
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 6px;
-  font-size: 18px;
-  transition: 0.2s;
-}
-
-.icon-btn:hover {
-  transform: scale(1.15);
-}
-
-.delete:hover {
-  color: #c0392b;
-}
-
-/* EMPTY STATE */
-.empty-state {
-  margin-top: 50px;
-  text-align: center;
-  color: #777;
-}
-.action-col {
-  display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .icon-btn {
@@ -210,6 +168,11 @@
   transition: 0.2s;
   display: flex;
   align-items: center;
+}
+
+.icon-btn svg {
+  width: 22px;
+  height: 22px;
 }
 
 .icon-btn:hover {
@@ -222,4 +185,104 @@
 
 .icon-btn:hover svg {
   stroke: #1e2d3d;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  margin-top: 50px;
+  text-align: center;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .search-add-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .employee-table {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 576px) {
+  .employee-container {
+    padding: 15px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .btn-add-gold {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .employee-table th:nth-child(5),
+  .employee-table td:nth-child(5),
+  .employee-table th:nth-child(6),
+  .employee-table td:nth-child(6) {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .employee-table thead {
+    display: none;
+  }
+  .employee-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  .employee-table td {
+    display: block;
+    text-align: right;
+    border-bottom: 1px solid #eee;
+  }
+  .employee-table td:last-child {
+    border-bottom: none;
+  }
+  .employee-table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  .emp-profile {
+    justify-content: flex-end;
+  }
+
+  .action-col {
+    justify-content: flex-end;
+  }
+
+  .employee-table th:nth-child(3),
+  .employee-table td:nth-child(3),
+  .employee-table th:nth-child(4),
+  .employee-table td:nth-child(4) {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .employee-table td {
+    padding: 12px;
+  }
 }

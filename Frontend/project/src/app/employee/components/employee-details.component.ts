@@ -3,13 +3,12 @@ import { CommonModule } from "@angular/common";
 import { Router, ActivatedRoute, RouterModule } from "@angular/router";
 import { EmployeeService } from "../../shared/services/employee.service";
 import { Employee } from "../../shared/models/employee.model";
-import { SidebarComponent } from "../../shared/components/sidebar.component";
 
 @Component({
   selector: "app-employee-details",
   standalone: true,
-  imports: [CommonModule, RouterModule, SidebarComponent],
-  templateUrl: "./employee-details.component.html",
+  imports: [CommonModule, RouterModule],
+  templateUrl: "./employee-details-modal/employee-details-modal.component.html",
   styleUrls: [],
 })
 export class EmployeeDetailsComponent implements OnInit {
@@ -47,7 +46,9 @@ export class EmployeeDetailsComponent implements OnInit {
   onBack(): void {
     this.router.navigate(["/employees"]);
   }
-
+  onCancel(): void {
+    this.router.navigate(["/employees"]);
+  }
   onEdit(): void {
     if (this.employee?.id) {
       this.router.navigate(["/employees/edit", this.employee.id]);
