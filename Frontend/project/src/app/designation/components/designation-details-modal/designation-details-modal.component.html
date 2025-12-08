@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h2>Designation Details</h2>
+  <button class="close-btn" (click)="onClose()">
+    <i class="bi bi-x-lg"></i>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading details...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && designation" class="details-grid">
+    <div class="detail-item">
+      <span class="detail-label">Title</span>
+      <span class="detail-value">{{ designation.title }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">ID</span>
+      <span class="detail-value">{{ designation.id }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-secondary" (click)="onClose()">Close</button>
+  <button class="btn btn-primary" (click)="onEdit()">Edit</button>
+</div>

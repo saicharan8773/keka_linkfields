@@ -1,80 +1,113 @@
 <div class="dashboard-container">
-    <app-sidebar></app-sidebar>
-    <main class="main-content">
-        <div class="employee-container">
-            <div class="header">
-                <div class="header-content">
-                    <h1>Department Management</h1>
-                    <div class="header-actions">
-                        <button class="btn btn-primary" routerLink="/departments/create">
-                            + Add Department
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <app-sidebar></app-sidebar>
 
-            <div class="content">
-                <div *ngIf="isLoading" class="loading">
-                    <p>Loading departments...</p>
-                </div>
-
-                <div *ngIf="errorMessage && !isLoading" class="alert alert-error">
-                    {{ errorMessage }}
-                </div>
-
-                <div *ngIf="!isLoading && !errorMessage && departments.length === 0" class="empty-state">
-                    <p>No departments found. Add your first department to get started.</p>
-                    <button class="btn btn-primary" routerLink="/departments/create">
-                        + Add Department
-                    </button>
-                </div>
-
-                <div *ngIf="!isLoading && departments.length > 0" class="table-container">
-                    <table class="employee-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Code</th>
-                                <th>Employees</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let department of departments">
-                                <td>{{ department.name }}</td>
-                                <td>{{ department.code }}</td>
-                                <td>no data</td>
-                                <td class="actions">
-                                    <button class="btn-icon btn-view"
-                                        [routerLink]="['/departments/details', department.id]" title="View Details">
-                                        <svg width="20" height="20" fill="none" stroke="#283a4d" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="10" cy="10" r="8" />
-                                            <circle cx="10" cy="10" r="3" />
-                                        </svg>
-                                    </button>
-                                    <button class="btn-icon btn-edit"
-                                        [routerLink]="['/departments/edit', department.id]" title="Edit">
-                                        <svg width="20" height="20" fill="none" stroke="#ffd166" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 4l4 4L8 16H4v-4L12 4z" />
-                                        </svg>
-                                    </button>
-                                    <button class="btn-icon btn-delete" (click)="onDelete(department.id)"
-                                        title="Delete">
-                                        <svg width="20" height="20" fill="none" stroke="#c33" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="6" width="14" height="12" rx="2" />
-                                            <path d="M8 10v4M12 10v4" />
-                                            <path d="M5 6V4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" />
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <main class="main-content">
+    <div class="employee-container">
+      <!-- Header -->
+      <div class="page-header">
+        <div>
+          <h1>Departments</h1>
+          <p class="subtitle">Manage your organization’s departments</p>
         </div>
-    </main>
+      </div>
+
+      <!-- Search and Add Button Row -->
+      <div class="search-add-row">
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Search departments…"
+            [(ngModel)]="searchText"
+            (input)="onSearch()"
+          />
+        </div>
+        <button class="btn-add-gold" (click)="showAddDepartmentModal = true">
+          <span class="plus-sign">+</span> Add Department
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrapper" *ngIf="departments.length > 0">
+        <table class="employee-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Code</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let department of departments">
+              <td data-label="Name">{{ department.name }}</td>
+              <td data-label="Code">
+                <span class="code-tag">{{ department.code }}</span>
+              </td>
+              <td data-label="Actions" class="action-col">
+                <button
+                  class="icon-btn"
+                  (click)="showDetailsModal(department.id!)"
+                  title="View"
+                >
+                  <i class="bi bi-eye-fill" style="font-size:18px"></i>
+                </button>
+
+                <button
+                  class="icon-btn"
+                  (click)="showEditModal(department.id!)"
+                  title="Edit"
+                >
+                 <i class="bi bi-pencil-square" style="font-size:18px"></i>
+                </button>
+
+                <button
+                  class="icon-btn delete"
+                  (click)="onDelete(department.id)"
+                  title="Delete"
+                >
+                  <i class="bi bi-trash-fill" style="font-size:18px; color: #c33;"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="departments.length === 0" class="empty-state">
+        <p>No departments found.</p>
+      </div>
+    </div>
+
+    <!-- Add Department Modal -->
+    <div *ngIf="showAddDepartmentModal" class="modal-overlay">
+      <div class="modal-card">
+        <app-department-create
+          (closeModal)="showAddDepartmentModal = false"
+          (departmentAdded)="onDepartmentAdded()"
+        ></app-department-create>
+      </div>
+    </div>
+
+    <!-- Edit Department Modal -->
+    <div *ngIf="showEditDepartmentModal" class="modal-overlay">
+      <div class="modal-card">
+        <app-department-edit-modal
+          [departmentId]="selectedDepartmentId"
+          (closeModal)="showEditDepartmentModal = false"
+          (departmentUpdated)="onDepartmentUpdated()"
+        ></app-department-edit-modal>
+      </div>
+    </div>
+
+    <!-- Details Department Modal -->
+    <div *ngIf="showDetailsDepartmentModal" class="modal-overlay">
+      <div class="modal-card">
+        <app-department-details-modal
+          [departmentId]="selectedDepartmentId"
+          (closeModal)="showDetailsDepartmentModal = false"
+          (editDepartment)="showEditModalFromDetails($event)"
+        ></app-department-details-modal>
+      </div>
+    </div>
+  </main>
 </div>

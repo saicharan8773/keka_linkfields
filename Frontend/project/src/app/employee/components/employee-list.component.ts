@@ -26,6 +26,7 @@ import { EmployeeDetailsModalComponent } from "./employee-details-modal/employee
 })
 export class EmployeeListComponent implements OnInit {
   allEmployees: Employee[] = [];
+  filteredEmployees: Employee[] = [];
   employees: Employee[] = [];
   isLoading: boolean = false;
   errorMessage: string = "";
@@ -36,7 +37,7 @@ export class EmployeeListComponent implements OnInit {
   selectedEmployeeId: string = "";
 
   currentPage: number = 1;
-  itemsPerPage: number = 8;
+  itemsPerPage: number = 5;
 
   constructor(
     private employeeService: EmployeeService,
@@ -50,8 +51,12 @@ export class EmployeeListComponent implements OnInit {
     this.showAddEmployeeModal = false;
     this.loadEmployees();
   }
+  get totalPages(): number {
+    return Math.ceil(this.filteredEmployees.length / this.itemsPerPage);
+  }
   onSearch(): void {
     this.currentPage = 1;
+    this.filterEmployees();
     this.updatePaginatedEmployees();
   }
 
@@ -62,6 +67,7 @@ export class EmployeeListComponent implements OnInit {
     this.employeeService.getAllEmployees().subscribe({
       next: (data) => {
         this.allEmployees = data;
+        this.filterEmployees();
         this.updatePaginatedEmployees();
         this.isLoading = false;
       },
@@ -72,17 +78,19 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  updatePaginatedEmployees(): void {
-    const filteredEmployees = this.allEmployees.filter(
+  filterEmployees(): void {
+    this.filteredEmployees = this.allEmployees.filter(
       (employee) =>
-        employee.firstName.toLowerCase().includes(this.searchText) ||
-        employee.lastName.toLowerCase().includes(this.searchText) ||
-        employee.workEmail.toLowerCase().includes(this.searchText)
+        employee.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        employee.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        employee.workEmail.toLowerCase().includes(this.searchText.toLowerCase())
     );
+  }
 
+  updatePaginatedEmployees(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.employees = filteredEmployees.slice(startIndex, endIndex);
+    this.employees = this.filteredEmployees.slice(startIndex, endIndex);
   }
 
   onPageChange(page: number): void {

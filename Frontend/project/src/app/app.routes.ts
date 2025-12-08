@@ -43,61 +43,16 @@ export const routes: Routes = [
     loadComponent: () => import('./department/components/department-list.component').then(m => m.DepartmentListComponent),
     canActivate: [AuthGuard],
   },
-  {
-    path: "departments/create",
-    loadComponent: () => import('./department/components/department-create.component').then(m => m.DepartmentCreateComponent),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "departments/edit/:id",
-    loadComponent: () => import('./department/components/department-edit.component').then(m => m.DepartmentEditComponent),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "departments/details/:id",
-    loadComponent: () => import('./department/components/department-details.component').then(m => m.DepartmentDetailsComponent),
-    canActivate: [AuthGuard],
-  },
   // Designation Routes
   {
     path: "designations",
     loadComponent: () => import('./designation/components/designation-list.component').then(m => m.DesignationListComponent),
     canActivate: [AuthGuard],
   },
-  {
-    path: "designations/create",
-    loadComponent: () => import('./designation/components/designation-create.component').then(m => m.DesignationCreateComponent),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "designations/edit/:id",
-    loadComponent: () => import('./designation/components/designation-edit.component').then(m => m.DesignationEditComponent),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "designations/details/:id",
-    loadComponent: () => import('./designation/components/designation-details.component').then(m => m.DesignationDetailsComponent),
-    canActivate: [AuthGuard],
-  },
   // Salary Structure Routes
   {
     path: "salary-structures",
     loadComponent: () => import('./salary-structure/components/salary-structure-list.component').then(m => m.SalaryStructureListComponent),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "salary-structures/create",
-    loadComponent: () => import('./salary-structure/components/salary-structure-create.component').then(m => m.SalaryStructureCreateComponent),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "salary-structures/edit/:id",
-    loadComponent: () => import('./salary-structure/components/salary-structure-edit.component').then(m => m.SalaryStructureEditComponent),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "salary-structures/details/:id",
-    loadComponent: () => import('./salary-structure/components/salary-structure-details.component').then(m => m.SalaryStructureDetailsComponent),
     canActivate: [AuthGuard],
   },
   {
