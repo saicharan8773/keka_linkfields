@@ -29,78 +29,60 @@ export class EmployeeListComponent implements OnInit {
   allEmployees: Employee[] = [];
   filteredEmployees: Employee[] = [];
   employees: Employee[] = [];
-  isLoading: boolean = false;
-  errorMessage: string = "";
-  searchText: string = "";
+
+  isLoading = false;
+  errorMessage = "";
+  searchText = "";
   departmentId: string | null = null;
+
   showAddEmployeeModal = false;
   showEditEmployeeModal = false;
   showDetailsEmployeeModal = false;
-  selectedEmployeeId: string = "";
+  selectedEmployeeId = "";
   showFilterPanel = false;
 
-  currentPage: number = 1;
-  itemsPerPage: number = 5;
+  currentPage = 1;
+  itemsPerPage = 8;
 
-  // Filter Data
+  // Dropdowns
   departments: any[] = [];
   designations: any[] = [];
   locations: any[] = [];
 
-  // Selected Filters
-  filterDepartmentId: string = "";
-  filterDesignationId: string = "";
-  filterLocationId: string = "";
-  filterEmploymentType: string = "";
+  // Filter selections
+  filterDepartmentId = "";
+  filterDesignationId = "";
+  filterLocationId = "";
+  filterEmploymentType = "";
 
   constructor(
     private employeeService: EmployeeService,
     private dropdownService: DropdownService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.fetchDropdowns();
+
     this.route.queryParams.subscribe((params) => {
       this.departmentId = params["departmentId"] || null;
+
       if (this.departmentId) {
         this.filterDepartmentId = this.departmentId;
       }
-      if (this.departmentId) {
-        this.filterDepartmentId = this.departmentId;
-        this.loadEmployees();
-      } else {
-        this.loadEmployees();
-      }
+
+      this.loadEmployees();
     });
   }
 
   fetchDropdowns() {
-    this.dropdownService
-      .getDepartments()
-      .subscribe((data) => (this.departments = data));
-    this.dropdownService
-      .getDesignations()
-      .subscribe((data) => (this.designations = data));
-    this.dropdownService
-      .getLocations()
-      .subscribe((data) => (this.locations = data));
+    this.dropdownService.getDepartments().subscribe((d) => (this.departments = d));
+    this.dropdownService.getDesignations().subscribe((d) => (this.designations = d));
+    this.dropdownService.getLocations().subscribe((d) => (this.locations = d));
   }
 
-  onEmployeeAdded() {
-    this.showAddEmployeeModal = false;
-    this.loadEmployees();
-  }
-  get totalPages(): number {
-    return Math.ceil(this.filteredEmployees.length / this.itemsPerPage);
-  }
-  onSearch(): void {
-    this.currentPage = 1;
-    this.filterEmployees();
-    this.updatePaginatedEmployees();
-  }
-
+  // SEARCH + FILTER + BACKEND FILTERS
   loadEmployees(): void {
     this.isLoading = true;
     this.errorMessage = "";
@@ -111,7 +93,7 @@ export class EmployeeListComponent implements OnInit {
       designationId: this.filterDesignationId,
       locationId: this.filterLocationId,
       employmentType: this.filterEmploymentType,
-      pageSize: 10000 // Get all matching for client-side pagination
+      pageSize: 10000
     };
 
     this.employeeService.getAllEmployees(filters).subscribe({
@@ -121,20 +103,63 @@ export class EmployeeListComponent implements OnInit {
         this.updatePaginatedEmployees();
         this.isLoading = false;
       },
-      error: (error) => {
+      error: () => {
         this.errorMessage = "Failed to load employees. Please try again.";
         this.isLoading = false;
       },
     });
   }
 
+  // FULL FILTER LOGIC HERE
   filterEmployees(): void {
-    this.filteredEmployees = this.allEmployees.filter(
-      (employee) =>
-        employee.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        employee.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        employee.workEmail.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+    this.filteredEmployees = this.allEmployees.filter((e) => {
+      const matchesSearch =
+        e.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        e.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        e.workEmail.toLowerCase().includes(this.searchText.toLowerCase());
+
+      const matchesDepartment = !this.filterDepartmentId || e.departmentId === this.filterDepartmentId;
+      const matchesDesignation = !this.filterDesignationId || e.designationId === this.filterDesignationId;
+      const matchesLocation = !this.filterLocationId || e.locationId === this.filterLocationId;
+      const matchesEmploymentType =
+        !this.filterEmploymentType || e.employmentType === this.filterEmploymentType;
+
+      return (
+        matchesSearch &&
+        matchesDepartment &&
+        matchesDesignation &&
+        matchesLocation &&
+        matchesEmploymentType
+      );
+    });
+  }
+
+  toggleFilterPanel() {
+    this.showFilterPanel = !this.showFilterPanel;
+  }
+
+  applyFilters() {
+    this.currentPage = 1;
+    this.loadEmployees();
+    this.showFilterPanel = false;
+  }
+
+  clearFilters() {
+    this.filterDepartmentId = "";
+    this.filterDesignationId = "";
+    this.filterLocationId = "";
+    this.filterEmploymentType = "";
+    this.searchText = "";
+    this.currentPage = 1;
+
+    this.loadEmployees();
+    this.showFilterPanel = false;
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.filterEmployees();
+    this.updatePaginatedEmployees();
   }
 
   updatePaginatedEmployees(): void {
@@ -143,27 +168,36 @@ export class EmployeeListComponent implements OnInit {
     this.employees = this.filteredEmployees.slice(startIndex, endIndex);
   }
 
-  onPageChange(page: number): void {
+  onPageChange(page: number) {
     this.currentPage = page;
     this.updatePaginatedEmployees();
   }
 
-  showDetailsModal(employeeId: string): void {
-    this.selectedEmployeeId = employeeId;
+  get totalPages(): number {
+    return Math.ceil(this.filteredEmployees.length / this.itemsPerPage);
+  }
+
+  showDetailsModal(id: string) {
+    this.selectedEmployeeId = id;
     this.showDetailsEmployeeModal = true;
   }
 
-  showEditModal(employeeId: string): void {
-    this.selectedEmployeeId = employeeId;
+  showEditModal(id: string) {
+    this.selectedEmployeeId = id;
     this.showEditEmployeeModal = true;
   }
 
-  showEditModalFromDetails(employeeId: string): void {
+  showEditModalFromDetails(id: string) {
     this.showDetailsEmployeeModal = false;
-    this.showEditModal(employeeId);
+    this.showEditModal(id);
   }
 
-  onEmployeeUpdated(): void {
+  onEmployeeAdded() {
+    this.showAddEmployeeModal = false;
+    this.loadEmployees();
+  }
+
+  onEmployeeUpdated() {
     this.showEditEmployeeModal = false;
     this.loadEmployees();
   }
@@ -173,12 +207,8 @@ export class EmployeeListComponent implements OnInit {
 
     if (confirm("Are you sure you want to delete this employee?")) {
       this.employeeService.deleteEmployee(id).subscribe({
-        next: () => {
-          this.loadEmployees();
-        },
-        error: (error) => {
-          alert("Failed to delete employee. Please try again.");
-        },
+        next: () => this.loadEmployees(),
+        error: () => alert("Failed to delete employee. Please try again."),
       });
     }
   }
