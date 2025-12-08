@@ -6,6 +6,8 @@ public class EmployeeSearchParams
     public Guid? DepartmentId { get; set; }
     public Guid? DesignationId { get; set; }
     public Guid? ManagerId { get; set; }
+    public Guid? LocationId { get; set; }
+    public string? EmploymentType { get; set; }
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 20;
     public string? SortBy { get; set; }

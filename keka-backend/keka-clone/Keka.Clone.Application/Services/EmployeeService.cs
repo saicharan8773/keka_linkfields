@@ -109,6 +109,8 @@ namespace Keka.Clone.Application.Services
                 searchParams.DepartmentId,
                 searchParams.DesignationId,
                 searchParams.ManagerId,
+                searchParams.LocationId,
+                searchParams.EmploymentType,
                 searchParams.Page,
                 searchParams.PageSize,
                 searchParams.SortBy,

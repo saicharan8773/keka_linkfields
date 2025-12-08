@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { Router, RouterModule } from "@angular/router";
+import { Router, RouterModule, ActivatedRoute } from "@angular/router";
 import { EmployeeService } from "../../shared/services/employee.service";
 import { Employee } from "../../shared/models/employee.model";
 import { SidebarComponent } from "../../shared/components/sidebar.component";
@@ -8,6 +8,7 @@ import { FormsModule } from "@angular/forms";
 import { EmployeeCreateComponent } from "./employee-create.component";
 import { EmployeeEditModalComponent } from "./employee-edit-modal/employee-edit-modal.component";
 import { EmployeeDetailsModalComponent } from "./employee-details-modal/employee-details-modal.component";
+import { DropdownService } from "../../shared/services/dropdown.service";
 
 @Component({
   selector: "app-employee-list",
@@ -31,22 +32,62 @@ export class EmployeeListComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string = "";
   searchText: string = "";
+  departmentId: string | null = null;
   showAddEmployeeModal = false;
   showEditEmployeeModal = false;
   showDetailsEmployeeModal = false;
   selectedEmployeeId: string = "";
+  showFilterPanel = false;
 
   currentPage: number = 1;
   itemsPerPage: number = 5;
 
+  // Filter Data
+  departments: any[] = [];
+  designations: any[] = [];
+  locations: any[] = [];
+
+  // Selected Filters
+  filterDepartmentId: string = "";
+  filterDesignationId: string = "";
+  filterLocationId: string = "";
+  filterEmploymentType: string = "";
+
   constructor(
     private employeeService: EmployeeService,
-    private router: Router
-  ) {}
+    private dropdownService: DropdownService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    this.loadEmployees();
+    this.fetchDropdowns();
+    this.route.queryParams.subscribe((params) => {
+      this.departmentId = params["departmentId"] || null;
+      if (this.departmentId) {
+        this.filterDepartmentId = this.departmentId;
+      }
+      if (this.departmentId) {
+        this.filterDepartmentId = this.departmentId;
+        this.loadEmployees();
+      } else {
+        this.loadEmployees();
+      }
+    });
   }
+
+  fetchDropdowns() {
+    this.dropdownService
+      .getDepartments()
+      .subscribe((data) => (this.departments = data));
+    this.dropdownService
+      .getDesignations()
+      .subscribe((data) => (this.designations = data));
+    this.dropdownService
+      .getLocations()
+      .subscribe((data) => (this.locations = data));
+  }
+
   onEmployeeAdded() {
     this.showAddEmployeeModal = false;
     this.loadEmployees();
@@ -64,7 +105,16 @@ export class EmployeeListComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = "";
 
-    this.employeeService.getAllEmployees().subscribe({
+    const filters = {
+      query: this.searchText,
+      departmentId: this.filterDepartmentId,
+      designationId: this.filterDesignationId,
+      locationId: this.filterLocationId,
+      employmentType: this.filterEmploymentType,
+      pageSize: 10000 // Get all matching for client-side pagination
+    };
+
+    this.employeeService.getAllEmployees(filters).subscribe({
       next: (data) => {
         this.allEmployees = data;
         this.filterEmployees();
