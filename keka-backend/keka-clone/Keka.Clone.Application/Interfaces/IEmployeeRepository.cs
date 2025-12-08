@@ -15,6 +15,8 @@ namespace Keka.Clone.Application.Interfaces
             Guid? departmentId,
             Guid? designationId,
             Guid? managerId,
+            Guid? locationId,
+            string? employmentType,
             int page,
             int pageSize,
             string? sortBy,
@@ -23,6 +25,6 @@ namespace Keka.Clone.Application.Interfaces
 
         Task<IEnumerable<Employee>> GetByDepartmentIdAsync(Guid departmentId);
 
-        Task SaveChangesAsync(); // ✅ required
+        Task SaveChangesAsync();
     }
 }

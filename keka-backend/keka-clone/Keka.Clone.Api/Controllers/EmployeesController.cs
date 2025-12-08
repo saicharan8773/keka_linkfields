@@ -18,10 +18,10 @@ public class EmployeesController:ControllerBase
 
     // GET api/employees
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] EmployeeSearchParams query)
+    public async Task<IActionResult> Get([FromQuery] EmployeeSearchParams searchParams)
     {
-        var (items, total) = await _service.SearchAsync(query);
-        return Ok(new { Items = items, Total = total, Page = query.Page, PageSize = query.PageSize });
+        var (items, total) = await _service.SearchAsync(searchParams);
+        return Ok(new { Items = items, Total = total, Page = searchParams.Page, PageSize = searchParams.PageSize });
     }
 
     // GET api/employees/{id}

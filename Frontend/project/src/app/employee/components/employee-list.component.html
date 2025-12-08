@@ -1,8 +1,5 @@
 <head>
-   <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 </head>
 
 <div class="dashboard-container">
@@ -18,16 +15,79 @@
         </div>
       </div>
 
-      <!-- Search and Add Employee Button Row -->
+      <!-- Search, Filter, and Add Employee Button Row -->
       <div class="search-add-row">
-        <div class="search-box">
-          <input
-            type="text"
-            placeholder="Search employees…"
-            [(ngModel)]="searchText"
-            (input)="onSearch()"
-          />
+        <div class="search-filter-group">
+          <div class="search-box">
+            <input type="text" placeholder="Search employees…" [(ngModel)]="searchText" (input)="onSearch()" />
+          </div>
+
+          <!-- Filter Component -->
+          <div class="filter-wrapper">
+            <button class="btn-filter" (click)="toggleFilterPanel()" [class.active]="showFilterPanel">
+              <i class="bi bi-funnel"></i> <span>Filter</span>
+            </button>
+
+            <!-- Filter Panel -->
+            <div class="filter-panel" *ngIf="showFilterPanel">
+              <div class="filter-header">
+                <h3>Filters</h3>
+                <button class="close-filter" (click)="toggleFilterPanel()">
+                  ×
+                </button>
+              </div>
+
+              <div class="filter-body">
+                <div class="filter-group">
+                  <label>Department</label>
+                  <select [(ngModel)]="filterDepartmentId">
+                    <option value="">All Departments</option>
+                    <option *ngFor="let d of departments" [value]="d.id">
+                      {{ d.name }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="filter-group">
+                  <label>Designation</label>
+                  <select [(ngModel)]="filterDesignationId">
+                    <option value="">All Designations</option>
+                    <option *ngFor="let d of designations" [value]="d.id">
+                      {{ d.title }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="filter-group">
+                  <label>Location</label>
+                  <select [(ngModel)]="filterLocationId">
+                    <option value="">All Locations</option>
+                    <option *ngFor="let l of locations" [value]="l.id">
+                      {{ l.name }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="filter-group">
+                  <label>Employment Type</label>
+                  <select [(ngModel)]="filterEmploymentType">
+                    <option value="">All Types</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Intern">Intern</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="filter-footer">
+                <button class="btn-clear" (click)="clearFilters()">Clear</button>
+                <button class="btn-apply" (click)="applyFilters()">Apply</button>
+              </div>
+            </div>
+          </div>
         </div>
+
         <button class="btn-add-gold" (click)="showAddEmployeeModal = true">
           <span class="plus-sign">+</span> Add Employee
         </button>
@@ -79,27 +139,15 @@
 
               <!-- ACTIONS -->
               <td data-label="Actions" class="action-col">
-                <button
-                  class="icon-btn"
-                  (click)="showDetailsModal(employee.id!)"
-                  title="View"
-                >
+                <button class="icon-btn" (click)="showDetailsModal(employee.id!)" title="View">
                   <i class="bi bi-eye-fill" style="font-size:18px"></i>
                 </button>
 
-                <button
-                  class="icon-btn"
-                  (click)="showEditModal(employee.id!)"
-                  title="Edit"
-                >
-                 <i class="bi bi-pencil-square" style="font-size:18px"></i>
+                <button class="icon-btn" (click)="showEditModal(employee.id!)" title="Edit">
+                  <i class="bi bi-pencil-square" style="font-size:18px"></i>
                 </button>
 
-                <button
-                  class="icon-btn delete"
-                  (click)="onDelete(employee.id)"
-                  title="Delete"
-                >
+                <button class="icon-btn delete" (click)="onDelete(employee.id)" title="Delete">
                   <i class="bi bi-trash-fill" style="font-size:18px; color: #c33;"></i>
                 </button>
               </td>
@@ -115,30 +163,22 @@
     <!-- Add Employee Modal Popup -->
     <div *ngIf="showAddEmployeeModal" class="modal-overlay">
       <div class="modal-card">
-        <app-employee-create
-          (closeModal)="showAddEmployeeModal = false"
-          (employeeAdded)="onEmployeeAdded()"
-        ></app-employee-create>
+        <app-employee-create (closeModal)="showAddEmployeeModal = false"
+          (employeeAdded)="onEmployeeAdded()"></app-employee-create>
       </div>
     </div>
 
     <!-- Edit Employee Modal -->
     <div *ngIf="showEditEmployeeModal" class="modal-overlay">
-      <div class="modal-card">
-        <app-employee-edit-modal
-          [employeeId]="selectedEmployeeId"
-          (closeModal)="showEditEmployeeModal = false"
-          (employeeUpdated)="onEmployeeUpdated()"
-        ></app-employee-edit-modal>
+      <div class="modal-card modal-fixed">
+        <app-employee-edit-modal [employeeId]="selectedEmployeeId" (closeModal)="showEditEmployeeModal = false"
+          (employeeUpdated)="onEmployeeUpdated()"></app-employee-edit-modal>
       </div>
     </div>
     <div *ngIf="showDetailsEmployeeModal" class="modal-overlay">
-      <div class="modal-card">
-        <app-employee-details-modal
-          [employeeId]="selectedEmployeeId"
-          (closeModal)="showDetailsEmployeeModal = false"
-          (editEmployee)="showEditModalFromDetails($event)"
-        ></app-employee-details-modal>
+      <div class="modal-card modal-fixed">
+        <app-employee-details-modal [employeeId]="selectedEmployeeId" (closeModal)="showDetailsEmployeeModal = false"
+          (editEmployee)="showEditModalFromDetails($event)"></app-employee-details-modal>
       </div>
     </div>
   </main>

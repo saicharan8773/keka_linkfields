@@ -43,7 +43,12 @@
                             <tr *ngFor="let department of departments">
                                 <td>{{ department.name }}</td>
                                 <td>{{ department.code }}</td>
-                                <td>no data</td>
+                                <td>
+                                    <a [routerLink]="['/employees']" [queryParams]="{ departmentId: department.id }"
+                                        style="color: #4a6ee0; text-decoration: none; font-weight: 500;">
+                                        View Employees
+                                    </a>
+                                </td>
                                 <td class="actions">
                                     <button class="btn-icon btn-view"
                                         [routerLink]="['/departments/details', department.id]" title="View Details">
