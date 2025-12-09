@@ -3,20 +3,31 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background-color: #f7f9fc;
+  background: black;
   border-bottom: 1px solid #e0e6ed;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
   flex-shrink: 0;
 }
 
-.modal-header h2 {
+.modal-header h2{
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #283a4d;
+  color: #dad41b;
 }
-
+.title-box {
+  display: flex;
+  flex-direction: column;
+}
+.title-box p{
+  margin: 4px 0 0 0;
+  font-size: 0.875rem;
+  color: #cccccc;
+}
+.title-box span{
+  font-size: 1rem;
+  font-weight: 500;
+  color: #35c5cf;
+}
 .close-btn {
   background: transparent;
   border: none;
@@ -35,7 +46,6 @@
 
 .modal-body {
   padding: 24px;
-  /* Removed max-height, using flex */
   flex: 1;
   overflow-y: auto;
   min-height: 0;

@@ -47,7 +47,9 @@
                   (click)="showDetailsModal(designation.id!)"
                   title="View"
                 >
-                  <i class="bi bi-eye-fill" style="font-size:18px"></i>
+                  <span class="material-icons" style="font-size: 18px"
+                    >visibility</span
+                  >
                 </button>
 
                 <button
@@ -55,7 +57,9 @@
                   (click)="showEditModal(designation.id!)"
                   title="Edit"
                 >
-                 <i class="bi bi-pencil-square" style="font-size:18px"></i>
+                  <span class="material-icons" style="font-size: 18px"
+                    >edit</span
+                  >
                 </button>
 
                 <button
@@ -63,7 +67,11 @@
                   (click)="onDelete(designation.id)"
                   title="Delete"
                 >
-                  <i class="bi bi-trash-fill" style="font-size:18px; color: #c33;"></i>
+                  <span
+                    class="material-icons"
+                    style="font-size: 18px; color: #c33"
+                    >delete</span
+                  >
                 </button>
               </td>
             </tr>

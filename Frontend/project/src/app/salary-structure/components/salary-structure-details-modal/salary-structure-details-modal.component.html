@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h2>Salary Structure Details</h2>
   <button class="close-btn" (click)="onClose()">
-    <i class="bi bi-x-lg"></i>
+    <span class="material-icons">close</span>
   </button>
 </div>
 
@@ -25,23 +25,31 @@
     </div>
     <div class="detail-item">
       <span class="detail-label">Basic Salary</span>
-      <span class="detail-value">{{ salaryStructure.basic | currency:'INR' }}</span>
+      <span class="detail-value">{{
+        salaryStructure.basic | currency : "INR"
+      }}</span>
     </div>
     <div class="detail-item">
       <span class="detail-label">HRA</span>
-      <span class="detail-value">{{ salaryStructure.hra | currency:'INR' }}</span>
+      <span class="detail-value">{{
+        salaryStructure.hra | currency : "INR"
+      }}</span>
     </div>
     <div class="detail-item">
       <span class="detail-label">Other Allowances</span>
-      <span class="detail-value">{{ salaryStructure.otherAllowances | currency:'INR' }}</span>
+      <span class="detail-value">{{
+        salaryStructure.otherAllowances | currency : "INR"
+      }}</span>
     </div>
     <div class="detail-item">
       <span class="detail-label">Deductions</span>
-      <span class="detail-value">{{ salaryStructure.deductions | currency:'INR' }}</span>
+      <span class="detail-value">{{
+        salaryStructure.deductions | currency : "INR"
+      }}</span>
     </div>
     <div class="detail-item total-row">
-        <span class="detail-label">Net Salary</span>
-        <span class="detail-value">{{ total | currency:'INR' }}</span>
+      <span class="detail-label">Net Salary</span>
+      <span class="detail-value">{{ total | currency : "INR" }}</span>
     </div>
     <div class="detail-item">
       <span class="detail-label">ID</span>
