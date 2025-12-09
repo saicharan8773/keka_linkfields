@@ -45,7 +45,7 @@ public class EmployeesController:ControllerBase
     }
 
     // PUT api/employees/{id}
-    [HttpPut("{id:guid}")]
+    [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Admin,HR,Manager")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateEmployeeRequest request)
     {
@@ -64,7 +64,6 @@ public class EmployeesController:ControllerBase
 
     [HttpGet("Managers")]
     [AllowAnonymous] 
-    // [Authorize(Roles = "Admin,HR,Manager")]
     public async Task<IActionResult> GetManagers()
     {
         var managers = await _service.GetManagersAsync();

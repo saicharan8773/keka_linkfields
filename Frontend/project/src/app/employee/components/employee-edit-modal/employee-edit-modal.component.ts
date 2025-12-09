@@ -1,3 +1,4 @@
+import { DropdownService } from './../../../shared/services/dropdown.service';
 import {
   Component,
   OnInit,
@@ -40,7 +41,8 @@ export class EmployeeEditModalComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService,
     private departmentService: DepartmentService,
-    private designationService: DesignationService
+    private designationService: DesignationService,
+    private dropdownService: DropdownService
   ) { }
 
   ngOnInit(): void {
@@ -103,15 +105,14 @@ export class EmployeeEditModalComponent implements OnInit {
   }
 
   loadManagers(): void {
-    this.employeeService.getAllEmployees().subscribe((data) => {
+    this.dropdownService.getManagers().subscribe((data) => {
       this.managers = data;
     });
   }
   loadLocations(): void {
-    this.locations = [
-      { id: "1", name: "Head Office" },
-      { id: "2", name: "Branch Office" },
-    ];
+    this.dropdownService.getLocations().subscribe((data) => {
+      this.locations = data;
+    });
   }
 
   onSubmit(): void {

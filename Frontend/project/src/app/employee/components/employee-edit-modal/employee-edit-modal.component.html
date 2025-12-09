@@ -97,9 +97,9 @@
         <div class="form-group">
           <label>Manager</label>
           <select [(ngModel)]="employee.managerId" name="managerId" class="form-control">
-            <option value="">-- None --</option>
+            <option value="">--None--</option>
             <option *ngFor="let m of managers" [value]="m.id">
-              {{ m.displayName }}
+              {{ m.fullName }}
             </option>
           </select>
         </div>
@@ -109,8 +109,9 @@
         <div class="form-group">
           <label>Location</label>
           <select [(ngModel)]="employee.locationId" name="locationId" class="form-control">
+            <option value="">--None--</option>
             <option *ngFor="let l of locations" [value]="l.id">
-              {{ l.name }}
+              {{ l.city }}, {{ l.country }}
             </option>
           </select>
         </div>

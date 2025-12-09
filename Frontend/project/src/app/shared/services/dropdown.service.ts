@@ -31,6 +31,6 @@ export class DropdownService {
   }
 
   getManagers() {
-    return this.http.get<any[]>(`${this.base}/Employee/Managers`);
+    return this.http.get<any[]>(`${this.base}/Employees/Managers`);
   }
 };
