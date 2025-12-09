@@ -58,7 +58,7 @@ export class EmployeeService {
     id: string,
     data: EmployeeUpdatePayload
   ): Observable<Employee> {
-    return this.http.put<Employee>(`${this.EMP_API}/${id}`, data);
+    return this.http.patch<Employee>(`${this.EMP_API}/${id}`, data);
   }
 
   deleteEmployee(id: string): Observable<void> {

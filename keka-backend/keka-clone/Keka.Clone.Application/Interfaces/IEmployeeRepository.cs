@@ -1,4 +1,5 @@
-﻿using Keka.Clone.Domain.Entities;
+﻿using Keka.Clone.Application.DTOs.Employee;
+using Keka.Clone.Domain.Entities;
 
 namespace Keka.Clone.Application.Interfaces
 {
@@ -25,7 +26,7 @@ namespace Keka.Clone.Application.Interfaces
 
         Task<IEnumerable<Employee>> GetByDepartmentIdAsync(Guid departmentId);
         
-        Task<IEnumerable<Keka.Clone.Application.DTOs.Employee.ManagerDto>> GetManagersAsync();
+        Task<IEnumerable<ManagerDto>> GetManagersAsync();
 
         Task SaveChangesAsync();
     }

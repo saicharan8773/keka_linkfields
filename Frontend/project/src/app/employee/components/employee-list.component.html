@@ -129,7 +129,7 @@
                   </div>
                   <div class="emp-info">
                     <div class="name">
-                      {{ employee.firstName }} {{ employee.lastName }}
+                      {{employee.displayName}}
                     </div>
                     <div class="email">{{ employee.workEmail }}</div>
                   </div>
@@ -148,7 +148,7 @@
 
               <!-- FIXED: SHOW REAL EMPLOYMENT TYPE -->
               <td data-label="Type">
-                <span class="type-tag">{{ employee.employmentType }}</span>
+                <span class="type-tag">{{ employee.employmentType || "FT"}}</span>
               </td>
 
               <!-- ACTIONS -->

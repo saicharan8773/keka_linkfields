@@ -42,7 +42,7 @@ export class EmployeeListComponent implements OnInit {
   showFilterPanel = false;
 
   currentPage = 1;
-  itemsPerPage = 8;
+  itemsPerPage = 4;
 
   // Dropdowns
   departments: any[] = [];

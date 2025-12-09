@@ -55,7 +55,8 @@ export class EmployeeCreateComponent {
     private employeeService: EmployeeService,
     private router: Router,
     private master: DropdownService
-  ) { }
+  ) {
+   }
 
   ngOnInit() {
     this.loadMasters();
@@ -100,8 +101,7 @@ export class EmployeeCreateComponent {
       this.errorMessage = "Please fill in all required fields (*).";
       this.isLoading = false;
       return;
-    }
-    console.log("Submitting Payload:", this.employee);
+    };
 
     this.employeeService.createEmployee(this.employee).subscribe({
       next: (res: any) => {
