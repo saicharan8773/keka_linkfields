@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Keka.Clone.Application.DTOs;
 using Keka.Clone.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/[controller]")]

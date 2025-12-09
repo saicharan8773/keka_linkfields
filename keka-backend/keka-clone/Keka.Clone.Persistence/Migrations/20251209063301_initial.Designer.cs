@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Keka.Clone.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251208103316_ExplicitNoActionOnDesignation")]
-    partial class ExplicitNoActionOnDesignation
+    [Migration("20251209063301_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -825,7 +825,7 @@ namespace Keka.Clone.Persistence.Migrations
                     b.HasOne("Keka.Clone.Domain.Entities.Designation", "Designation")
                         .WithMany("Employees")
                         .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Keka.Clone.Domain.Entities.Location", "Location")
                         .WithMany("Employees")
