@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Keka.Clone.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class ExplicitNoActionOnDesignation : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -189,7 +189,8 @@ namespace Keka.Clone.Persistence.Migrations
                         name: "FK_Employees_Designations_DesignationId",
                         column: x => x.DesignationId,
                         principalTable: "Designations",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Employees_Locations_LocationId",
                         column: x => x.LocationId,

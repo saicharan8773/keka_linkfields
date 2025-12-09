@@ -20,7 +20,6 @@ public class AuthController:ControllerBase
         => Ok(await _auth.LoginAsync(req));
 
     [HttpPost("register")]
-    [Authorize(Roles ="Admin,Manager,HR")]
     public async Task<IActionResult> Register(Application.DTOs.Auth.RegisterRequest req)
     {
         await _auth.RegisterAsync(req);
