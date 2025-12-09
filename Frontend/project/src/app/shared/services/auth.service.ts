@@ -30,17 +30,10 @@ export class AuthService {
       );
   }
 
-  signup(userData: SignupRequest): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.AUTH_API}/register`, userData)
-      .pipe(
-        tap((response) => {
-          if (response.accessToken) {
-            localStorage.setItem(this.TOKEN_KEY, response.accessToken);
-          }
-        })
-      );
+  signup(userData: SignupRequest): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.AUTH_API}/register`, userData);
   }
+
 
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);

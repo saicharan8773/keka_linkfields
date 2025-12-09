@@ -23,7 +23,7 @@ public class AuthController:ControllerBase
     public async Task<IActionResult> Register(Application.DTOs.Auth.RegisterRequest req)
     {
         await _auth.RegisterAsync(req);
-        return Ok();
+        return Ok(new { message = "Registration successful! Please login with your credentials." });
     }
 
     [HttpPost("refresh")]

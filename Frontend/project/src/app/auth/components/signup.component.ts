@@ -16,23 +16,19 @@ export class SignupComponent {
   fullName: string = '';
   email: string = '';
   password: string = '';
-  confirmPassword: string = '';
+  role: string = '';
   errorMessage: string = '';
+  successMessage: string = '';
   isLoading: boolean = false;
 
   constructor(
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   onSignup(): void {
-    if (!this.fullName || !this.email || !this.password || !this.confirmPassword) {
+    if (!this.fullName || !this.email || !this.password || !this.role) {
       this.errorMessage = 'Please fill in all fields';
-      return;
-    }
-
-    if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Passwords do not match';
       return;
     }
 
@@ -43,21 +39,26 @@ export class SignupComponent {
 
     this.isLoading = true;
     this.errorMessage = '';
+    this.successMessage = '';
 
     const signupData: SignupRequest = {
       fullName: this.fullName,
       email: this.email,
-      password: this.password
+      password: this.password,
+      role: this.role
     };
-
     this.authService.signup(signupData).subscribe({
-      next: (response) => {
+      next: (res) => {
         this.isLoading = false;
-        this.router.navigate(['/employees']);
+        this.successMessage = res.message;  // <-- Works now
+
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1500);
       },
-      error: (error) => {
+      error: (err) => {
         this.isLoading = false;
-        this.errorMessage = error.error?.message || 'Signup failed. Please try again.';
+        this.errorMessage = err.error?.message || 'Signup failed. Please try again.';
       }
     });
   }
