@@ -14,31 +14,26 @@
       <div class="row">
         <div class="col">
           <label>Employee Code *</label>
-          <input type="text" name="employeeCode" [(ngModel)]="employee.employeeCode"
-                 required #ec="ngModel" />
+          <input type="text" name="employeeCode" [(ngModel)]="employee.employeeCode" required #ec="ngModel" />
           <div class="error" *ngIf="ec.invalid && ec.touched">Employee code is required</div>
         </div>
 
         <div class="col">
-          <label>Display Name *</label>
-          <input type="text" name="displayName" [(ngModel)]="employee.displayName"
-                 required #dn="ngModel" />
-          <div class="error" *ngIf="dn.invalid && dn.touched">Display name is required</div>
+          <label>Display Name</label>
+          <input type="text" name="displayName" [(ngModel)]="employee.displayName" #dn="ngModel" />
         </div>
       </div>
 
       <div class="row">
         <div class="col">
           <label>First Name *</label>
-          <input type="text" name="firstName" [(ngModel)]="employee.firstName"
-                 required #fn="ngModel" />
+          <input type="text" name="firstName" [(ngModel)]="employee.firstName" required #fn="ngModel" />
           <div class="error" *ngIf="fn.invalid && fn.touched">First name is required</div>
         </div>
 
         <div class="col">
           <label>Last Name *</label>
-          <input type="text" name="lastName" [(ngModel)]="employee.lastName"
-                 required #ln="ngModel" />
+          <input type="text" name="lastName" [(ngModel)]="employee.lastName" required #ln="ngModel" />
           <div class="error" *ngIf="ln.invalid && ln.touched">Last name is required</div>
         </div>
       </div>
@@ -48,47 +43,37 @@
       <div class="row">
         <div class="col">
           <label>Work Email *</label>
-          <input type="email" name="workEmail" [(ngModel)]="employee.workEmail"
-                 required email #we="ngModel" />
+          <input type="email" name="workEmail" [(ngModel)]="employee.workEmail" required email #we="ngModel" />
           <div class="error" *ngIf="we.invalid && we.touched">Invalid email address</div>
         </div>
 
         <div class="col">
-          <label>Mobile Number *</label>
-          <input type="text" name="mobileNumber" [(ngModel)]="employee.mobileNumber"
-                 required #mn="ngModel" />
-          <div class="error" *ngIf="mn.invalid && mn.touched">Mobile number is required</div>
+          <label>Mobile Number</label>
+          <input type="text" name="mobileNumber" [(ngModel)]="employee.mobileNumber" #mn="ngModel" />
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label>Date of Birth *</label>
-          <input type="date" name="dateOfBirth" [(ngModel)]="employee.dateOfBirth"
-                 required #dob="ngModel" />
-          <div class="error" *ngIf="dob.invalid && dob.touched">Date of birth is required</div>
+          <label>Date of Birth</label>
+          <input type="date" name="dateOfBirth" [(ngModel)]="employee.dateOfBirth" #dob="ngModel" />
         </div>
 
         <div class="col">
-          <label>Gender *</label>
-          <input type="text" name="gender" [(ngModel)]="employee.gender"
-                 required #gen="ngModel" />
-          <div class="error" *ngIf="gen.invalid && gen.touched">Gender is required</div>
+          <label>Gender</label>
+          <input type="text" name="gender" [(ngModel)]="employee.gender" #gen="ngModel" />
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label>Nationality *</label>
-          <input type="text" name="nationality" [(ngModel)]="employee.nationality"
-                 required #nat="ngModel" />
-          <div class="error" *ngIf="nat.invalid && nat.touched">Nationality is required</div>
+          <label>Nationality</label>
+          <input type="text" name="nationality" [(ngModel)]="employee.nationality" #nat="ngModel" />
         </div>
 
         <div class="col">
           <label>Joining Date *</label>
-          <input type="date" name="joiningDate" [(ngModel)]="employee.joiningDate"
-                 required #jd="ngModel" />
+          <input type="date" name="joiningDate" [(ngModel)]="employee.joiningDate" required #jd="ngModel" />
           <div class="error" *ngIf="jd.invalid && jd.touched">Joining date is required</div>
         </div>
       </div>
@@ -97,32 +82,34 @@
 
       <div class="row">
         <div class="col">
-          <label>Designation *</label>
-          <select name="designationId" [(ngModel)]="employee.designationId" required>
-            <option *ngFor="let d of designations" [value]="d.id">{{ d.title }}</option>
+          <label>Department</label>
+          <select name="departmentId" [(ngModel)]="employee.departmentId" (ngModelChange)="onDepartmentChange()">
+            <option value="">Select Department</option>
+            <option *ngFor="let dep of departments" [value]="dep.id">{{ dep.name }}</option>
           </select>
         </div>
 
         <div class="col">
-          <label>Department *</label>
-          <select name="departmentId" [(ngModel)]="employee.departmentId" required>
-            <option *ngFor="let dep of departments" [value]="dep.id">{{ dep.name }}</option>
+          <label>Designation</label>
+          <select name="designationId" [(ngModel)]="employee.designationId" [disabled]="!employee.departmentId">
+            <option value="">{{ employee.departmentId ? 'Select Designation' : 'Select Department First' }}</option>
+            <option *ngFor="let d of designations" [value]="d.id">{{ d.title }}</option>
           </select>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label>Manager *</label>
-          <select name="managerId" [(ngModel)]="employee.managerId" required>
+          <label>Manager</label>
+          <select name="managerId" [(ngModel)]="employee.managerId">
             <option *ngFor="let m of users" [value]="m.id">{{ m.firstName }} {{ m.lastName }}</option>
           </select>
         </div>
 
         <div class="col">
-          <label>Location *</label>
-          <select name="locationId" [(ngModel)]="employee.locationId" required>
-            <option *ngFor="let loc of locations" [value]="loc.id">{{ loc.city }}</option>
+          <label>Location</label>
+          <select name="locationId" [(ngModel)]="employee.locationId">
+            <option *ngFor="let loc of locations" [value]="loc.id">{{ loc.city }}, {{ loc.country }}</option>
           </select>
         </div>
       </div>
@@ -131,15 +118,23 @@
 
       <div class="row">
         <div class="col">
-          <label>Employment Type *</label>
-          <input type="text" name="employmentType"
-                 [(ngModel)]="employee.employmentType" required />
+          <label>Employment Type</label>
+          <input type="text" name="employmentType" [(ngModel)]="employee.employmentType" />
         </div>
 
         <div class="col">
-          <label>Time Type *</label>
-          <input type="text" name="timeType"
-                 [(ngModel)]="employee.timeType" required />
+          <label>Time Type</label>
+          <input type="text" name="timeType" [(ngModel)]="employee.timeType" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Salary Structure</label>
+          <select name="salaryStructureId" [(ngModel)]="employee.salaryStructureId">
+            <option value="">Select Salary</option>
+            <option *ngFor="let s of salaries" [value]="s.id">{{ s.title }}</option>
+          </select>
         </div>
       </div>
 

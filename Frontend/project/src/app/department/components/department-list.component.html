@@ -14,12 +14,7 @@
       <!-- Search and Add Button Row -->
       <div class="search-add-row">
         <div class="search-box">
-          <input
-            type="text"
-            placeholder="Search departments…"
-            [(ngModel)]="searchText"
-            (input)="onSearch()"
-          />
+          <input type="text" placeholder="Search departments…" [(ngModel)]="searchText" (input)="onSearch()" />
         </div>
         <button class="btn-add-gold" (click)="showAddDepartmentModal = true">
           <span class="plus-sign">+</span> Add Department
@@ -33,6 +28,7 @@
             <tr>
               <th>Name</th>
               <th>Code</th>
+              <th>Employees</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -43,28 +39,22 @@
               <td data-label="Code">
                 <span class="code-tag">{{ department.code }}</span>
               </td>
+              <td data-label="Employees">
+                <span class="employee-count clickable-count" (click)="navigateToEmployees(department)"
+                  title="View Employees">
+                  View Employees
+                </span>
+              </td>
               <td data-label="Actions" class="action-col">
-                <button
-                  class="icon-btn"
-                  (click)="showDetailsModal(department.id!)"
-                  title="View"
-                >
+                <button class="icon-btn" (click)="showDetailsModal(department.id!)" title="View">
                   <i class="bi bi-eye-fill" style="font-size:18px"></i>
                 </button>
 
-                <button
-                  class="icon-btn"
-                  (click)="showEditModal(department.id!)"
-                  title="Edit"
-                >
-                 <i class="bi bi-pencil-square" style="font-size:18px"></i>
+                <button class="icon-btn" (click)="showEditModal(department.id!)" title="Edit">
+                  <i class="bi bi-pencil-square" style="font-size:18px"></i>
                 </button>
 
-                <button
-                  class="icon-btn delete"
-                  (click)="onDelete(department.id)"
-                  title="Delete"
-                >
+                <button class="icon-btn delete" (click)="onDelete(department.id)" title="Delete">
                   <i class="bi bi-trash-fill" style="font-size:18px; color: #c33;"></i>
                 </button>
               </td>
@@ -81,32 +71,25 @@
     <!-- Add Department Modal -->
     <div *ngIf="showAddDepartmentModal" class="modal-overlay">
       <div class="modal-card">
-        <app-department-create
-          (closeModal)="showAddDepartmentModal = false"
-          (departmentAdded)="onDepartmentAdded()"
-        ></app-department-create>
+        <app-department-create (closeModal)="showAddDepartmentModal = false"
+          (departmentAdded)="onDepartmentAdded()"></app-department-create>
       </div>
     </div>
 
     <!-- Edit Department Modal -->
     <div *ngIf="showEditDepartmentModal" class="modal-overlay">
       <div class="modal-card">
-        <app-department-edit-modal
-          [departmentId]="selectedDepartmentId"
-          (closeModal)="showEditDepartmentModal = false"
-          (departmentUpdated)="onDepartmentUpdated()"
-        ></app-department-edit-modal>
+        <app-department-edit-modal [departmentId]="selectedDepartmentId" (closeModal)="showEditDepartmentModal = false"
+          (departmentUpdated)="onDepartmentUpdated()"></app-department-edit-modal>
       </div>
     </div>
 
     <!-- Details Department Modal -->
     <div *ngIf="showDetailsDepartmentModal" class="modal-overlay">
       <div class="modal-card">
-        <app-department-details-modal
-          [departmentId]="selectedDepartmentId"
+        <app-department-details-modal [departmentId]="selectedDepartmentId"
           (closeModal)="showDetailsDepartmentModal = false"
-          (editDepartment)="showEditModalFromDetails($event)"
-        ></app-department-details-modal>
+          (editDepartment)="showEditModalFromDetails($event)"></app-department-details-modal>
       </div>
     </div>
   </main>

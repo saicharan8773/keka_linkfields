@@ -60,7 +60,7 @@ export class EmployeeListComponent implements OnInit {
     private dropdownService: DropdownService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchDropdowns();

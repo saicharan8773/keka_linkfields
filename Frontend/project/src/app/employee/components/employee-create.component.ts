@@ -21,6 +21,7 @@ export class EmployeeCreateComponent {
   departments: any[] = [];
   locations: any[] = [];
   users: any[] = [];
+  salaries: any[] = [];
   isLoading = false;
   errorMessage: string | null = null;
 
@@ -42,6 +43,7 @@ export class EmployeeCreateComponent {
     locationId: "",
     employmentType: "",
     timeType: "",
+    salaryStructureId: "",
   };
 
   onCancel() {
@@ -53,16 +55,36 @@ export class EmployeeCreateComponent {
     private employeeService: EmployeeService,
     private router: Router,
     private master: DropdownService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadMasters();
   }
   loadMasters() {
     this.master.getDepartments().subscribe((res) => (this.departments = res));
-    this.master.getDesignations().subscribe((res) => (this.designations = res));
+    // Don't load all designations on init - they will be loaded based on selected department
     this.master.getLocations().subscribe((res) => (this.locations = res));
     this.master.getManagers().subscribe((res) => (this.users = res));
+    this.master.getSalaries().subscribe((res) => (this.salaries = res));
+  }
+
+  onDepartmentChange() {
+    // Reset designation field when department changes
+    this.employee.designationId = "";
+    this.designations = [];
+
+    // Load designations for the selected department
+    if (this.employee.departmentId) {
+      this.master.getDesignationsByDepartment(this.employee.departmentId).subscribe({
+        next: (res) => {
+          this.designations = res;
+        },
+        error: (err) => {
+          console.error("Failed to load designations for department", err);
+          this.designations = [];
+        }
+      });
+    }
   }
   onSubmit() {
     this.isLoading = true;

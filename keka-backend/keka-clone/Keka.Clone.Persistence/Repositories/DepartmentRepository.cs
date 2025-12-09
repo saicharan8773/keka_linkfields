@@ -11,7 +11,7 @@ public class DepartmentRepository:IDepartmentRepository
 
     public async Task<IEnumerable<Department>> GetAllAsync()
     {
-        return await _db.Departments.ToListAsync();
+        return await _db.Departments.Include(d => d.Employees).ToListAsync();
     }
 
     public async Task<Department?> GetByIdAsync(Guid id)
@@ -22,6 +22,11 @@ public class DepartmentRepository:IDepartmentRepository
     public async Task<Department?> GetByCodeAsync(string code)
     {
         return await _db.Departments.FirstOrDefaultAsync(d => d.Code == code);
+    }
+
+    public async Task<Department?> GetByNameAsync(string name)
+    {
+        return await _db.Departments.FirstOrDefaultAsync(d => d.Name == name);
     }
 
     public async Task AddAsync(Department department)

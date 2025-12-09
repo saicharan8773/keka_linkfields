@@ -20,6 +20,14 @@ export class DesignationService {
             );
     }
 
+    getDesignationsByDepartment(departmentId: string): Observable<Designation[]> {
+        return this.http
+            .get<Designation[] | { items: Designation[] }>(`${this.API_URL}?departmentId=${departmentId}`)
+            .pipe(
+                map((res) => (Array.isArray(res) ? res : res.items ?? []))
+            );
+    }
+
     getDesignationById(id: string): Observable<Designation> {
         return this.http.get<Designation>(`${this.API_URL}/${id}`);
     }

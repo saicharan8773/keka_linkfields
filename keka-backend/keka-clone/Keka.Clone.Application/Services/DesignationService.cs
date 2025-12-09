@@ -13,11 +13,13 @@ namespace Keka.Clone.Application.Services;
 public class DesignationService : IDesignationService
 {
     private readonly IDesignationRepository _repo;
+    private readonly IDepartmentRepository _deptRepo;
     private readonly IMapper _mapper;
 
-    public DesignationService(IDesignationRepository repo, IMapper mapper)
+    public DesignationService(IDesignationRepository repo, IDepartmentRepository deptRepo, IMapper mapper)
     {
         _repo = repo;
+        _deptRepo = deptRepo;
         _mapper = mapper;
     }
 
@@ -41,5 +43,25 @@ public class DesignationService : IDesignationService
         await _repo.SaveChangesAsync();
 
         return _mapper.Map<DesignationDto>(entity);
+    }
+
+    public async Task<IEnumerable<DesignationDto>> GetByDepartmentIdAsync(Guid departmentId)
+    {
+        var department = await _deptRepo.GetByIdAsync(departmentId);
+        if (department == null)
+            throw new KeyNotFoundException($"Department with ID {departmentId} not found.");
+
+        var entities = await _repo.GetByDepartmentIdAsync(departmentId);
+        return _mapper.Map<IEnumerable<DesignationDto>>(entities);
+    }
+
+    public async Task<IEnumerable<DesignationDto>> GetByDepartmentNameAsync(string name)
+    {
+        var department = await _deptRepo.GetByNameAsync(name);
+        if (department == null)
+            throw new KeyNotFoundException($"Department with name '{name}' not found.");
+
+        var entities = await _repo.GetByDepartmentIdAsync(department.Id);
+        return _mapper.Map<IEnumerable<DesignationDto>>(entities);
     }
 }

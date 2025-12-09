@@ -18,8 +18,26 @@ public class DesignationsController:ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] string? departmentId)
     {
+        if (!string.IsNullOrEmpty(departmentId))
+        {
+            try
+            {
+                if (Guid.TryParse(departmentId, out var id))
+                {
+                    return Ok(await _service.GetByDepartmentIdAsync(id));
+                }
+                else
+                {
+                    return Ok(await _service.GetByDepartmentNameAsync(departmentId));
+                }
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
         return Ok(await _service.GetAllAsync());
     }
 

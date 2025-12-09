@@ -126,6 +126,7 @@ export interface EmployeeCreatePayload {
   locationId: string;
   employmentType: string;
   timeType: string;
+  salaryStructureId: string;
 }
 
 // Update Payload matching C# UpdateEmployeeRequest DTO

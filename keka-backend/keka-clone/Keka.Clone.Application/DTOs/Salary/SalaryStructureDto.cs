@@ -19,4 +19,5 @@ public class SalaryStructureDto
     public decimal HRA { get; set; }
     public decimal OtherAllowances { get; set; }
     public decimal Deductions { get; set; }
+    public decimal Total => Basic + HRA + OtherAllowances - Deductions;
 }

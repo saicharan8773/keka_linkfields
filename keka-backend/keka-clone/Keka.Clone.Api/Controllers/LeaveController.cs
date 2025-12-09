@@ -5,6 +5,8 @@ using Keka.Clone.Application.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin,HR,Manager,Employee")]
+
 public class LeaveController:ControllerBase
 {
     private readonly ILeaveService _service;

@@ -134,6 +134,11 @@ namespace Keka.Clone.Application.Services
             return _mapper.Map<EmployeeDto>(emp);
         }
 
+        public async Task<IEnumerable<ManagerDto>> GetManagersAsync()
+        {
+            return await _repo.GetManagersAsync();
+        }
+
         private async Task AllocateDefaultLeavesAsync(Employee employee)
         {
             var currentYear = DateTime.UtcNow.Year;

@@ -11,4 +11,6 @@ public interface IDesignationService
 {
     Task<IEnumerable<DesignationDto>> GetAllAsync();
     Task<DesignationDto> CreateAsync(CreateDesignationRequest request);
+    Task<IEnumerable<DesignationDto>> GetByDepartmentIdAsync(Guid departmentId);
+    Task<IEnumerable<DesignationDto>> GetByDepartmentNameAsync(string name);
 }

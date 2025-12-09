@@ -2,6 +2,7 @@ export interface Department {
     id: string;
     name: string;
     code: string;
+    employeeCount: number;
 }
 
 export interface DepartmentCreatePayload {

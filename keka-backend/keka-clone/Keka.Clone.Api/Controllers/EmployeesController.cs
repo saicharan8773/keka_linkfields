@@ -36,7 +36,8 @@ public class EmployeesController:ControllerBase
 
     // POST api/employees
     [HttpPost]
-    [Authorize(Roles = "Admin,HR")]
+    [AllowAnonymous]
+    // [Authorize(Roles = "Admin,HR","Manager")]
     public async Task<IActionResult> Create([FromBody] CreateEmployeeRequest request)
     {
         var created = await _service.CreateAsync(request);
@@ -61,5 +62,13 @@ public class EmployeesController:ControllerBase
         return NoContent();
     }
 
+    [HttpGet("Managers")]
+    [AllowAnonymous] 
+    // [Authorize(Roles = "Admin,HR,Manager")]
+    public async Task<IActionResult> GetManagers()
+    {
+        var managers = await _service.GetManagersAsync();
+        return Ok(managers);
+    }
 }
  

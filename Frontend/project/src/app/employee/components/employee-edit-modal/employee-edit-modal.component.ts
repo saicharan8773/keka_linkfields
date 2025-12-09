@@ -41,13 +41,13 @@ export class EmployeeEditModalComponent implements OnInit {
     private employeeService: EmployeeService,
     private departmentService: DepartmentService,
     private designationService: DesignationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.employeeId) {
       this.loadEmployee();
       this.loadDepartments();
-      this.loadDesignations();
+      // Don't load all designations on init - they will be loaded based on department
       this.loadLocations();
       this.loadManagers();
     }
@@ -58,6 +58,10 @@ export class EmployeeEditModalComponent implements OnInit {
     this.employeeService.getEmployeeById(this.employeeId).subscribe({
       next: (data) => {
         this.employee = data;
+        // Load designations for the employee's current department
+        if (this.employee.departmentId) {
+          this.loadDesignationsByDepartment(this.employee.departmentId);
+        }
         this.isLoading = false;
       },
       error: (error) => {
@@ -73,10 +77,29 @@ export class EmployeeEditModalComponent implements OnInit {
     });
   }
 
-  loadDesignations(): void {
-    this.designationService.getAllDesignations().subscribe((data) => {
-      this.designations = data;
+  loadDesignationsByDepartment(departmentId: string): void {
+    this.designationService.getDesignationsByDepartment(departmentId).subscribe({
+      next: (data) => {
+        this.designations = data;
+      },
+      error: (error) => {
+        console.error("Failed to load designations for department", error);
+        this.designations = [];
+      }
     });
+  }
+
+  onDepartmentChange(): void {
+    if (!this.employee) return;
+
+    // Reset designation field when department changes
+    this.employee.designationId = "";
+    this.designations = [];
+
+    // Load designations for the selected department
+    if (this.employee.departmentId) {
+      this.loadDesignationsByDepartment(this.employee.departmentId);
+    }
   }
 
   loadManagers(): void {

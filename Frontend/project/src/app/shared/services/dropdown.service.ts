@@ -6,9 +6,9 @@ import { Injectable } from '@angular/core';
 })
 export class DropdownService {
 
- base = 'https://localhost:7225/api';
+  base = 'https://localhost:7225/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getDepartments() {
     return this.http.get<any[]>(`${this.base}/Departments`);
@@ -18,6 +18,14 @@ export class DropdownService {
     return this.http.get<any[]>(`${this.base}/Designations`);
   }
 
+  getDesignationsByDepartment(departmentId: string) {
+    return this.http.get<any[]>(`${this.base}/Designations?departmentId=${departmentId}`);
+  }
+
+  getSalaries() {
+    return this.http.get<any[]>(`${this.base}/SalaryStructures`);
+  }
+
   getLocations() {
     return this.http.get<any[]>(`${this.base}/Locations`);
   }
@@ -25,4 +33,4 @@ export class DropdownService {
   getManagers() {
     return this.http.get<any[]>(`${this.base}/Employee/Managers`);
   }
-}
+};

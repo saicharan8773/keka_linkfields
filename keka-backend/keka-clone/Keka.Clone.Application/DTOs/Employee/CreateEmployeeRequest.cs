@@ -18,4 +18,5 @@ public class CreateEmployeeRequest
     public Guid? LocationId { get; set; }
     public string EmploymentType { get; set; } = "FullTime";
     public string? TimeType { get; set; }
+    public Guid? SalaryStructureId { get; set; }
 }

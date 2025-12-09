@@ -25,6 +25,14 @@ public class DesignationRepository:IDesignationRepository
         await _db.Designations.AddAsync(designation);
     }
 
+    public async Task<IEnumerable<Designation>> GetByDepartmentIdAsync(Guid departmentId)
+    {
+        return await _db.Designations
+            .Include(d => d.Department)
+            .Where(d => d.DepartmentId == departmentId)
+            .ToListAsync();
+    }
+
     public async Task SaveChangesAsync()
     {
         await _db.SaveChangesAsync();

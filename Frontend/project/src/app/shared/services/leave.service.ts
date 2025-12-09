@@ -105,19 +105,10 @@ export class LeaveService {
     );
   }
 
-  /**
-   * Returns server-side current time or dashboard time info.
-   * Endpoint: GET /api/Leave/time
-   */
   getServerTime(): Observable<{ currentTime: string } | any> {
     return this.http.get<any>(`${this.API_URL}/time`);
   }
 
-  /**
-   * Fetch aggregated leave statistics for dashboard/leave page.
-   * Endpoint: GET /api/Leave/stats
-   * Expected shape (example): { weeklyPattern: number[], consumedByType: [{name,value}], monthlyStats: number[] }
-   */
   getLeaveStats(): Observable<any> {
     return this.http.get<any>(`${this.API_URL}/stats`);
   }

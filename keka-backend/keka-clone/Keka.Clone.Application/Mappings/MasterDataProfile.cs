@@ -11,7 +11,8 @@ public class MasterDataProfile:Profile
 {
     public MasterDataProfile()
     {
-        CreateMap<Department, DepartmentDto>();
+        CreateMap<Department, DepartmentDto>()
+            .ForMember(dest => dest.EmployeeCount, opt => opt.MapFrom(src => src.Employees.Count));
         CreateMap<Designation, DesignationDto>()
             .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name))
             .ForMember(dest => dest.DepartmentCode, opt => opt.MapFrom(src => src.Department.Code));

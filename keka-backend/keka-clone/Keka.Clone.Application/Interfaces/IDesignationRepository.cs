@@ -12,5 +12,6 @@ public interface IDesignationRepository
 {
     Task<IEnumerable<Designation>> GetAllAsync();
     Task AddAsync(Designation designation);
+    Task<IEnumerable<Designation>> GetByDepartmentIdAsync(Guid departmentId);
     Task SaveChangesAsync();
 }

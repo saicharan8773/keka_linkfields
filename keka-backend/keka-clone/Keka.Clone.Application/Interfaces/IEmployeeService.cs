@@ -10,4 +10,5 @@ public interface IEmployeeService
     Task<EmployeeDto> CreateAsync(CreateEmployeeRequest request);
     Task<EmployeeDto> UpdateAsync(Guid id, UpdateEmployeeRequest request);
     Task DeleteAsync(Guid id);
+    Task<IEnumerable<ManagerDto>> GetManagersAsync();
 }

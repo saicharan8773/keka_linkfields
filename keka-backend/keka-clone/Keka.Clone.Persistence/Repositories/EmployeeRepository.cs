@@ -58,6 +58,30 @@ namespace Keka.Clone.Persistence.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Keka.Clone.Application.DTOs.Employee.ManagerDto>> GetManagersAsync()
+        {
+            // Join Users with Employees on Email
+            // Filter by User Role = 'Manager' or 'Admin'
+            
+            var query = from u in _db.Users
+                        join e in _db.Employees on u.Email equals e.WorkEmail into employees
+                        from e in employees.DefaultIfEmpty()
+                        where u.Role == "Manager" || u.Role == "Admin"
+                        select new Keka.Clone.Application.DTOs.Employee.ManagerDto
+                        {
+                            Id = u.Id,
+                            EmployeeId = e != null ? e.Id : Guid.Empty,
+                            FirstName = e != null ? e.FirstName : "",
+                            LastName = e != null ? e.LastName : "",
+                            FullName = u.FullName, // User's FullName is reliable
+                            DepartmentName = e != null && e.Department != null ? e.Department.Name : "",
+                            DesignationTitle = e != null && e.Designation != null ? e.Designation.Title : ""
+                        };
+
+            var result = await query.OrderBy(x => x.FullName).ToListAsync();
+            return result;
+        }
+
         // ============================================================
         //               FINAL UPDATED SEARCH IMPLEMENTATION
         // ============================================================

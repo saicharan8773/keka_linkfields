@@ -38,7 +38,7 @@ export class DepartmentListComponent implements OnInit {
   constructor(
     private departmentService: DepartmentService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadDepartments();
@@ -97,6 +97,12 @@ export class DepartmentListComponent implements OnInit {
   onDepartmentUpdated(): void {
     this.showEditDepartmentModal = false;
     this.loadDepartments();
+  }
+
+  navigateToEmployees(department: Department): void {
+    this.router.navigate(['/employees'], {
+      queryParams: { departmentId: department.id },
+    });
   }
 
   onDelete(id: string | undefined): void {

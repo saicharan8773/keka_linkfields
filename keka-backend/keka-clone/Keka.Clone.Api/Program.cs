@@ -57,6 +57,10 @@ builder.Services.AddScoped<IDesignationService, DesignationService>();
 builder.Services.AddScoped<ISalaryStructureRepository, SalaryStructureRepository>();
 builder.Services.AddScoped<ISalaryStructureService, SalaryStructureService>();
 
+// Locations
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ILocationService, LocationService>();
+
 // Mappings
 builder.Services.AddAutoMapper(typeof(MasterDataProfile));
 builder.Services.AddScoped<ILeaveService, LeaveService>();
