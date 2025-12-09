@@ -9,6 +9,9 @@ import { EmployeeCreateComponent } from "./employee-create.component";
 import { EmployeeEditModalComponent } from "./employee-edit-modal/employee-edit-modal.component";
 import { EmployeeDetailsModalComponent } from "./employee-details-modal/employee-details-modal.component";
 import { DropdownService } from "../../shared/services/dropdown.service";
+import { DeleteConfirmationModalComponent } from "../../shared/components/delete-confirmation-modal.component";
+import { ToastService } from "../../shared/services/toast.service";
+import { ToastComponent } from "../../shared/components/toast.component";
 
 @Component({
   selector: "app-employee-list",
@@ -21,6 +24,8 @@ import { DropdownService } from "../../shared/services/dropdown.service";
     EmployeeCreateComponent,
     EmployeeEditModalComponent,
     EmployeeDetailsModalComponent,
+    DeleteConfirmationModalComponent,
+    ToastComponent,
   ],
   templateUrl: "./employee-list.component.html",
   styleUrls: ["./employee-list.component.css"],
@@ -40,6 +45,9 @@ export class EmployeeListComponent implements OnInit {
   showDetailsEmployeeModal = false;
   selectedEmployeeId = "";
   showFilterPanel = false;
+  showDeleteModal = false;
+  employeeToDelete: string | undefined = undefined;
+  isDeleting = false;
 
   currentPage = 1;
   itemsPerPage = 4;
@@ -59,8 +67,9 @@ export class EmployeeListComponent implements OnInit {
     private employeeService: EmployeeService,
     private dropdownService: DropdownService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private toastService: ToastService
+  ) { }
 
   ngOnInit(): void {
     this.fetchDropdowns();
@@ -106,6 +115,7 @@ export class EmployeeListComponent implements OnInit {
       error: () => {
         this.errorMessage = "Failed to load employees. Please try again.";
         this.isLoading = false;
+        this.toastService.error('Failed to load employees');
       },
     });
   }
@@ -195,21 +205,44 @@ export class EmployeeListComponent implements OnInit {
   onEmployeeAdded() {
     this.showAddEmployeeModal = false;
     this.loadEmployees();
+    this.toastService.success('Employee added successfully!');
   }
 
   onEmployeeUpdated() {
     this.showEditEmployeeModal = false;
     this.loadEmployees();
+    this.toastService.success('Employee updated successfully!');
   }
 
   onDelete(id: string | undefined): void {
     if (!id) return;
+    this.employeeToDelete = id;
+    this.showDeleteModal = true;
+  }
 
-    if (confirm("Are you sure you want to delete this employee?")) {
-      this.employeeService.deleteEmployee(id).subscribe({
-        next: () => this.loadEmployees(),
-        error: () => alert("Failed to delete employee. Please try again."),
-      });
-    }
+  confirmDelete(): void {
+    if (!this.employeeToDelete) return;
+
+    this.isDeleting = true;
+    this.employeeService.deleteEmployee(this.employeeToDelete).subscribe({
+      next: () => {
+        this.isDeleting = false;
+        this.showDeleteModal = false;
+        this.employeeToDelete = undefined;
+        this.loadEmployees();
+        this.toastService.success('Employee deleted successfully!');
+      },
+      error: () => {
+        this.isDeleting = false;
+        this.showDeleteModal = false;
+        this.employeeToDelete = undefined;
+        this.toastService.error('Failed to delete employee. Please try again.');
+      },
+    });
+  }
+
+  cancelDelete(): void {
+    this.showDeleteModal = false;
+    this.employeeToDelete = undefined;
   }
 }

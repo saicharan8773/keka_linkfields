@@ -48,4 +48,41 @@ public class DepartmentsController:ControllerBase
         var created = await _service.CreateAsync(request);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateDepartmentRequest request)
+    {
+        try
+        {
+            var updated = await _service.UpdateAsync(id, request);
+            return Ok(updated);
+        }
+        catch (Exception ex)
+        {
+            if (ex.Message.Contains("not found"))
+                return NotFound(new { message = ex.Message });
+            
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        try
+        {
+            var result = await _service.DeleteAsync(id);
+            if (!result)
+                return NotFound(new { message = "Department not found." });
+
+            return Ok(new 
+            { 
+                message = "Department deleted successfully. Related designations removed, and employees updated with NULL DepartmentId." 
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = $"Error deleting department: {ex.Message}" });
+        }
+    }
 }

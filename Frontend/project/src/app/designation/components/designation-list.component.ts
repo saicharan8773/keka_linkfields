@@ -8,6 +8,9 @@ import { FormsModule } from "@angular/forms";
 import { DesignationCreateComponent } from "./designation-create.component";
 import { DesignationDetailsModalComponent } from "./designation-details-modal/designation-details-modal.component";
 import { DesignationEditModalComponent } from "./designation-edit-modal/designation-edit-modal.component";
+import { DeleteConfirmationModalComponent } from "../../shared/components/delete-confirmation-modal.component";
+import { ToastService } from "../../shared/services/toast.service";
+import { ToastComponent } from "../../shared/components/toast.component";
 
 @Component({
   selector: "app-designation-list",
@@ -20,6 +23,8 @@ import { DesignationEditModalComponent } from "./designation-edit-modal/designat
     DesignationCreateComponent,
     DesignationDetailsModalComponent,
     DesignationEditModalComponent,
+    DeleteConfirmationModalComponent,
+    ToastComponent,
   ],
   templateUrl: "./designation-list.component.html",
   styleUrls: ["./designation-list.component.css"],
@@ -34,11 +39,15 @@ export class DesignationListComponent implements OnInit {
   showEditDesignationModal = false;
   showDetailsDesignationModal = false;
   selectedDesignationId: string = "";
+  showDeleteModal = false;
+  designationToDelete: string | undefined = undefined;
+  isDeleting = false;
 
   constructor(
     private designationService: DesignationService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private toastService: ToastService
+  ) { }
 
   ngOnInit(): void {
     this.loadDesignations();
@@ -47,6 +56,7 @@ export class DesignationListComponent implements OnInit {
   onDesignationAdded() {
     this.showAddDesignationModal = false;
     this.loadDesignations();
+    this.toastService.success('Designation added successfully!');
   }
 
   onSearch(): void {
@@ -66,6 +76,7 @@ export class DesignationListComponent implements OnInit {
       error: (error) => {
         this.errorMessage = "Failed to load designations. Please try again.";
         this.isLoading = false;
+        this.toastService.error('Failed to load designations');
       },
     });
   }
@@ -96,20 +107,38 @@ export class DesignationListComponent implements OnInit {
   onDesignationUpdated(): void {
     this.showEditDesignationModal = false;
     this.loadDesignations();
+    this.toastService.success('Designation updated successfully!');
   }
 
   onDelete(id: string | undefined): void {
     if (!id) return;
+    this.designationToDelete = id;
+    this.showDeleteModal = true;
+  }
 
-    if (confirm("Are you sure you want to delete this designation?")) {
-      this.designationService.deleteDesignation(id).subscribe({
-        next: () => {
-          this.loadDesignations();
-        },
-        error: (error) => {
-          alert("Failed to delete designation. Please try again.");
-        },
-      });
-    }
+  confirmDelete(): void {
+    if (!this.designationToDelete) return;
+
+    this.isDeleting = true;
+    this.designationService.deleteDesignation(this.designationToDelete).subscribe({
+      next: () => {
+        this.isDeleting = false;
+        this.showDeleteModal = false;
+        this.designationToDelete = undefined;
+        this.loadDesignations();
+        this.toastService.success('Designation deleted successfully!');
+      },
+      error: (error) => {
+        this.isDeleting = false;
+        this.showDeleteModal = false;
+        this.designationToDelete = undefined;
+        this.toastService.error('Failed to delete designation. Please try again.');
+      },
+    });
+  }
+
+  cancelDelete(): void {
+    this.showDeleteModal = false;
+    this.designationToDelete = undefined;
   }
 }
