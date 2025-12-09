@@ -1,3 +1,15 @@
+/* Bootstrap Icon Styles for Designation List Actions */
+.icon-btn .bi-eye-fill,
+.icon-btn .bi-pencil-square {
+  font-size: 18px;
+  color: #283a4d;
+}
+
+.icon-btn.delete .bi-trash-fill {
+  font-size: 18px;
+  color: #c33;
+}
+
 /* Search and Add Employee Row */
 .search-add-row {
   display: flex;
@@ -21,9 +33,11 @@
   box-shadow: 0 2px 8px rgba(40, 58, 77, 0.08);
   transition: background 0.2s;
 }
+
 .btn-add-gold:hover {
   background: #ffce5c;
 }
+
 /* PAGE WRAPPER */
 .employee-container {
   padding: 30px;
@@ -62,10 +76,12 @@
   font-size: 15px;
   background: #f9fbfd;
 }
+
 .plus-sign {
   font-size: 18px;
   font-weight: bold;
 }
+
 /* TABLE */
 .table-wrapper {
   background: white;
@@ -157,17 +173,26 @@
 .action-col {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .icon-btn {
   background: none;
   border: none;
-  padding: 6px;
+  padding: 8px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  position: relative;
+}
+
+.icon-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .icon-btn svg {
@@ -176,11 +201,43 @@
 }
 
 .icon-btn:hover {
-  transform: scale(1.15);
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.icon-btn.delete:hover svg {
-  stroke: #ff3b30;
+.icon-btn:active {
+  transform: scale(0.95);
+}
+
+.icon-btn i {
+  transition: all 0.2s ease;
+}
+
+/* View button - blue theme */
+.icon-btn:not(.delete):nth-child(1):hover {
+  background: rgba(33, 150, 243, 0.1);
+}
+
+.icon-btn:not(.delete):nth-child(1):hover i {
+  color: #2196F3 !important;
+}
+
+/* Edit button - green theme */
+.icon-btn:not(.delete):nth-child(2):hover {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.icon-btn:not(.delete):nth-child(2):hover i {
+  color: #4CAF50 !important;
+}
+
+/* Delete button - red theme */
+.icon-btn.delete:hover {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.icon-btn.delete:hover i {
+  color: #F44336 !important;
 }
 
 .icon-btn:hover svg {
@@ -229,6 +286,7 @@
 }
 
 @media screen and (max-width: 992px) {
+
   .employee-table th:nth-child(5),
   .employee-table td:nth-child(5),
   .employee-table th:nth-child(6),
@@ -241,6 +299,7 @@
   .employee-table thead {
     display: none;
   }
+
   .employee-table tr {
     display: block;
     margin-bottom: 1rem;
@@ -248,14 +307,17 @@
     border: 1px solid #ddd;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
+
   .employee-table td {
     display: block;
     text-align: right;
     border-bottom: 1px solid #eee;
   }
+
   .employee-table td:last-child {
     border-bottom: none;
   }
+
   .employee-table td::before {
     content: attr(data-label);
     float: left;
@@ -271,6 +333,14 @@
 
   .action-col {
     justify-content: flex-end;
+    gap: 8px;
+    padding: 8px 0;
+  }
+
+  .icon-btn {
+    padding: 10px;
+    min-width: 40px;
+    min-height: 40px;
   }
 
   .employee-table th:nth-child(3),

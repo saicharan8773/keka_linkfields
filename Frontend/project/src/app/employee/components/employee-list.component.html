@@ -21,12 +21,7 @@
 
           <!-- SEARCH -->
           <div class="search-box">
-            <input
-              type="text"
-              placeholder="Search employees…"
-              [(ngModel)]="searchText"
-              (input)="onSearch()"
-            />
+            <input type="text" placeholder="Search employees…" [(ngModel)]="searchText" (input)="onSearch()" />
           </div>
 
           <!-- FILTER BUTTON -->
@@ -120,7 +115,7 @@
 
           <tbody>
             <tr *ngFor="let employee of employees">
-              
+
               <!-- EMPLOYEE -->
               <td data-label="Employee">
                 <div class="emp-profile">
@@ -192,33 +187,33 @@
     <!-- ADD EMPLOYEE MODAL -->
     <div *ngIf="showAddEmployeeModal" class="modal-overlay">
       <div class="modal-card">
-        <app-employee-create
-          (closeModal)="showAddEmployeeModal = false"
-          (employeeAdded)="onEmployeeAdded()"
-        ></app-employee-create>
+        <app-employee-create (closeModal)="showAddEmployeeModal = false"
+          (employeeAdded)="onEmployeeAdded()"></app-employee-create>
       </div>
     </div>
 
     <!-- EDIT MODAL -->
     <div *ngIf="showEditEmployeeModal" class="modal-overlay">
       <div class="modal-card modal-fixed">
-        <app-employee-edit-modal
-          [employeeId]="selectedEmployeeId"
-          (closeModal)="showEditEmployeeModal = false"
-          (employeeUpdated)="onEmployeeUpdated()"
-        ></app-employee-edit-modal>
+        <app-employee-edit-modal [employeeId]="selectedEmployeeId" (closeModal)="showEditEmployeeModal = false"
+          (employeeUpdated)="onEmployeeUpdated()"></app-employee-edit-modal>
       </div>
     </div>
 
     <!-- DETAILS MODAL -->
     <div *ngIf="showDetailsEmployeeModal" class="modal-overlay">
       <div class="modal-card modal-fixed">
-        <app-employee-details-modal
-          [employeeId]="selectedEmployeeId"
-          (closeModal)="showDetailsEmployeeModal = false"
-          (editEmployee)="showEditModalFromDetails($event)"
-        ></app-employee-details-modal>
+        <app-employee-details-modal [employeeId]="selectedEmployeeId" (closeModal)="showDetailsEmployeeModal = false"
+          (editEmployee)="showEditModalFromDetails($event)"></app-employee-details-modal>
       </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <app-delete-confirmation-modal *ngIf="showDeleteModal" message="Are you sure you want to delete this employee?"
+      [isDeleting]="isDeleting" (confirm)="confirmDelete()" (cancel)="cancelDelete()">
+    </app-delete-confirmation-modal>
+
+    <!-- Toast Notifications -->
+    <app-toast></app-toast>
   </main>
 </div>
