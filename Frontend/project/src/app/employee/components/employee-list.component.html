@@ -1,7 +1,3 @@
-<head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
-</head>
-
 <div class="dashboard-container">
   <app-sidebar></app-sidebar>
 
@@ -17,24 +13,29 @@
 
       <!-- Search, Filter, Add Button -->
       <div class="search-add-row">
-        <div class="search-filter-group">
-
-          <!-- SEARCH -->
+        <div class="search-filter-group">  
           <div class="search-box">
             <input type="text" placeholder="Search employees…" [(ngModel)]="searchText" (input)="onSearch()" />
           </div>
 
           <!-- FILTER BUTTON -->
           <div class="filter-wrapper">
-            <button class="btn-filter" (click)="toggleFilterPanel()" [class.active]="showFilterPanel">
-              <i class="bi bi-funnel"></i> <span>Filter</span>
+            <button
+              class="btn-filter"
+              (click)="toggleFilterPanel()"
+              [class.active]="showFilterPanel"
+            >
+              <span class="material-icons md-18">filter_list</span
+              ><span>Filter</span>
             </button>
 
             <!-- FILTER PANEL -->
             <div class="filter-panel" *ngIf="showFilterPanel">
               <div class="filter-header">
                 <h3>Filters</h3>
-                <button class="close-filter" (click)="toggleFilterPanel()">×</button>
+                <button class="close-filter" (click)="toggleFilterPanel()">
+                  ×
+                </button>
               </div>
 
               <div class="filter-body">
@@ -85,8 +86,12 @@
               </div>
 
               <div class="filter-footer">
-                <button class="btn-clear" (click)="clearFilters()">Clear</button>
-                <button class="btn-apply" (click)="applyFilters()">Apply</button>
+                <button class="btn-clear" (click)="clearFilters()">
+                  Clear
+                </button>
+                <button class="btn-apply" (click)="applyFilters()">
+                  Apply
+                </button>
               </div>
             </div>
           </div>
@@ -115,7 +120,6 @@
 
           <tbody>
             <tr *ngFor="let employee of employees">
-
               <!-- EMPLOYEE -->
               <td data-label="Employee">
                 <div class="emp-profile">
@@ -124,7 +128,7 @@
                   </div>
                   <div class="emp-info">
                     <div class="name">
-                      {{employee.displayName}}
+                      {{ employee.displayName }}
                     </div>
                     <div class="email">{{ employee.workEmail }}</div>
                   </div>
@@ -143,21 +147,35 @@
 
               <!-- FIXED: SHOW REAL EMPLOYMENT TYPE -->
               <td data-label="Type">
-                <span class="type-tag">{{ employee.employmentType || "FT"}}</span>
+                <span class="type-tag">{{
+                  employee.employmentType || "FT"
+                }}</span>
               </td>
 
               <!-- ACTIONS -->
               <td data-label="Actions" class="action-col">
-                <button class="icon-btn" (click)="showDetailsModal(employee.id!)" title="View">
-                  <i class="bi bi-eye-fill" style="font-size:18px"></i>
+                <button
+                  class="icon-btn"
+                  (click)="showDetailsModal(employee.id!)"
+                  title="View"
+                >
+                  <span class="material-icons md-18">visibility</span>
                 </button>
 
-                <button class="icon-btn" (click)="showEditModal(employee.id!)" title="Edit">
-                  <i class="bi bi-pencil-square" style="font-size:18px"></i>
+                <button
+                  class="icon-btn"
+                  (click)="showEditModal(employee.id!)"
+                  title="Edit"
+                >
+                  <span class="material-icons md-18">edit</span>
                 </button>
 
-                <button class="icon-btn delete" (click)="onDelete(employee.id)" title="Delete">
-                  <i class="bi bi-trash-fill" style="font-size:18px; color: #c33;"></i>
+                <button
+                  class="icon-btn delete"
+                  (click)="onDelete(employee.id)"
+                  title="Delete"
+                >
+                  <span class="material-icons md-18 md-delete">delete</span>
                 </button>
               </td>
             </tr>
@@ -172,13 +190,19 @@
 
       <!-- PAGINATION -->
       <div class="pagination-controls">
-        <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
+        <button
+          (click)="onPageChange(currentPage - 1)"
+          [disabled]="currentPage === 1"
+        >
           &laquo; Previous
         </button>
 
         <span>Page {{ currentPage }} of {{ totalPages }}</span>
 
-        <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">
+        <button
+          (click)="onPageChange(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+        >
           Next &raquo;
         </button>
       </div>

@@ -37,16 +37,36 @@
               <td data-label="Title">{{ designation.title }}</td>
               <td data-label="Department">{{ designation.departmentName }}</td>
               <td data-label="Actions" class="action-col">
-                <button class="icon-btn" (click)="showDetailsModal(designation.id!)" title="View">
-                  <i class="bi bi-eye-fill" style="font-size:18px"></i>
+                <button
+                  class="icon-btn"
+                  (click)="showDetailsModal(designation.id!)"
+                  title="View"
+                >
+                  <span class="material-icons" style="font-size: 18px"
+                    >visibility</span
+                  >
                 </button>
 
-                <button class="icon-btn" (click)="showEditModal(designation.id!)" title="Edit">
-                  <i class="bi bi-pencil-square" style="font-size:18px"></i>
+                <button
+                  class="icon-btn"
+                  (click)="showEditModal(designation.id!)"
+                  title="Edit"
+                >
+                  <span class="material-icons" style="font-size: 18px"
+                    >edit</span
+                  >
                 </button>
 
-                <button class="icon-btn delete" (click)="onDelete(designation.id)" title="Delete">
-                  <i class="bi bi-trash-fill" style="font-size:18px; color: #c33;"></i>
+                <button
+                  class="icon-btn delete"
+                  (click)="onDelete(designation.id)"
+                  title="Delete"
+                >
+                  <span
+                    class="material-icons"
+                    style="font-size: 18px; color: #c33"
+                    >delete</span
+                  >
                 </button>
               </td>
             </tr>

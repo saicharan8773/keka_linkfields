@@ -21,7 +21,10 @@
             (input)="onSearch()"
           />
         </div>
-        <button class="btn-add-gold" (click)="showAddSalaryStructureModal = true">
+        <button
+          class="btn-add-gold"
+          (click)="showAddSalaryStructureModal = true"
+        >
           <span class="plus-sign">+</span> Add Structure
         </button>
       </div>
@@ -44,18 +47,28 @@
           <tbody>
             <tr *ngFor="let structure of salaryStructures">
               <td data-label="Title">{{ structure.title }}</td>
-              <td data-label="Basic">{{ structure.basic | currency:'INR' }}</td>
-              <td data-label="HRA">{{ structure.hra | currency:'INR' }}</td>
-              <td data-label="Other Allowances">{{ structure.otherAllowances | currency:'INR' }}</td>
-              <td data-label="Deductions">{{ structure.deductions | currency:'INR' }}</td>
-              <td data-label="Total (Net)">{{ calculateTotal(structure) | currency:'INR' }}</td>
+              <td data-label="Basic">
+                {{ structure.basic | currency : "INR" }}
+              </td>
+              <td data-label="HRA">{{ structure.hra | currency : "INR" }}</td>
+              <td data-label="Other Allowances">
+                {{ structure.otherAllowances | currency : "INR" }}
+              </td>
+              <td data-label="Deductions">
+                {{ structure.deductions | currency : "INR" }}
+              </td>
+              <td data-label="Total (Net)">
+                {{ calculateTotal(structure) | currency : "INR" }}
+              </td>
               <td data-label="Actions" class="action-col">
                 <button
                   class="icon-btn"
                   (click)="showDetailsModal(structure.id!)"
                   title="View"
                 >
-                  <i class="bi bi-eye-fill" style="font-size:18px"></i>
+                  <span class="material-icons" style="font-size: 18px"
+                    >visibility</span
+                  >
                 </button>
 
                 <button
@@ -63,7 +76,9 @@
                   (click)="showEditModal(structure.id!)"
                   title="Edit"
                 >
-                 <i class="bi bi-pencil-square" style="font-size:18px"></i>
+                  <span class="material-icons" style="font-size: 18px"
+                    >edit</span
+                  >
                 </button>
 
                 <button
@@ -71,7 +86,11 @@
                   (click)="onDelete(structure.id)"
                   title="Delete"
                 >
-                  <i class="bi bi-trash-fill" style="font-size:18px; color: #c33;"></i>
+                  <span
+                    class="material-icons"
+                    style="font-size: 18px; color: #c33"
+                    >delete</span
+                  >
                 </button>
               </td>
             </tr>
