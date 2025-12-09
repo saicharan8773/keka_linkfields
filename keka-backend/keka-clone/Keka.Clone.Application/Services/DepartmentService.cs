@@ -38,12 +38,45 @@ public class DepartmentService:IDepartmentService
         {
             Id = Guid.NewGuid(),
             Name = request.Name,
-            Code = request.Code
+            Code = request.Code,
+            // Description = request.Description
         };
 
         await _repo.AddAsync(entity);
         await _repo.SaveChangesAsync();
 
         return _mapper.Map<DepartmentDto>(entity);
+    }
+
+    public async Task<DepartmentDto> UpdateAsync(Guid id, UpdateDepartmentRequest request)
+    {
+        var department = await _repo.GetByIdAsync(id);
+        if (department == null)
+            throw new Exception("Department not found.");
+
+        // Check for duplicate code (excluding current department)
+        var duplicateCode = await _repo.GetByCodeExcludingIdAsync(request.Code, id);
+        if (duplicateCode != null)
+            throw new Exception("Another department with this code already exists.");
+
+        // Check for duplicate name (excluding current department)
+        var duplicateName = await _repo.GetByNameExcludingIdAsync(request.Name, id);
+        if (duplicateName != null)
+            throw new Exception("Another department with this name already exists.");
+
+        // Update department fields
+        department.Name = request.Name;
+        department.Code = request.Code;
+        // department.Description = request.Description;
+
+        _repo.Update(department);
+        await _repo.SaveChangesAsync();
+
+        return _mapper.Map<DepartmentDto>(department);
+    }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        return await _repo.DeleteWithCascadeAsync(id);
     }
 }
