@@ -8,6 +8,9 @@ import { FormsModule } from "@angular/forms";
 import { DepartmentCreateComponent } from "./department-create.component";
 import { DepartmentDetailsModalComponent } from "./department-details-modal/department-details-modal.component";
 import { DepartmentEditModalComponent } from "./department-edit-modal/department-edit-modal.component";
+import { DeleteConfirmationModalComponent } from "../../shared/components/delete-confirmation-modal.component";
+import { ToastService } from "../../shared/services/toast.service";
+import { ToastComponent } from "../../shared/components/toast.component";
 
 @Component({
   selector: "app-department-list",
@@ -20,6 +23,8 @@ import { DepartmentEditModalComponent } from "./department-edit-modal/department
     DepartmentCreateComponent,
     DepartmentDetailsModalComponent,
     DepartmentEditModalComponent,
+    DeleteConfirmationModalComponent,
+    ToastComponent,
   ],
   templateUrl: "./department-list.component.html",
   styleUrls: ["./department-list.component.css"],
@@ -34,10 +39,14 @@ export class DepartmentListComponent implements OnInit {
   showEditDepartmentModal = false;
   showDetailsDepartmentModal = false;
   selectedDepartmentId: string = "";
+  showDeleteModal = false;
+  departmentToDelete: string | undefined = undefined;
+  isDeleting = false;
 
   constructor(
     private departmentService: DepartmentService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -47,6 +56,7 @@ export class DepartmentListComponent implements OnInit {
   onDepartmentAdded() {
     this.showAddDepartmentModal = false;
     this.loadDepartments();
+    this.toastService.success('Department added successfully!');
   }
 
   onSearch(): void {
@@ -66,6 +76,7 @@ export class DepartmentListComponent implements OnInit {
       error: (error) => {
         this.errorMessage = "Failed to load departments. Please try again.";
         this.isLoading = false;
+        this.toastService.error('Failed to load departments');
       },
     });
   }
@@ -97,6 +108,7 @@ export class DepartmentListComponent implements OnInit {
   onDepartmentUpdated(): void {
     this.showEditDepartmentModal = false;
     this.loadDepartments();
+    this.toastService.success('Department updated successfully!');
   }
 
   navigateToEmployees(department: Department): void {
@@ -107,16 +119,33 @@ export class DepartmentListComponent implements OnInit {
 
   onDelete(id: string | undefined): void {
     if (!id) return;
+    this.departmentToDelete = id;
+    this.showDeleteModal = true;
+  }
 
-    if (confirm("Are you sure you want to delete this department?")) {
-      this.departmentService.deleteDepartment(id).subscribe({
-        next: () => {
-          this.loadDepartments();
-        },
-        error: (error) => {
-          alert("Failed to delete department. Please try again.");
-        },
-      });
-    }
+  confirmDelete(): void {
+    if (!this.departmentToDelete) return;
+
+    this.isDeleting = true;
+    this.departmentService.deleteDepartment(this.departmentToDelete).subscribe({
+      next: () => {
+        this.isDeleting = false;
+        this.showDeleteModal = false;
+        this.departmentToDelete = undefined;
+        this.loadDepartments();
+        this.toastService.success('Department deleted successfully!');
+      },
+      error: (error) => {
+        this.isDeleting = false;
+        this.showDeleteModal = false;
+        this.departmentToDelete = undefined;
+        this.toastService.error('Failed to delete department. Please try again.');
+      },
+    });
+  }
+
+  cancelDelete(): void {
+    this.showDeleteModal = false;
+    this.departmentToDelete = undefined;
   }
 }

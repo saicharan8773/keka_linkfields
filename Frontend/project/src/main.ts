@@ -9,6 +9,6 @@ import { appConfig } from './app/app.config';
   imports: [RouterOutlet],
   template: '<router-outlet></router-outlet>'
 })
-export class App {}
+export class App { }
 
 bootstrapApplication(App, appConfig);
