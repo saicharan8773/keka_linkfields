@@ -1,4 +1,6 @@
-﻿namespace Keka.Clone.Application.DTOs.Employee;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Keka.Clone.Application.DTOs.Employee;
 
 public class CreateEmployeeRequest
 {
@@ -12,6 +14,7 @@ public class CreateEmployeeRequest
     public string? Gender { get; set; }
     public string? Nationality { get; set; }
     public DateTime JoiningDate { get; set; }
+    public string Role { get; set; }
     public Guid? DesignationId { get; set; }
     public Guid? DepartmentId { get; set; }
     public Guid? ManagerId { get; set; }

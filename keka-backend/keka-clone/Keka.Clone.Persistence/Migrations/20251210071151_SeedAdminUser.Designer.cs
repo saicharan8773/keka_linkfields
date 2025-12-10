@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Keka.Clone.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251209071849_AddDescriptionToDepartment")]
-    partial class AddDescriptionToDepartment
+    [Migration("20251210071151_SeedAdminUser")]
+    partial class SeedAdminUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,9 +74,6 @@ namespace Keka.Clone.Persistence.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -386,6 +383,10 @@ namespace Keka.Clone.Persistence.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Nationality")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("SalaryStructureId")
@@ -805,6 +806,18 @@ namespace Keka.Clone.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("85f3589d-7ed8-496c-a1b5-f6c975c1a1d7"),
+                            CreatedAt = new DateTime(2025, 12, 10, 7, 11, 50, 981, DateTimeKind.Utc).AddTicks(205),
+                            Email = "admin@keka.com",
+                            FullName = "Admin",
+                            IsActive = true,
+                            PasswordHash = "AQAAAAIAAYagAAAAEOm851cRKDy0NeIsMFPAGhs/PSktKwZifz3Kgku/Mijp9Wim9iF/7meEWx4t1Tz7pA==",
+                            Role = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Keka.Clone.Domain.Entities.Designation", b =>

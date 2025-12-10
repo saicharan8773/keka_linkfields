@@ -37,6 +37,7 @@ export class EmployeeCreateComponent {
     gender: "",
     nationality: "",
     joiningDate: "",
+    role:"",
     designationId: "",
     departmentId: "",
     managerId: "",
@@ -96,7 +97,8 @@ export class EmployeeCreateComponent {
       !this.employee.employeeCode ||
       !this.employee.firstName ||
       !this.employee.lastName ||
-      !this.employee.workEmail
+      !this.employee.workEmail ||
+      !this.employee.role
     ) {
       this.errorMessage = "Please fill in all required fields (*).";
       this.isLoading = false;

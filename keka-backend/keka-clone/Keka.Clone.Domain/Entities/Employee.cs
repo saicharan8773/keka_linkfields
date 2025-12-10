@@ -15,6 +15,7 @@ namespace Keka.Clone.Domain.Entities
         public string? Gender { get; set; }
         public string? Nationality { get; set; }
         public DateTime JoiningDate { get; set; }
+        public string Role { get; set; }
         public Guid? DesignationId { get; set; }
         public Designation? Designation { get; set; }
         public Guid? DepartmentId { get; set; }

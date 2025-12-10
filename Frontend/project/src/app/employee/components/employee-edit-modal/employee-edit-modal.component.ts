@@ -121,6 +121,19 @@ export class EmployeeEditModalComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = "";
 
+    // Validate Required Fields (Basic Check)
+    if (
+      !this.employee.employeeCode ||
+      !this.employee.firstName ||
+      !this.employee.lastName ||
+      !this.employee.workEmail ||
+      !this.employee.role
+    ) {
+      this.errorMessage = "Please fill in all required fields (*).";
+      this.isLoading = false;
+      return;
+    }
+
     const updatePayload: EmployeeUpdatePayload = {
       ...this.employee,
     };

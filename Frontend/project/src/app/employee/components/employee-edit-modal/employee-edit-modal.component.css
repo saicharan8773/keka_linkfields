@@ -28,20 +28,9 @@
   font-weight: 500;
   color: #35c5cf;
 }
-.close-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #5f6e85;
-  transition: color 0.2s;
-}
 
-.close-btn:hover {
-  color: #283a4d;
+.material-icons:hover {
+  color: #c21313;
 }
 
 .modal-body {

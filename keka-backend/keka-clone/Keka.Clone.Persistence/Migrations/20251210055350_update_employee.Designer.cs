@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Keka.Clone.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251209063301_initial")]
-    partial class initial
+    [Migration("20251210055350_update_employee")]
+    partial class update_employee
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -383,6 +383,10 @@ namespace Keka.Clone.Persistence.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Nationality")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("SalaryStructureId")

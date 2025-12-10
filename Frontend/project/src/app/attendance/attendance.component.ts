@@ -5,6 +5,7 @@ import { AttendanceService } from "../shared/services/attendance.service";
 import { AuthService } from "../shared/services/auth.service";
 import { CreateRequest } from "../shared/models/CreateRequest.model";
 import { SidebarComponent } from "../shared/components/sidebar.component";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-attendance",
@@ -54,7 +55,8 @@ export class AttendanceComponent implements OnInit, OnDestroy {
 
   constructor(
     private svc: AttendanceService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -110,7 +112,9 @@ export class AttendanceComponent implements OnInit, OnDestroy {
       (err) => this.showToast("Unable to get location: " + err.message, "error")
     );
   }
-
+ onRequestLeave() {
+  this.router.navigate(['/leave']);
+}
   onLogin() {
     this.getLocationAndCall("login");
   }

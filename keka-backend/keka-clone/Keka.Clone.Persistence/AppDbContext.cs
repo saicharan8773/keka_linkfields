@@ -1,4 +1,5 @@
 using Keka.Clone.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Keka.Clone.Persistence
@@ -26,6 +27,19 @@ namespace Keka.Clone.Persistence
         {
             // Apply entity configurations from this assembly
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+            var adminUser = new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "admin@keka.com",
+                FullName = "Admin",
+                Role = "Admin",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            var passwordHasher = new PasswordHasher<User>();
+            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Passw0rd!");
+            modelBuilder.Entity<User>().HasData(adminUser);
             modelBuilder.Entity<SalaryStructure>(entity =>
             {
                 entity.Property(x => x.Basic).HasPrecision(18, 2);

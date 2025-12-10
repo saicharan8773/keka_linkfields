@@ -44,7 +44,7 @@ public class EmployeesController:ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, new { message = "Employee created successfully" });
     }
 
-    // PUT api/employees/{id}
+    // Patch api/employees/{id}
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Admin,HR,Manager")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateEmployeeRequest request)
