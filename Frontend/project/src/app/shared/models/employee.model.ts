@@ -49,6 +49,7 @@ export interface Employee {
   nationality: string | null;
 
   joiningDate: string;
+  role: string;
 
   // Job & org
   designationId: string | null;
@@ -120,6 +121,7 @@ export interface EmployeeCreatePayload {
   gender: string;
   nationality: string;
   joiningDate: string;
+  role: string;
   designationId: string;
   departmentId: string;
   managerId: string;
@@ -148,6 +150,7 @@ export interface EmployeeUpdatePayload {
   isPhysicallyHandicapped?: boolean | null; // C#: bool?
   nationality?: string | null;
   joiningDate?: string | null; // C#: DateTime?
+  role: string | null;
   designationId?: string | null; // C#: Guid?
   departmentId?: string | null; // C#: Guid?
   departmentPath?: string | null;

@@ -89,10 +89,10 @@
 /* SEARCH BOX */
 .search-box {
  position: relative;
-  margin-bottom: 5px;
 }
 
 .search-box input {
+  top: 100px;
   width: 400px;
  padding: 14px 18px 14px 42px;
   border-radius: 10px;
