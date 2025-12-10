@@ -11,6 +11,7 @@ import { DepartmentEditModalComponent } from "./department-edit-modal/department
 import { DeleteConfirmationModalComponent } from "../../shared/components/delete-confirmation-modal.component";
 import { ToastService } from "../../shared/services/toast.service";
 import { ToastComponent } from "../../shared/components/toast.component";
+import { Pagination } from "../../shared/components/pagination/pagination";
 
 @Component({
   selector: "app-department-list",
@@ -25,6 +26,7 @@ import { ToastComponent } from "../../shared/components/toast.component";
     DepartmentEditModalComponent,
     DeleteConfirmationModalComponent,
     ToastComponent,
+    Pagination
   ],
   templateUrl: "./department-list.component.html",
   styleUrls: ["./department-list.component.css"],
@@ -35,6 +37,12 @@ export class DepartmentListComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string = "";
   searchText: string = "";
+
+  // Pagination
+  currentPage = 1;
+  itemsPerPage = 4;
+  totalItems = 0;
+
   showAddDepartmentModal = false;
   showEditDepartmentModal = false;
   showDetailsDepartmentModal = false;
@@ -60,6 +68,7 @@ export class DepartmentListComponent implements OnInit {
   }
 
   onSearch(): void {
+    this.currentPage = 1;
     this.updateDepartments();
   }
 
@@ -73,7 +82,7 @@ export class DepartmentListComponent implements OnInit {
         this.updateDepartments();
         this.isLoading = false;
       },
-      error: (error) => {
+      error: () => {
         this.errorMessage = "Failed to load departments. Please try again.";
         this.isLoading = false;
         this.toastService.error('Failed to load departments');
@@ -87,7 +96,18 @@ export class DepartmentListComponent implements OnInit {
         department.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
         department.code.toLowerCase().includes(this.searchText.toLowerCase())
     );
-    this.departments = filteredDepartments;
+
+    this.totalItems = filteredDepartments.length;
+
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+
+    this.departments = filteredDepartments.slice(startIndex, endIndex);
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.updateDepartments();
   }
 
   showDetailsModal(departmentId: string): void {
@@ -135,7 +155,7 @@ export class DepartmentListComponent implements OnInit {
         this.loadDepartments();
         this.toastService.success('Department deleted successfully!');
       },
-      error: (error) => {
+      error: () => {
         this.isDeleting = false;
         this.showDeleteModal = false;
         this.departmentToDelete = undefined;

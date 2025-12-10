@@ -1,22 +1,22 @@
-/* Bootstrap Icon Styles for Department List Actions */
-.icon-btn .bi-eye-fill,
-.icon-btn .bi-pencil-square {
+/* Material Icons Styles for Department List Actions */
+.material-icons.md-18 {
   font-size: 18px;
   color: #283a4d;
+  vertical-align: middle;
 }
 
-.icon-btn.delete .bi-trash-fill {
-  font-size: 18px;
+.material-icons.md-delete {
   color: #c33;
 }
 
-/* Search and Add Employee Row */
+/* Search and Add Department Row */
 .search-add-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
   gap: 16px;
+  flex-shrink: 0;
 }
 
 .btn-add-gold {
@@ -39,9 +39,32 @@
 }
 
 /* PAGE WRAPPER */
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.dashboard-container {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.dashboard-container .main-content {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 .employee-container {
-  padding: 30px;
+  padding: 30px 30px 0 30px;
+  /* Removing bottom padding to allow table to sit flush or handle its own spacing */
   font-family: Inter, sans-serif;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* HEADER */
@@ -50,6 +73,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
+  flex-shrink: 0;
 }
 
 .page-header h1 {
@@ -65,16 +89,26 @@
 
 /* SEARCH BOX */
 .search-box {
+  position: relative;
   margin-bottom: 5px;
 }
 
 .search-box input {
   width: 400px;
-  padding: 14px 18px;
+  padding: 14px 18px 14px 42px;
   border-radius: 10px;
   border: 1px solid #d8d8d8;
   font-size: 15px;
   background: #f9fbfd;
+}
+
+.search-box .search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #131212;
 }
 
 .plus-sign {
@@ -85,9 +119,15 @@
 /* TABLE */
 .table-wrapper {
   background: white;
-  border-radius: 12px;
+  border-radius: 12px 12px 0 0;
+  /* Rounded top corners only if it touches bottom, or keep all if there's padding */
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .employee-table {
@@ -98,6 +138,10 @@
 
 .employee-table thead {
   background: #fafafa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .employee-table th {
@@ -176,6 +220,36 @@
   gap: 12px;
 }
 
+.pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.pagination-controls button {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #f7f9fb;
+  color: #232e3c;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pagination-controls button.active,
+.pagination-controls button:focus {
+  background: #232e3c;
+  color: #fff;
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .icon-btn {
   background: none;
   border: none;
@@ -201,43 +275,11 @@
 }
 
 .icon-btn:hover {
-  transform: scale(1.1);
-  background: rgba(0, 0, 0, 0.05);
+  transform: scale(1.15);
 }
 
-.icon-btn:active {
-  transform: scale(0.95);
-}
-
-.icon-btn i {
-  transition: all 0.2s ease;
-}
-
-/* View button - blue theme */
-.icon-btn:not(.delete):nth-child(1):hover {
-  background: rgba(33, 150, 243, 0.1);
-}
-
-.icon-btn:not(.delete):nth-child(1):hover i {
-  color: #2196F3 !important;
-}
-
-/* Edit button - green theme */
-.icon-btn:not(.delete):nth-child(2):hover {
-  background: rgba(76, 175, 80, 0.1);
-}
-
-.icon-btn:not(.delete):nth-child(2):hover i {
-  color: #4CAF50 !important;
-}
-
-/* Delete button - red theme */
-.icon-btn.delete:hover {
-  background: rgba(244, 67, 54, 0.1);
-}
-
-.icon-btn.delete:hover i {
-  color: #F44336 !important;
+.icon-btn.delete:hover svg {
+  stroke: #ff3b30;
 }
 
 .icon-btn:hover svg {
@@ -333,14 +375,6 @@
 
   .action-col {
     justify-content: flex-end;
-    gap: 8px;
-    padding: 8px 0;
-  }
-
-  .icon-btn {
-    padding: 10px;
-    min-width: 40px;
-    min-height: 40px;
   }
 
   .employee-table th:nth-child(3),
@@ -355,6 +389,24 @@
   .employee-table td {
     padding: 12px;
   }
+}
+
+/* Modal Fixed Layout for Internal Scrolling */
+.modal-card.modal-fixed {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Prevent card from scrolling */
+  max-height: 85vh;
+  /* Ensure it respects the max height */
+}
+
+.modal-card.modal-fixed>app-department-details-modal,
+.modal-card.modal-fixed>app-department-edit-modal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .clickable-count {

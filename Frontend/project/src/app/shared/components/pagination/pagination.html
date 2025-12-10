@@ -1,25 +1,13 @@
 <div class="pagination-container" *ngIf="totalPages > 1">
-  <button
-    class="arrow-btn"
-    (click)="goToPrevious()"
-    [disabled]="currentPage === 1"
-  >
-    &laquo;
+  <button class="nav-btn" (click)="goToPrevious()" [disabled]="currentPage === 1">
+    &laquo; Previous
   </button>
-  <ng-container *ngFor="let page of pages">
-    <button
-      class="page-btn"
-      [class.active]="page === currentPage"
-      (click)="selectPage(page)"
-    >
-      {{ page }}
-    </button>
-  </ng-container>
-  <button
-    class="arrow-btn"
-    (click)="goToNext()"
-    [disabled]="currentPage === totalPages"
-  >
-    &raquo;
+
+  <span class="page-info">
+    Page {{ currentPage }} of {{ totalPages }}
+  </span>
+
+  <button class="nav-btn" (click)="goToNext()" [disabled]="currentPage === totalPages">
+    Next &raquo;
   </button>
 </div>

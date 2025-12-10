@@ -16,17 +16,15 @@
 
   <div *ngIf="!isLoading && department" class="details-grid">
     <div class="detail-item">
-      <span class="detail-label">Name</span>
-      <span class="detail-value">{{ department.name }}</span>
+      <span class="detail-label">Name :   </span>
+        <span class="detail-value">{{ department.name }}</span>
     </div>
+
     <div class="detail-item">
-      <span class="detail-label">Code</span>
+      <span class="detail-label">Code : </span>
       <span class="detail-value">{{ department.code }}</span>
     </div>
-    <div class="detail-item">
-      <span class="detail-label">ID</span>
-      <span class="detail-value">{{ department.id }}</span>
-    </div>
+
   </div>
 </div>
 
