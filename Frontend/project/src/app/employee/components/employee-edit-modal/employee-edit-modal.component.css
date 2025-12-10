@@ -8,26 +8,44 @@
   flex-shrink: 0;
 }
 
-.modal-header h2{
+.modal-header h2 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #dad41b;
+  color: #ffd166;
 }
+
 .title-box {
   display: flex;
   flex-direction: column;
 }
-.title-box p{
+
+.title-box p {
   margin: 4px 0 0 0;
   font-size: 0.875rem;
   color: #cccccc;
 }
-.title-box span{
-  font-size: 1rem;
+
+.title-box span {
+  font-size: 1.5rem;
   font-weight: 500;
-  color: #35c5cf;
+  color: #f3f3ea;
 }
+<<<<<<< Updated upstream
+=======
+
+.close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5f6e85;
+  transition: color 0.2s;
+}
+>>>>>>> Stashed changes
 
 .material-icons:hover {
   color: #c21313;

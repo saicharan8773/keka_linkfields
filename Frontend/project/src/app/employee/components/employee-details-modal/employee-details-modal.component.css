@@ -13,14 +13,14 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #dad41b;
+  color: #ffd166;
 }
 
 .modal-header p {
   display: block;
   margin: 4px 0 0 0;
   font-size: 0.95rem;
-  color: #c3e211;
+  color: #ffd166;
 }
 
 .material-icons:hover {

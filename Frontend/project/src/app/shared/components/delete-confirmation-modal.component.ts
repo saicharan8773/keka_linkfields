@@ -2,15 +2,15 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-delete-confirmation-modal',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-delete-confirmation-modal',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="modal-overlay" (click)="onCancel()">
       <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
           <div class="icon-warning">
-            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span class="material-icons">delete</span>
           </div>
           <h2>Confirm Deletion</h2>
         </div>
@@ -32,7 +32,7 @@ import { CommonModule } from '@angular/common';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -43,7 +43,7 @@ import { CommonModule } from '@angular/common';
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
+      z-index: 10000;
       backdrop-filter: blur(4px);
     }
 
@@ -51,10 +51,10 @@ import { CommonModule } from '@angular/common';
       background: white;
       border-radius: 16px;
       padding: 0;
-      max-width: 450px;
+      max-width: 350px;
       width: 90%;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      animation: slideUp 0.3s ease;
+      animation: slideUp 0.5s ease;
     }
 
     @keyframes slideUp {
@@ -69,40 +69,39 @@ import { CommonModule } from '@angular/common';
     }
 
     .modal-header {
-      padding: 32px 32px 24px;
+      padding: 20px 20px 20px;
       text-align: center;
       border-bottom: 1px solid #f0f0f0;
     }
 
     .icon-warning {
+      margin: 0 auto 16px;
       width: 64px;
       height: 64px;
-      margin: 0 auto 16px;
-      background: #fff3cd;
+      background: #ffebee;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .icon-warning i {
-      font-size: 32px;
-      color: #ff9800;
+    .icon-warning .material-icons {
+      font-size: 30px;
+      color: #dc3545;
     }
 
     .modal-header h2 {
-      margin: 0;
       font-size: 24px;
       font-weight: 700;
       color: #283a4d;
     }
 
     .modal-body {
-      padding: 24px 32px;
+      padding: 10px 20px;
     }
 
     .modal-body p {
-      margin: 0 0 12px;
+      margin: 0 0 1px;
       font-size: 16px;
       color: #555;
       line-height: 1.6;
@@ -117,7 +116,7 @@ import { CommonModule } from '@angular/common';
     .modal-footer {
       padding: 20px 32px 32px;
       display: flex;
-      gap: 12px;
+      gap: 2px;
       justify-content: flex-end;
     }
 
@@ -183,16 +182,16 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class DeleteConfirmationModalComponent {
-    @Input() message: string = 'Are you sure you want to delete this record?';
-    @Input() isDeleting: boolean = false;
-    @Output() confirm = new EventEmitter<void>();
-    @Output() cancel = new EventEmitter<void>();
+  @Input() message: string = 'Are you sure you want to delete this record?';
+  @Input() isDeleting: boolean = false;
+  @Output() confirm = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
 
-    onConfirm(): void {
-        this.confirm.emit();
-    }
+  onConfirm(): void {
+    this.confirm.emit();
+  }
 
-    onCancel(): void {
-        this.cancel.emit();
-    }
+  onCancel(): void {
+    this.cancel.emit();
+  }
 }
