@@ -25,6 +25,7 @@ namespace Keka.Clone.Application.Interfaces
         );
 
         Task<IEnumerable<Employee>> GetByDepartmentIdAsync(Guid departmentId);
+        Task<IEnumerable<Employee>> GetByDesignationIdAsync(Guid designationId);
         
         Task<IEnumerable<ManagerDto>> GetManagersAsync();
 

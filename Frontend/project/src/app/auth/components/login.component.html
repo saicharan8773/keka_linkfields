@@ -1,4 +1,9 @@
 <div class="auth-container">
+  <ngx-particles
+    [id]="id"
+    [options]="particlesOptions"
+    (particlesLoaded)="particlesLoaded($event)"
+  ></ngx-particles>
   <div class="auth-card">
     <div class="auth-header">
       <h1>Domain</h1>
@@ -45,4 +50,3 @@
       <p>Don't have an account? <a routerLink="/signup">Sign up here</a></p>
     </div>
   </div>
-</div>

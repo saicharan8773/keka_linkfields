@@ -74,7 +74,7 @@
                 </div>
 
                 <!-- EMPLOYMENT TYPE -->
-                <div class="filter-group">
+                <!-- <div class="filter-group">
                   <label>Employment Type</label>
                   <select [(ngModel)]="filterEmploymentType">
                     <option value="">All Types</option>
@@ -83,8 +83,8 @@
                     <option value="Contract">Contract</option>
                     <option value="Intern">Intern</option>
                   </select>
-                </div>
-              </div>
+                </div>-->
+              </div> 
 
               <div class="filter-footer">
                 <button class="btn-clear" (click)="clearFilters()">
@@ -114,7 +114,7 @@
               <th>Department</th>
               <th>Designation</th>
               <th>Location</th>
-              <th>Type</th>
+              <!-- <th>Type</th> -->
               <th>Actions</th>
             </tr>
           </thead>
@@ -147,11 +147,11 @@
               <td data-label="Location">{{ employee.locationName }}</td>
 
               <!-- FIXED: SHOW REAL EMPLOYMENT TYPE -->
-              <td data-label="Type">
+              <!-- <td data-label="Type">
                 <span class="type-tag">{{
                   employee.employmentType || "FT"
                 }}</span>
-              </td>
+              </td> -->
 
               <!-- ACTIONS -->
               <td data-label="Actions" class="action-col">

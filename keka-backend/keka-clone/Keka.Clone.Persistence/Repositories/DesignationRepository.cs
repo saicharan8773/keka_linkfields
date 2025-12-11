@@ -19,10 +19,20 @@ public class DesignationRepository:IDesignationRepository
     {
         return await _db.Designations.Include(d => d.Department).ToListAsync();
     }
+    
+    public async Task<Designation?> GetByIdAsync(Guid id)
+    {
+        return await _db.Designations.Include(d => d.Department).FirstOrDefaultAsync(d => d.Id == id);
+    }
 
     public async Task AddAsync(Designation designation)
     {
         await _db.Designations.AddAsync(designation);
+    }
+
+    public void Delete(Designation designation)
+    {
+        _db.Designations.Remove(designation);
     }
 
     public async Task<IEnumerable<Designation>> GetByDepartmentIdAsync(Guid departmentId)

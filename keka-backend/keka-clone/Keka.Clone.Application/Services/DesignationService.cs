@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using AutoMapper;
 using Keka.Clone.Application.DTOs.Designation;
 using Keka.Clone.Application.Interfaces;
@@ -14,12 +16,14 @@ public class DesignationService : IDesignationService
 {
     private readonly IDesignationRepository _repo;
     private readonly IDepartmentRepository _deptRepo;
+    private readonly IEmployeeRepository _employeeRepo;
     private readonly IMapper _mapper;
 
-    public DesignationService(IDesignationRepository repo, IDepartmentRepository deptRepo, IMapper mapper)
+    public DesignationService(IDesignationRepository repo, IDepartmentRepository deptRepo, IEmployeeRepository employeeRepo, IMapper mapper)
     {
         _repo = repo;
         _deptRepo = deptRepo;
+        _employeeRepo = employeeRepo;
         _mapper = mapper;
     }
 
@@ -55,6 +59,31 @@ public class DesignationService : IDesignationService
         return _mapper.Map<IEnumerable<DesignationDto>>(entities);
     }
 
+    public async Task<DesignationDto> GetByIdAsync(Guid id)
+    {
+        var entity = await _repo.GetByIdAsync(id);
+        if (entity == null)
+            throw new KeyNotFoundException($"Designation with ID {id} not found.");
+
+        return _mapper.Map<DesignationDto>(entity);
+    }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        var entity = await _repo.GetByIdAsync(id);
+        if (entity == null)
+            throw new KeyNotFoundException($"Designation with ID {id} not found.");
+
+        var employees = await _employeeRepo.GetByDesignationIdAsync(id);
+        foreach (var employee in employees)
+        {
+            employee.DesignationId = null;
+        }
+        await _employeeRepo.SaveChangesAsync();
+        _repo.Delete(entity);
+        await _repo.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<DesignationDto>> GetByDepartmentNameAsync(string name)
     {
         var department = await _deptRepo.GetByNameAsync(name);
@@ -63,5 +92,24 @@ public class DesignationService : IDesignationService
 
         var entities = await _repo.GetByDepartmentIdAsync(department.Id);
         return _mapper.Map<IEnumerable<DesignationDto>>(entities);
+    }
+
+    public async Task<DesignationDto> EditDesignationAsync(Guid id , Designationupdate entity)
+    {
+        var designationEntity = await _repo.GetByIdAsync(id);
+
+        if (designationEntity == null)
+        {
+            throw new KeyNotFoundException($"Designation with ID {id} not found.");
+        }
+
+        designationEntity.Title = entity.Title;
+        designationEntity.Description = entity.Description;
+        designationEntity.DepartmentId = entity.DepartmentId;
+
+        await _repo.SaveChangesAsync();
+        var result =  _mapper.Map<DesignationDto>(designationEntity);
+
+        return result;
     }
 }
