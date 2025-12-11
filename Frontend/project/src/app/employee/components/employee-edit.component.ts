@@ -17,7 +17,7 @@ import { SidebarComponent } from "../../shared/components/sidebar.component";
   styleUrls: [],
 })
 export class EmployeeEditComponent implements OnInit {
-  employee: Employee = {
+  employee: Partial<Employee> = {
     id: "",
     employeeCode: "",
     firstName: "",
@@ -119,7 +119,7 @@ export class EmployeeEditComponent implements OnInit {
     this.errorMessage = "";
 
     const updatePayload: EmployeeUpdatePayload = {
-      ...this.employee,
+      ...(this.employee as EmployeeUpdatePayload),
     };
 
     this.employeeService
