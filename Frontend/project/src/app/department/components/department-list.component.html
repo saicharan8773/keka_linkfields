@@ -71,9 +71,18 @@
         <p>No departments found.</p>
       </div>
 
-      <!-- Pagination -->
-      <app-pagination *ngIf="totalItems > itemsPerPage" [currentPage]="currentPage" [totalItems]="totalItems"
-        [itemsPerPage]="itemsPerPage" (pageChange)="onPageChange($event)"></app-pagination>
+      <!-- PAGINATION -->
+      <div class="pagination-controls">
+        <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
+          &laquo; Previous
+        </button>
+
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+
+        <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">
+          Next &raquo;
+        </button>
+      </div>
     </div>
 
     <!-- Add Modal -->

@@ -26,6 +26,7 @@ import { SalaryStructureEditModalComponent } from "./salary-structure-edit-modal
 })
 export class SalaryStructureListComponent implements OnInit {
   allSalaryStructures: SalaryStructure[] = [];
+  filteredSalaryStructures: SalaryStructure[] = [];
   salaryStructures: SalaryStructure[] = [];
   isLoading: boolean = false;
   errorMessage: string = "";
@@ -34,6 +35,10 @@ export class SalaryStructureListComponent implements OnInit {
   showEditSalaryStructureModal = false;
   showDetailsSalaryStructureModal = false;
   selectedSalaryStructureId: string = "";
+
+  // Pagination (matching employees page)
+  currentPage = 1;
+  itemsPerPage = 4;
 
   constructor(
     private salaryStructureService: SalaryStructureService,
@@ -50,6 +55,7 @@ export class SalaryStructureListComponent implements OnInit {
   }
 
   onSearch(): void {
+    this.currentPage = 1;
     this.updateSalaryStructures();
   }
 
@@ -64,18 +70,35 @@ export class SalaryStructureListComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.errorMessage = "Failed to load salary structures. Please try again.";
+        this.errorMessage =
+          "Failed to load salary structures. Please try again.";
         this.isLoading = false;
       },
     });
   }
 
   updateSalaryStructures(): void {
-    const filteredSalaryStructures = this.allSalaryStructures.filter(
+    this.filteredSalaryStructures = this.allSalaryStructures.filter(
       (structure) =>
         structure.title.toLowerCase().includes(this.searchText.toLowerCase())
     );
-    this.salaryStructures = filteredSalaryStructures;
+
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.salaryStructures = this.filteredSalaryStructures.slice(
+      startIndex,
+      endIndex
+    );
+  }
+
+  onPageChange(page: number) {
+    if (page < 1) return;
+    this.currentPage = page;
+    this.updateSalaryStructures();
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredSalaryStructures.length / this.itemsPerPage);
   }
 
   calculateTotal(structure: SalaryStructure): number {

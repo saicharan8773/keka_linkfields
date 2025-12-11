@@ -1,4 +1,10 @@
-import { Component, HostBinding, OnInit } from "@angular/core";
+import {
+  Component,
+  HostBinding,
+  OnInit,
+  Output,
+  EventEmitter,
+} from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router, RouterModule } from "@angular/router";
 import { AuthService } from "../services/auth.service";
@@ -14,6 +20,8 @@ export class SidebarComponent implements OnInit {
   isOpen = true; // Sidebar starts open
   canManageOrg = false;
 
+  @Output() sidebarToggle = new EventEmitter<boolean>();
+
   @HostBinding("class.sidebar-open")
   get sidebarOpenClass(): boolean {
     return this.isOpen;
@@ -24,7 +32,7 @@ export class SidebarComponent implements OnInit {
     return !this.isOpen;
   }
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     // Check if user has Admin or Manager role
@@ -33,6 +41,7 @@ export class SidebarComponent implements OnInit {
 
   toggleSidebar(): void {
     this.isOpen = !this.isOpen;
+    this.sidebarToggle.emit(this.isOpen);
   }
 
   onLogout(): void {

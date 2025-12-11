@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private timeInterval: any;
   isLoading = true;
   errorMessage = "";
+  sidebarOpen: boolean = true;
 
   constructor(
     private leaveService: LeaveService,
@@ -55,6 +56,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.timeInterval) {
       clearInterval(this.timeInterval);
     }
+  }
+
+  onSidebarToggle(isOpen: boolean): void {
+    this.sidebarOpen = isOpen;
   }
 
   private loadDashboardData(): void {

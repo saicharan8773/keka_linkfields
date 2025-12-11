@@ -14,17 +14,9 @@
       <!-- Search and Add Button Row -->
       <div class="search-add-row">
         <div class="search-box">
-          <input
-            type="text"
-            placeholder="Search salary structures…"
-            [(ngModel)]="searchText"
-            (input)="onSearch()"
-          />
+          <input type="text" placeholder="Search salary structures…" [(ngModel)]="searchText" (input)="onSearch()" />
         </div>
-        <button
-          class="btn-add-gold"
-          (click)="showAddSalaryStructureModal = true"
-        >
+        <button class="btn-add-gold" (click)="showAddSalaryStructureModal = true">
           <span class="plus-sign">+</span> Add Structure
         </button>
       </div>
@@ -61,41 +53,30 @@
                 {{ calculateTotal(structure) | currency : "INR" }}
               </td>
               <td data-label="Actions" class="action-col">
-                <button
-                  class="icon-btn"
-                  (click)="showDetailsModal(structure.id!)"
-                  title="View"
-                >
-                  <span class="material-icons" style="font-size: 18px"
-                    >visibility</span
-                  >
+                <button class="icon-btn" (click)="showDetailsModal(structure.id!)" title="View">
+                  <span class="material-icons" style="font-size: 18px">visibility</span>
                 </button>
 
-                <button
-                  class="icon-btn"
-                  (click)="showEditModal(structure.id!)"
-                  title="Edit"
-                >
-                  <span class="material-icons" style="font-size: 18px"
-                    >edit</span
-                  >
+                <button class="icon-btn" (click)="showEditModal(structure.id!)" title="Edit">
+                  <span class="material-icons" style="font-size: 18px">edit</span>
                 </button>
 
-                <button
-                  class="icon-btn delete"
-                  (click)="onDelete(structure.id)"
-                  title="Delete"
-                >
-                  <span
-                    class="material-icons"
-                    style="font-size: 18px; color: #c33"
-                    >delete</span
-                  >
+                <button class="icon-btn delete" (click)="onDelete(structure.id)" title="Delete">
+                  <span class="material-icons" style="font-size: 18px; color: #c33">delete</span>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="pagination-controls">
+        <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">&laquo; Previous</button>
+
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+
+        <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Next &raquo;</button>
       </div>
 
       <div *ngIf="salaryStructures.length === 0" class="empty-state">
@@ -106,32 +87,26 @@
     <!-- Add Salary Structure Modal -->
     <div *ngIf="showAddSalaryStructureModal" class="modal-overlay">
       <div class="modal-card">
-        <app-salary-structure-create
-          (closeModal)="showAddSalaryStructureModal = false"
-          (salaryStructureAdded)="onSalaryStructureAdded()"
-        ></app-salary-structure-create>
+        <app-salary-structure-create (closeModal)="showAddSalaryStructureModal = false"
+          (salaryStructureAdded)="onSalaryStructureAdded()"></app-salary-structure-create>
       </div>
     </div>
 
     <!-- Edit Salary Structure Modal -->
     <div *ngIf="showEditSalaryStructureModal" class="modal-overlay">
       <div class="modal-card">
-        <app-salary-structure-edit-modal
-          [salaryStructureId]="selectedSalaryStructureId"
+        <app-salary-structure-edit-modal [salaryStructureId]="selectedSalaryStructureId"
           (closeModal)="showEditSalaryStructureModal = false"
-          (salaryStructureUpdated)="onSalaryStructureUpdated()"
-        ></app-salary-structure-edit-modal>
+          (salaryStructureUpdated)="onSalaryStructureUpdated()"></app-salary-structure-edit-modal>
       </div>
     </div>
 
     <!-- Details Salary Structure Modal -->
     <div *ngIf="showDetailsSalaryStructureModal" class="modal-overlay">
       <div class="modal-card">
-        <app-salary-structure-details-modal
-          [salaryStructureId]="selectedSalaryStructureId"
+        <app-salary-structure-details-modal [salaryStructureId]="selectedSalaryStructureId"
           (closeModal)="showDetailsSalaryStructureModal = false"
-          (editSalaryStructure)="showEditModalFromDetails($event)"
-        ></app-salary-structure-details-modal>
+          (editSalaryStructure)="showEditModalFromDetails($event)"></app-salary-structure-details-modal>
       </div>
     </div>
   </main>

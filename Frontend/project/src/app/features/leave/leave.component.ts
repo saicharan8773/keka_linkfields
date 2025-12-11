@@ -67,6 +67,10 @@ export class LeaveComponent implements OnInit, AfterViewInit {
   private consumedChartInstance: any = null;
   private monthlyChartInstance: any = null;
 
+  // Donut helpers for SVG rings
+  donutRadius = 60; // matches SVG r
+  donutCircumference: number = 2 * Math.PI * this.donutRadius;
+
   // Filters and Pagination
   selectedTypeFilter: string = "All";
   selectedStatusFilter: string = "All";
@@ -166,14 +170,30 @@ export class LeaveComponent implements OnInit, AfterViewInit {
   }
 
   getBalanceColor(type: string): string {
-    if (type.toLowerCase().includes("casual")) return "#d0c9ea";
-    if (
-      type.toLowerCase().includes("earned") ||
-      type.toLowerCase().includes("privilege")
-    )
-      return "#e2e8c0";
-    if (type.toLowerCase().includes("sick")) return "#fcd34d";
-    return "#e5e7eb";
+    type = type.toLowerCase();
+
+    if (type.includes("casual")) return "#74b9ff"; // Soft Blue
+    if (type.includes("earned") || type.includes("privilege")) return "#48b4a2"; // Teal
+    if (type.includes("sick")) return "#ff6b6b"; // Coral Red
+    if (type.includes("comp")) return "#ffd166"; // Gold
+    if (type.includes("floater")) return "#c8d7ff"; // Light Blue
+
+    return "#dfe6e9"; // Gray fallback
+  }
+
+  // Helper used by SVG donut bindings in template
+  getDonutOffset(balance: any): number {
+    const circumference = this.donutCircumference;
+    const remaining = Number(balance?.remainingDays) || 0;
+    const quota = Number(balance?.annualQuota) || 0;
+
+    if (balance?.isUnlimited || !quota || quota === Infinity) {
+      return 0; // full circle
+    }
+
+    // Clamp percent between 0..1
+    const percent = Math.max(0, Math.min(1, remaining / quota));
+    return Math.round(circumference * (1 - percent));
   }
 
   loadCharts() {
@@ -198,7 +218,7 @@ export class LeaveComponent implements OnInit, AfterViewInit {
                 datasets: [
                   {
                     data: data, // Using real API data
-                    backgroundColor: kekaPurple,
+                    backgroundColor: "#283a4d", // navy bars
                     borderRadius: 2,
                     barThickness: 25,
                   },
@@ -238,13 +258,13 @@ export class LeaveComponent implements OnInit, AfterViewInit {
           const labels = data.map((d) => d.name);
           const values = data.map((d) => d.value);
 
-          // Colors palette
+          // Colors palette (employees page theme - use distinct, high-contrast colors)
           const donutColors = [
-            "#c8bfae",
-            "#9b88cd",
-            "#e2e8c0",
-            "#fcd34d",
-            "#f472b6",
+            "#283a4d", // primary navy
+            "#ffd166", // gold accent
+            "#06b6d4", // teal
+            "#10b981", // green
+            "#ff7a59", // warm coral
           ];
 
           this.consumedChartInstance = new Chart(
@@ -314,7 +334,7 @@ export class LeaveComponent implements OnInit, AfterViewInit {
                 datasets: [
                   {
                     data: data, // Using real API data
-                    backgroundColor: kekaPurple,
+                    backgroundColor: "#ffd166", // gold bars
                     borderRadius: 2,
                     barThickness: 20,
                   },

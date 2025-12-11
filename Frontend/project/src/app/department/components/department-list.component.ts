@@ -11,7 +11,6 @@ import { DepartmentEditModalComponent } from "./department-edit-modal/department
 import { DeleteConfirmationModalComponent } from "../../shared/components/delete-confirmation-modal.component";
 import { ToastService } from "../../shared/services/toast.service";
 import { ToastComponent } from "../../shared/components/toast.component";
-import { Pagination } from "../../shared/components/pagination/pagination";
 
 @Component({
   selector: "app-department-list",
@@ -26,7 +25,6 @@ import { Pagination } from "../../shared/components/pagination/pagination";
     DepartmentEditModalComponent,
     DeleteConfirmationModalComponent,
     ToastComponent,
-    Pagination
   ],
   templateUrl: "./department-list.component.html",
   styleUrls: ["./department-list.component.css"],
@@ -55,7 +53,7 @@ export class DepartmentListComponent implements OnInit {
     private departmentService: DepartmentService,
     private router: Router,
     private toastService: ToastService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadDepartments();
@@ -64,7 +62,7 @@ export class DepartmentListComponent implements OnInit {
   onDepartmentAdded() {
     this.showAddDepartmentModal = false;
     this.loadDepartments();
-    this.toastService.success('Department added successfully!');
+    this.toastService.success("Department added successfully!");
   }
 
   onSearch(): void {
@@ -85,7 +83,7 @@ export class DepartmentListComponent implements OnInit {
       error: () => {
         this.errorMessage = "Failed to load departments. Please try again.";
         this.isLoading = false;
-        this.toastService.error('Failed to load departments');
+        this.toastService.error("Failed to load departments");
       },
     });
   }
@@ -110,6 +108,10 @@ export class DepartmentListComponent implements OnInit {
     this.updateDepartments();
   }
 
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
   showDetailsModal(departmentId: string): void {
     this.selectedDepartmentId = departmentId;
     this.showDetailsDepartmentModal = true;
@@ -128,11 +130,11 @@ export class DepartmentListComponent implements OnInit {
   onDepartmentUpdated(): void {
     this.showEditDepartmentModal = false;
     this.loadDepartments();
-    this.toastService.success('Department updated successfully!');
+    this.toastService.success("Department updated successfully!");
   }
 
   navigateToEmployees(department: Department): void {
-    this.router.navigate(['/employees'], {
+    this.router.navigate(["/employees"], {
       queryParams: { departmentId: department.id },
     });
   }
@@ -153,13 +155,15 @@ export class DepartmentListComponent implements OnInit {
         this.showDeleteModal = false;
         this.departmentToDelete = undefined;
         this.loadDepartments();
-        this.toastService.success('Department deleted successfully!');
+        this.toastService.success("Department deleted successfully!");
       },
       error: () => {
         this.isDeleting = false;
         this.showDeleteModal = false;
         this.departmentToDelete = undefined;
-        this.toastService.error('Failed to delete department. Please try again.');
+        this.toastService.error(
+          "Failed to delete department. Please try again."
+        );
       },
     });
   }

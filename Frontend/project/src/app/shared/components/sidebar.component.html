@@ -2,36 +2,15 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <h2 *ngIf="isOpen">Domain</h2>
-      <button
-        class="toggle-btn"
-        (click)="toggleSidebar()"
-        [attr.aria-label]="isOpen ? 'Close sidebar' : 'Open sidebar'"
-      >
-        <svg
-          *ngIf="isOpen"
-          width="20"
-          height="20"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          viewBox="0 0 24 24"
-        >
+      <button type="button" class="toggle-btn" (click)="toggleSidebar()"
+        [attr.aria-label]="isOpen ? 'Close sidebar' : 'Open sidebar'" [attr.aria-expanded]="isOpen">
+        <svg *ngIf="isOpen" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
           <!-- Chevron Left Icon -->
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
-        <svg
-          *ngIf="!isOpen"
-          width="20"
-          height="20"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          viewBox="0 0 24 24"
-        >
+        <svg *ngIf="!isOpen" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
           <!-- Chevron Right Icon -->
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
@@ -42,83 +21,63 @@
       <ul>
         <li class="icons">
           <a routerLink="/dashboard" routerLinkActive="active">
-            <span class="sidebar-icon"
-              ><span class="material-icons md-20">dashboard</span></span
-            >
+            <span class="sidebar-icon"><span class="material-icons md-20">dashboard</span></span>
             <span class="sidebar-label" *ngIf="isOpen">Dashboard</span>
           </a>
         </li>
 
         <li class="icons">
           <a routerLink="/employees" routerLinkActive="active">
-            <span class="sidebar-icon"
-              ><span class="material-icons md-20">group</span></span
-            >
+            <span class="sidebar-icon"><span class="material-icons md-20">group</span></span>
             <span class="sidebar-label" *ngIf="isOpen">Employees</span>
           </a>
         </li>
 
         <li class="icons">
           <a routerLink="/attendance" routerLinkActive="active">
-            <span class="sidebar-icon"
-              ><span class="material-icons md-20">event</span></span
-            >
+            <span class="sidebar-icon"><span class="material-icons md-20">event</span></span>
             <span class="sidebar-label" *ngIf="isOpen">Attendance</span>
           </a>
         </li>
 
         <li class="icons">
           <a routerLink="/leave" routerLinkActive="active">
-            <span class="sidebar-icon"
-              ><span class="material-icons md-20">beach_access</span></span
-            >
+            <span class="sidebar-icon"><span class="material-icons md-20">beach_access</span></span>
             <span class="sidebar-label" *ngIf="isOpen">Leaves</span>
           </a>
         </li>
 
         <li class="icons" *ngIf="canManageOrg">
           <a routerLink="/departments" routerLinkActive="active">
-            <span class="sidebar-icon"
-              ><span class="material-icons md-20">apartment</span></span
-            >
+            <span class="sidebar-icon"><span class="material-icons md-20">apartment</span></span>
             <span class="sidebar-label" *ngIf="isOpen">Departments</span>
           </a>
         </li>
 
         <li class="icons" *ngIf="canManageOrg">
           <a routerLink="/designations" routerLinkActive="active">
-            <span class="sidebar-icon"
-              ><span class="material-icons md-20">badge</span></span
-            >
+            <span class="sidebar-icon"><span class="material-icons md-20">badge</span></span>
             <span class="sidebar-label" *ngIf="isOpen">Designations</span>
           </a>
         </li>
 
         <li class="icons" *ngIf="canManageOrg">
           <a routerLink="/salary-structures" routerLinkActive="active">
-            <span class="sidebar-icon"
-              ><span class="material-icons md-20"
-                >account_balance_wallet</span
-              ></span
-            >
+            <span class="sidebar-icon"><span class="material-icons md-20">account_balance_wallet</span></span>
             <span class="sidebar-label" *ngIf="isOpen">Salary</span>
           </a>
         </li>
 
         <li class="icons">
           <a routerLink="/profile" routerLinkActive="active">
-            <span class="sidebar-icon"
-              ><span class="material-icons md-20">person</span></span
-            >
+            <span class="sidebar-icon"><span class="material-icons md-20">person</span></span>
             <span class="sidebar-label" *ngIf="isOpen">Profile</span>
           </a>
         </li>
 
         <li class="icons">
           <a (click)="onLogout()">
-            <span class="sidebar-icon"
-              ><span class="material-icons md-20">logout</span></span
-            >
+            <span class="sidebar-icon"><span class="material-icons md-20">logout</span></span>
             <span class="sidebar-label" *ngIf="isOpen">Logout</span>
           </a>
         </li>

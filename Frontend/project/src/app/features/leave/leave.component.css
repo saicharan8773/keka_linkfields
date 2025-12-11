@@ -109,7 +109,7 @@
 }
 
 .view-details {
-  color: #5e4d9d;
+  color: #000000;
   /* Keka Purple */
   font-size: 0.75rem;
   text-decoration: none;
@@ -286,7 +286,7 @@ tr:last-child td {
   border: none;
   border-radius: 6px;
   padding: 0.5rem 1.25rem;
-  background: #5e4d9d;
+  background: #000000;
   /* Keka */
   color: #fff;
   font-weight: 500;
@@ -628,4 +628,36 @@ canvas {
 
 .text-gray-500 {
   color: #6b7280;
+}
+
+/* Local theme tokens for the Employees look-and-feel */
+:host, .leave-page {
+  --brand: #283a4d; /* primary dark blue used in employees page */
+  --gold: #ffd166;
+  --muted: #6b7280;
+}
+
+/* Chart helpers */
+.chart-container {
+  min-height: 180px;
+}
+
+.chart-small {
+  width: 160px;
+  height: 160px;
+  position: relative;
+}
+
+.text-brand {
+  color: var(--brand) !important;
+}
+
+.donut svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.donut circle.opacity-20 {
+  opacity: 0.2;
 }
