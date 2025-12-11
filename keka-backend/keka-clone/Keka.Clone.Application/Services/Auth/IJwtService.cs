@@ -2,6 +2,6 @@
 
 public interface IJwtService
 {
-    string GenerateAccessToken(User user, Guid? employeeId = null);
+    string GenerateAccessToken(User user, Employee? employee = null);
     RefreshToken GenerateRefreshToken();
 }

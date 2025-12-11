@@ -3,7 +3,7 @@ using Keka.Clone.Application.Interfaces;
 using Keka.Clone.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
-public class AuthService:IAuthService
+public class AuthService : IAuthService
 {
     private readonly IUserRepository _users;
     private readonly IEmployeeRepository _employees;
@@ -28,7 +28,7 @@ public class AuthService:IAuthService
             throw new Exception("Invalid credentials");
 
         var employee = await _employees.GetByWorkEmailAsync(user.Email);
-        var accessToken = _jwt.GenerateAccessToken(user, employee?.Id);
+        var accessToken = _jwt.GenerateAccessToken(user, employee);
         var refreshToken = _jwt.GenerateRefreshToken();
         refreshToken.UserId = user.Id;
 
@@ -54,7 +54,7 @@ public class AuthService:IAuthService
             throw new Exception("User not found.");
 
         var employee = await _employees.GetByWorkEmailAsync(user.Email);
-        var newAccessToken = _jwt.GenerateAccessToken(user, employee?.Id);
+        var newAccessToken = _jwt.GenerateAccessToken(user, employee);
 
         return new AuthResponse
         {

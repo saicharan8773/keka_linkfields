@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-public class JwtService:IJwtService
+public class JwtService : IJwtService
 {
     private readonly IConfiguration _config;
 
@@ -14,7 +14,7 @@ public class JwtService:IJwtService
         _config = config;
     }
 
-    public string GenerateAccessToken(User user, Guid? employeeId = null)
+    public string GenerateAccessToken(User user, Employee? employee = null)
     {
         var jwt = _config.GetSection("Jwt");
 
@@ -24,12 +24,12 @@ public class JwtService:IJwtService
             new Claim("userid", user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name, user.FullName),
-            new Claim(ClaimTypes.Role, user.Role)
+            new Claim(ClaimTypes.Role, employee?.Role ?? user.Role)
         };
 
-        if (employeeId.HasValue)
+        if (employee != null)
         {
-            claims.Add(new Claim("EmployeeId", employeeId.Value.ToString()));
+            claims.Add(new Claim("EmployeeId", employee.Id.ToString()));
         }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));

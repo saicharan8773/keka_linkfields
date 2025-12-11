@@ -66,3 +66,23 @@ export interface LeaveHistoryItemDto {
   actionedOn?: string;
   note: string;
 }
+
+export interface PendingLeaveRequest {
+  requestCode: string;
+  leaveType: string;
+  startDate: string;
+  endDate: string;
+  totalDays: number;
+  requestedBy: string;
+  requestedOn: string;
+  note: string;
+}
+
+export interface ApproveLeavePayload {
+  requestCode: string;
+}
+
+export interface RejectLeavePayload {
+  requestCode: string;
+  note: string;
+}

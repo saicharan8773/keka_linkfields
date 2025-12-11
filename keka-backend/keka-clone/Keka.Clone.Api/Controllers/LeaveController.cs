@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 [Route("api/[controller]")]
 [Authorize(Roles = "Admin,HR,Manager,Employee")]
 
-public class LeaveController:ControllerBase
+public class LeaveController : ControllerBase
 {
     private readonly ILeaveService _service;
 
@@ -31,18 +31,25 @@ public class LeaveController:ControllerBase
         return Ok("Leave applied successfully.");
     }
 
-    [HttpPost("approve/{leaveId}")]
-    public async Task<IActionResult> ApproveByCode(string leaveid)
+    [HttpPost("approve")]
+    public async Task<IActionResult> ApproveLeaveRequest([FromBody] ApproveLeaveRequest request)
     {
-        await _service.ApproveLeaveByCodeAsync(leaveid);
-        return Ok("Leave approved.");
+        if (request == null || string.IsNullOrWhiteSpace(request.RequestCode))
+            return BadRequest(new { message = "RequestCode is required." });
+
+        await _service.ApproveLeaveByCodeAsync(request.RequestCode);
+        return Ok(new { message = "Leave approved successfully.", requestCode = request.RequestCode });
     }
 
-    [HttpPost("reject/{leaveId}")]
-    public async Task<IActionResult> RejectByCode(string leaveid)
+    [HttpPost("reject")]
+    public async Task<IActionResult> RejectLeaveRequest([FromBody] RejectLeaveRequest request)
     {
-        await _service.RejectLeaveByCodeAsync(leaveid);
-        return Ok("Leave rejected.");
+        if (request == null || string.IsNullOrWhiteSpace(request.RequestCode))
+            return BadRequest(new { message = "RequestCode is required." });
+
+        // Note: rejection note can be stored if the service supports it
+        await _service.RejectLeaveByCodeAsync(request.RequestCode);
+        return Ok(new { message = "Leave rejected successfully.", requestCode = request.RequestCode });
     }
 
     [HttpGet("history/{empId:guid}")]
@@ -65,4 +72,15 @@ public class LeaveController:ControllerBase
     {
         return Ok(await _service.GetRemainingLeavesAsync(empId, leaveTypeId));
     }
+}
+
+public class ApproveLeaveRequest
+{
+    public string RequestCode { get; set; }
+}
+
+public class RejectLeaveRequest
+{
+    public string RequestCode { get; set; }
+    public string Note { get; set; }
 }

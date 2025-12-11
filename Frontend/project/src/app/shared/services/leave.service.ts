@@ -7,6 +7,9 @@ import {
   LeaveRequest,
   LeaveType,
   LeaveHistoryItemDto,
+  PendingLeaveRequest,
+  ApproveLeavePayload,
+  RejectLeavePayload,
 } from "../models/leave.model";
 import { AuthService } from "./auth.service";
 
@@ -19,8 +22,8 @@ export class LeaveService {
     "https://localhost:7225/api/Leave/apply";
   private readonly EMPLOYEE_URL = "https://localhost:7225/api/Employee";
   private readonly ANALYTICS_URL = "https://localhost:7225/api/Analytics";
-  private apiUrl = 'https://localhost:7225/api';
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  private apiUrl = "https://localhost:7225/api";
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   applyLeave(payload: LeaveApplicationPayload): Observable<void> {
     return this.http.post<void>(this.LEAVE_REQUESTS_URL, payload);
@@ -74,7 +77,9 @@ export class LeaveService {
   getLeaveHistory(empiid: string): Observable<LeaveHistoryItemDto[]> {
     if (!empiid)
       return this.http.get<LeaveHistoryItemDto[]>(`${this.API_URL}/history`);
-    return this.http.get<LeaveHistoryItemDto[]>(`${this.API_URL}/history/${empiid}`);
+    return this.http.get<LeaveHistoryItemDto[]>(
+      `${this.API_URL}/history/${empiid}`
+    );
   }
 
   /**
@@ -121,14 +126,39 @@ export class LeaveService {
     return this.http.get<any>(`${this.EMPLOYEE_URL}/celebrations`);
   }
   getWeeklyApprovedPatterns(employeeId: string): Observable<number[]> {
-    return this.http.get<number[]>(`${this.apiUrl}/Analytics/weekly-approved/${employeeId}`);
+    return this.http.get<number[]>(
+      `${this.apiUrl}/Analytics/weekly-approved/${employeeId}`
+    );
   }
 
-  getConsumedLeaveTypesStats(employeeId: string): Observable<{ name: string, value: number }[]> {
-    return this.http.get<{ name: string, value: number }[]>(`${this.apiUrl}/Analytics/consumed-leave-types/${employeeId}`);
+  getConsumedLeaveTypesStats(
+    employeeId: string
+  ): Observable<{ name: string; value: number }[]> {
+    return this.http.get<{ name: string; value: number }[]>(
+      `${this.apiUrl}/Analytics/consumed-leave-types/${employeeId}`
+    );
   }
 
   getMonthlyApprovedStats(employeeId: string): Observable<number[]> {
-    return this.http.get<number[]>(`${this.apiUrl}/Analytics/monthly-stats/${employeeId}`);
+    return this.http.get<number[]>(
+      `${this.apiUrl}/Analytics/monthly-stats/${employeeId}`
+    );
+  }
+
+  getPendingLeaves(): Observable<PendingLeaveRequest[]> {
+    return this.http.get<PendingLeaveRequest[]>(`${this.API_URL}/pending`);
+  }
+
+  approveLeave(payload: ApproveLeavePayload): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}/approve`, payload);
+  }
+
+  /**
+   * Reject a leave request
+   * POST https://localhost:7225/api/Leave/reject
+   * BODY: { "requestCode": "<row.requestCode>", "note": "<rejection note>" }
+   */
+  rejectLeave(payload: RejectLeavePayload): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}/reject`, payload);
   }
 }
