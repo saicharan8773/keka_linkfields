@@ -7,7 +7,7 @@ namespace Keka.Clone.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin,HR,Manager")]
+
 public class DesignationsController:ControllerBase
 {
     private readonly IDesignationService _service;
@@ -41,10 +41,43 @@ public class DesignationsController:ControllerBase
         return Ok(await _service.GetAllAsync());
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        try
+        {
+            return Ok(await _service.GetByIdAsync(id));
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateDesignationRequest request)
     {
         var created = await _service.CreateAsync(request);
         return CreatedAtAction(nameof(GetAll), new { id = created.Id }, created);
+    }
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> Editdesignation(Guid id ,  Designationupdate entity)
+    {
+        var designation = await _service.EditDesignationAsync(id, entity);
+        return Ok(designation);
+    }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        try
+        {
+            await _service.DeleteAsync(id);
+            var message = "Designation deleted successfully";
+            return Ok(message);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

@@ -16,12 +16,16 @@
 
   <div *ngIf="!isLoading && designation" class="details-grid">
     <div class="detail-item">
-      <span class="detail-label">Title</span>
+      <span class="detail-label">Title : </span>
       <span class="detail-value">{{ designation.title }}</span>
     </div>
     <div class="detail-item">
-      <span class="detail-label">ID</span>
-      <span class="detail-value">{{ designation.id }}</span>
+      <span class="detail-label">Department : </span>
+      <span class="detail-value">{{ designation.departmentName }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Description : </span>
+      <span class="detail-value">{{ designation.description }}</span>
     </div>
   </div>
 </div>

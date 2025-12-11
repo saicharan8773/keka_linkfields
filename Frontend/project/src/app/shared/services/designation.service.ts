@@ -37,7 +37,7 @@ export class DesignationService {
     }
 
     updateDesignation(id: string, data: DesignationUpdatePayload): Observable<Designation> {
-        return this.http.put<Designation>(`${this.API_URL}/${id}`, data);
+        return this.http.patch<Designation>(`${this.API_URL}/${id}`, data);
     }
 
     deleteDesignation(id: string): Observable<void> {
