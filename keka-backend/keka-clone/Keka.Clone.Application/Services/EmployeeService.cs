@@ -192,5 +192,126 @@ namespace Keka.Clone.Application.Services
             await _userRepo.AddAsync(user);
             await _userRepo.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<EmployeeAnniversaryDto>> GetTodayAnniversariesAsync()
+        {
+            var today = DateTime.Today;
+            var allEmployees = await _repo.GetAllAsync();
+
+            var anniversaryEmployees = allEmployees
+                .Where(emp =>
+                {
+                    var joiningDate = emp.JoiningDate.Date;
+                    // Check if today is the anniversary (same month and day)
+                    if (joiningDate.Month != today.Month || joiningDate.Day != today.Day)
+                        return false;
+
+                    // Calculate years completed
+                    var yearsCompleted = today.Year - joiningDate.Year;
+
+                    // Must have completed at least 1 year
+                    return yearsCompleted >= 1;
+                })
+                .Select(emp =>
+                {
+                    var joiningDate = emp.JoiningDate.Date;
+                    var yearsCompleted = today.Year - joiningDate.Year;
+
+                    // Generate anniversary message based on years
+                    string message;
+                    if (yearsCompleted == 1)
+                        message = "First Anniversary";
+                    else if (yearsCompleted == 2)
+                        message = "Second Anniversary";
+                    else if (yearsCompleted == 3)
+                        message = "Third Anniversary";
+                    else
+                        message = $"{yearsCompleted}th Anniversary";
+
+                    return new EmployeeAnniversaryDto
+                    {
+                        Id = emp.Id,
+                        EmployeeCode = emp.EmployeeCode,
+                        FirstName = emp.FirstName,
+                        LastName = emp.LastName,
+                        DisplayName = emp.DisplayName,
+                        WorkEmail = emp.WorkEmail,
+                        JoiningDate = emp.JoiningDate,
+                        YearsCompleted = yearsCompleted,
+                        AnniversaryMessage = message,
+                        DepartmentName = emp.Department?.Name,
+                        DesignationTitle = emp.Designation?.Title
+                    };
+                })
+                .OrderBy(emp => emp.YearsCompleted)
+                .ToList();
+
+            return anniversaryEmployees;
+        }
+
+        public async Task<IEnumerable<EmployeeAnniversaryDto>> GetUpcomingAnniversariesAsync(int daysAhead = 15)
+        {
+            var today = DateTime.Today;
+            var endDate = today.AddDays(daysAhead);
+            var allEmployees = await _repo.GetAllAsync();
+            var upcomingAnniversaries = allEmployees
+                .Where(emp =>
+                {
+                    var joiningDate = emp.JoiningDate.Date;
+                    var yearsCompleted = today.Year - joiningDate.Year;
+                    if (yearsCompleted < 1)
+                        return false;
+                    var thisYearAnniversary = new DateTime(today.Year, joiningDate.Month, joiningDate.Day);
+                    return thisYearAnniversary > today && thisYearAnniversary <= endDate;
+                })
+                .Select(emp =>
+                {
+                    var joiningDate = emp.JoiningDate.Date;
+                    var yearsCompleted = today.Year - joiningDate.Year;
+                    var thisYearAnniversary = new DateTime(today.Year, joiningDate.Month, joiningDate.Day);
+                    string message;
+                    if (yearsCompleted == 1)
+                        message = "First Anniversary";
+                    else if (yearsCompleted == 2)
+                        message = "Second Anniversary";
+                    else if (yearsCompleted == 3)
+                        message = "Third Anniversary";
+                    else
+                        message = $"{yearsCompleted}th Anniversary";
+
+                    return new EmployeeAnniversaryDto
+                    {
+                        Id = emp.Id,
+                        EmployeeCode = emp.EmployeeCode,
+                        FirstName = emp.FirstName,
+                        LastName = emp.LastName,
+                        DisplayName = emp.DisplayName,
+                        WorkEmail = emp.WorkEmail,
+                        JoiningDate = emp.JoiningDate,
+                        YearsCompleted = yearsCompleted,
+                        AnniversaryMessage = message,
+                        DepartmentName = emp.Department?.Name,
+                        DesignationTitle = emp.Designation?.Title
+                    };
+                })
+                .OrderBy(emp => new DateTime(today.Year, emp.JoiningDate.Month, emp.JoiningDate.Day))
+                .ToList();
+                Console.WriteLine("Upcoming Anniversaries: " + upcomingAnniversaries.Count);
+            return upcomingAnniversaries;
+        }
+
+        public async Task<IEnumerable<EmployeeDto>> GetNewJoineesAsync(int daysBack = 30)
+        {
+            var today = DateTime.Today;
+            var cutoffDate = today.AddDays(-daysBack);
+            var allEmployees = await _repo.GetAllAsync();
+
+            var newJoinees = allEmployees
+                .Where(emp => emp.JoiningDate.Date >= cutoffDate && emp.JoiningDate.Date <= today)
+                .OrderByDescending(emp => emp.JoiningDate)
+                .ToList();
+
+            return _mapper.Map<IEnumerable<EmployeeDto>>(newJoinees);
+        }
     }
 }

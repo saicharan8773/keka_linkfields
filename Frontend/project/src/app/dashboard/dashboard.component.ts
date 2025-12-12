@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { SidebarComponent } from "../shared/components/sidebar.component";
-// import { WeeklyPatternChartComponent } from "../shared/components/weekly-pattern-chart.component";
 import { LeaveService } from "../shared/services/leave.service";
 import { EmployeeService } from "../shared/services/employee.service";
+import { AnalyticsService, EmployeeAnniversary } from "../shared/services/analytics.service";
 
 interface EmployeeOnLeave {
   id: string;
@@ -21,6 +21,7 @@ interface Employee {
   dateOfBirth?: string;
   workAnniversaryDate?: string;
   joinDate?: string;
+  anniversaryMessage?: string;
 }
 
 @Component({
@@ -43,11 +44,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
   errorMessage = "";
   sidebarOpen: boolean = true;
+  activeTab: string = 'birthdays';
 
   constructor(
     private leaveService: LeaveService,
-    private employeeService: EmployeeService
-  ) {}
+    private employeeService: EmployeeService,
+    private analyticsService: AnalyticsService
+  ) { }
 
   ngOnInit(): void {
     this.loadDashboardData();
@@ -222,14 +225,65 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private loadCelebrations(): void {
-    this.leaveService.getCelebrations().subscribe({
-      next: (data: any) => {
-        this.workAnniversariesToday = data.workAnniversariesToday || [];
-        this.upcomingWorkAnniversaries = data.upcomingWorkAnniversaries || [];
-        this.newJoiners = data.newJoiners || [];
+    // Load work anniversaries from the new API
+    this.analyticsService.getTodayAnniversaries().subscribe({
+      next: (anniversaries: EmployeeAnniversary[]) => {
+        // Transform the API response to match the Employee interface
+        this.workAnniversariesToday = anniversaries.map((emp, index) => ({
+          id: emp.id,
+          name: emp.displayName || `${emp.firstName} ${emp.lastName}`,
+          initials: this.getInitials(emp.displayName || `${emp.firstName} ${emp.lastName}`),
+          avatarColor: this.getAvatarColor(index),
+          workAnniversaryDate: emp.joiningDate,
+          anniversaryMessage: emp.anniversaryMessage,
+        }));
+
+        console.log(`Loaded ${this.workAnniversariesToday.length} work anniversaries today`);
       },
-      error: () => {
-        console.log("Unable to load celebrations data");
+      error: (err) => {
+        console.error('Unable to load work anniversaries:', err);
+        this.workAnniversariesToday = [];
+      },
+    });
+
+    // Load upcoming work anniversaries from the new API
+    this.analyticsService.getUpcomingAnniversaries(15).subscribe({
+      next: (anniversaries: EmployeeAnniversary[]) => {
+        // Transform the API response to match the Employee interface
+        this.upcomingWorkAnniversaries = anniversaries.map((emp, index) => ({
+          id: emp.id,
+          name: emp.displayName || `${emp.firstName} ${emp.lastName}`,
+          initials: this.getInitials(emp.displayName || `${emp.firstName} ${emp.lastName}`),
+          avatarColor: this.getAvatarColor(index),
+          workAnniversaryDate: emp.joiningDate,
+          anniversaryMessage: emp.anniversaryMessage,
+        }));
+
+        console.log(`Loaded ${this.upcomingWorkAnniversaries.length} upcoming work anniversaries`);
+      },
+      error: (err) => {
+        console.error('Unable to load upcoming work anniversaries:', err);
+        this.upcomingWorkAnniversaries = [];
+      },
+    });
+
+    // Load new joiners from the new API
+    this.analyticsService.getNewJoinees(30).subscribe({
+      next: (employees) => {
+        // Transform the API response to match the Employee interface
+        this.newJoiners = employees.map((emp, index) => ({
+          id: emp.id,
+          name: emp.displayName || `${emp.firstName} ${emp.lastName}`,
+          initials: this.getInitials(emp.displayName || `${emp.firstName} ${emp.lastName}`),
+          avatarColor: this.getAvatarColor(index),
+          joinDate: emp.joiningDate,
+        }));
+
+        console.log(`Loaded ${this.newJoiners.length} new joiners`);
+      },
+      error: (err) => {
+        console.error('Unable to load new joiners:', err);
+        this.newJoiners = [];
       },
     });
   }
@@ -284,5 +338,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       month: "short",
       day: "numeric",
     });
+  }
+
+  switchTab(tabName: string): void {
+    this.activeTab = tabName;
   }
 }

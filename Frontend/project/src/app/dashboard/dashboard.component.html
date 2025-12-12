@@ -87,20 +87,20 @@
       <section class="card celebrations-card">
         <div class="tabs-header">
           <div class="tab-buttons">
-            <button class="tab-btn active" onclick="switchTab('birthdays')">
+            <button class="tab-btn" [class.active]="activeTab === 'birthdays'" (click)="switchTab('birthdays')">
               🎂 {{ birthdaysToday.length }} Birthday
             </button>
-            <button class="tab-btn" onclick="switchTab('anniversaries')">
+            <button class="tab-btn" [class.active]="activeTab === 'anniversaries'" (click)="switchTab('anniversaries')">
               🎖️ {{ workAnniversariesToday.length }} Work Anniversary
             </button>
-            <button class="tab-btn" onclick="switchTab('joiners')">
+            <button class="tab-btn" [class.active]="activeTab === 'joiners'" (click)="switchTab('joiners')">
               👤 {{ newJoiners.length }} New joinee<span *ngIf="newJoiners.length !== 1">s</span>
             </button>
           </div>
         </div>
 
         <!-- Birthdays Tab -->
-        <div id="birthdays" class="tab-content active">
+        <div id="birthdays" class="tab-content" [class.active]="activeTab === 'birthdays'">
           <div class="celebrations-section">
             <h3>Birthdays today</h3>
             <div class="celebrations-list">
@@ -137,7 +137,7 @@
         </div>
 
         <!-- Work Anniversaries Tab -->
-        <div id="anniversaries" class="tab-content">
+        <div id="anniversaries" class="tab-content" [class.active]="activeTab === 'anniversaries'">
           <div class="celebrations-section">
             <h3>Work Anniversaries today</h3>
             <div class="celebrations-list">
@@ -149,7 +149,12 @@
                   {{ getInitials(emp.name) }}
                 </div>
                 <div class="employee-info">
-                  <span class="employee-name">{{ emp.name }}</span>
+                  <div>
+                    <span class="employee-name">{{ emp.name }}</span>
+                    <div *ngIf="emp.anniversaryMessage" style="font-size: 0.85em; color: #666; margin-top: 2px;">
+                      🎉 {{ emp.anniversaryMessage }}
+                    </div>
+                  </div>
                   <a href="#" class="wish-btn">Wish</a>
                 </div>
               </div>
@@ -174,19 +179,24 @@
         </div>
 
         <!-- New Joiners Tab -->
-        <div id="joiners" class="tab-content">
+        <div id="joiners" class="tab-content" [class.active]="activeTab === 'joiners'">
           <div class="celebrations-section">
-            <h3>New joiners</h3>
+            <h3>New joiners (Last 30 Days)</h3>
             <div class="celebrations-list">
               <div *ngIf="newJoiners.length === 0" class="empty-state">
-                <p>No new joiners</p>
+                <p>No new joiners in the last 30 days</p>
               </div>
               <div *ngFor="let emp of newJoiners; let i = index" class="celebration-item">
                 <div class="avatar" [style.background-color]="getAvatarColor(i)">
                   {{ getInitials(emp.name) }}
                 </div>
                 <div class="employee-info">
-                  <span class="employee-name">{{ emp.name }}</span>
+                  <div>
+                    <span class="employee-name">{{ emp.name }}</span>
+                    <div *ngIf="emp.joinDate" style="font-size: 0.85em; color: #666; margin-top: 2px;">
+                      📅 Joined on {{ formatDate(emp.joinDate) }}
+                    </div>
+                  </div>
                   <a href="#" class="wish-btn">Welcome</a>
                 </div>
               </div>

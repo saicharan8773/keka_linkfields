@@ -141,19 +141,19 @@
 }
 
 .employee-table th {
-  padding: 16px;
+  padding: 20px 50px;
   font-size: 13px;
   color: #666;
   text-transform: uppercase;
   font-weight: 600;
-  text-align: center;
+  text-align: left;
 }
 
 .employee-table td {
   padding: 18px;
   border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
-  text-align: center;
+  text-align: left;
 
 }
 
