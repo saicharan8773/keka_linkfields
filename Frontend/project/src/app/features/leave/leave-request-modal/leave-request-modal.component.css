@@ -51,7 +51,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #1f2937;
+    background-color: #000000;
+    color: #ffd166;
+    padding: 16px 32px;
+    margin: -28px -32px 24px -32px;
 }
 
 .leave-modal-close {
@@ -197,7 +200,7 @@
 }
 
 .btn-request {
-    background: #6a4ff5;
+    background: #ffd166;
     padding: 10px 32px;
     border-radius: 6px;
     border: none;

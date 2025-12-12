@@ -26,6 +26,7 @@
         <table class="employee-table">
           <thead>
             <tr>
+              <th>S.No</th>
               <th>Title</th>
               <th>Basic</th>
               <th>HRA</th>
@@ -37,7 +38,10 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let structure of salaryStructures">
+            <tr *ngFor="let structure of salaryStructures; let i = index">
+              <td data-label="S.No">
+                <span class="serial-number">{{ getSerialNumber(i) }}</span>
+              </td>
               <td data-label="Title">{{ structure.title }}</td>
               <td data-label="Basic">
                 {{ structure.basic | currency : "INR" }}
@@ -53,16 +57,16 @@
                 {{ calculateTotal(structure) | currency : "INR" }}
               </td>
               <td data-label="Actions" class="action-col">
-                <button class="icon-btn" (click)="showDetailsModal(structure.id!)" title="View">
-                  <span class="material-icons" style="font-size: 18px">visibility</span>
+                <button class="icon-btn view" (click)="showDetailsModal(structure.id!)" title="View">
+                  <span class="material-icons md-18">visibility</span>
                 </button>
 
-                <button class="icon-btn" (click)="showEditModal(structure.id!)" title="Edit">
-                  <span class="material-icons" style="font-size: 18px">edit</span>
+                <button class="icon-btn edit" (click)="showEditModal(structure.id!)" title="Edit">
+                  <span class="material-icons md-18">edit</span>
                 </button>
 
                 <button class="icon-btn delete" (click)="onDelete(structure.id)" title="Delete">
-                  <span class="material-icons" style="font-size: 18px; color: #c33">delete</span>
+                  <span class="material-icons md-18">delete</span>
                 </button>
               </td>
             </tr>

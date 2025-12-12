@@ -1,11 +1,8 @@
-/* Bootstrap Icon Styles for Employee List Actions */
+/* Material Icon Styles - Base styles are in global_styles.css */
 .material-icons.md-18 {
   font-size: 18px;
   color: #283a4d;
   vertical-align: middle;
-}
-.material-icons.md-delete {
-  color: #c33;
 }
 
 /* Search and Add Employee Row */
@@ -88,18 +85,19 @@
 
 /* SEARCH BOX */
 .search-box {
- position: relative;
+  position: relative;
 }
 
 .search-box input {
   top: 100px;
   width: 400px;
- padding: 14px 18px 14px 42px;
+  padding: 14px 18px 14px 42px;
   border-radius: 10px;
   border: 1px solid #d8d8d8;
   font-size: 15px;
   background: #f9fbfd;
 }
+
 .search-box .search-icon {
   position: absolute;
   left: 14px;
@@ -108,6 +106,7 @@
   font-size: 20px;
   color: #131212;
 }
+
 .plus-sign {
   font-size: 18px;
   font-weight: bold;
@@ -142,7 +141,7 @@
 }
 
 .employee-table th {
-  padding: 16px;
+  padding: 20px 50px;
   font-size: 13px;
   color: #666;
   text-transform: uppercase;
@@ -154,6 +153,8 @@
   padding: 18px;
   border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
+  text-align: left;
+
 }
 
 .employee-table tbody tr:hover {
@@ -227,70 +228,58 @@
   font-size: 12px;
 }
 
+/* SERIAL NUMBER */
+.serial-number {
+  font-weight: 600;
+  color: #283a4d;
+  font-size: 14px;
+}
+
+.employee-table th:first-child,
+.employee-table td:first-child {
+  width: 80px;
+  text-align: center;
+}
+
+
 /* ACTION BUTTONS */
 .action-col {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .pagination-controls {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 12px;
-    margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .pagination-controls button {
-    padding: 6px 16px;
-    border-radius: 6px;
-    border: none;
-    background: #f7f9fb;
-    color: #232e3c;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #f7f9fb;
+  color: #232e3c;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .pagination-controls button.active,
 .pagination-controls button:focus {
-    background: #232e3c;
-    color: #fff;
+  background: #232e3c;
+  color: #fff;
 }
 
 .pagination-controls button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.icon-btn {
-    background: none;
-    border: none;
-    padding: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    position: relative;
-}
-
-.icon-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-.icon-btn svg {
-  width: 22px;
-  height: 22px;
-}
-
-.icon-btn:hover {
-  transform: scale(1.15);
-}
+/* Icon button styles are now in global_styles.css */
 
 .icon-btn.delete:hover svg {
   stroke: #ff3b30;
@@ -342,6 +331,7 @@
 }
 
 @media screen and (max-width: 992px) {
+
   .employee-table th:nth-child(5),
   .employee-table td:nth-child(5),
   .employee-table th:nth-child(6),

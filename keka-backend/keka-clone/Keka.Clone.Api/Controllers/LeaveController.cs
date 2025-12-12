@@ -33,7 +33,7 @@ public class LeaveController : ControllerBase
     public async Task<IActionResult> ApplyLeave(LeaveRequestDto dto)
     {
         await _service.ApplyLeaveAsync(dto);
-        return Ok("Leave applied successfully.");
+        return Ok(new { message = "Leave applied successfully." });
     }
 
     [HttpPost("approve")]

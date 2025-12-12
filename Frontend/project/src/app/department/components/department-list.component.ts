@@ -53,7 +53,7 @@ export class DepartmentListComponent implements OnInit {
     private departmentService: DepartmentService,
     private router: Router,
     private toastService: ToastService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadDepartments();
@@ -110,6 +110,10 @@ export class DepartmentListComponent implements OnInit {
 
   get totalPages(): number {
     return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  getSerialNumber(index: number): number {
+    return (this.currentPage - 1) * this.itemsPerPage + index + 1;
   }
 
   showDetailsModal(departmentId: string): void {

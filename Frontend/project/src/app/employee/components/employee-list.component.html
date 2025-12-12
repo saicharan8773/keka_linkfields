@@ -13,7 +13,7 @@
 
       <!-- Search, Filter, Add Button -->
       <div class="search-add-row">
-        <div class="search-filter-group">  
+        <div class="search-filter-group">
           <div class="search-box">
             <span class="material-icons md-18 search-icon">search</span>
             <input type="text" placeholder="Search employees…" [(ngModel)]="searchText" (input)="onSearch()" />
@@ -21,13 +21,8 @@
 
           <!-- FILTER BUTTON -->
           <div class="filter-wrapper">
-            <button
-              class="btn-filter"
-              (click)="toggleFilterPanel()"
-              [class.active]="showFilterPanel"
-            >
-              <span class="material-icons md-18">filter_list</span
-              ><span>Filter</span>
+            <button class="btn-filter" (click)="toggleFilterPanel()" [class.active]="showFilterPanel">
+              <span class="material-icons md-18">filter_list</span><span>Filter</span>
             </button>
 
             <!-- FILTER PANEL -->
@@ -84,7 +79,7 @@
                     <option value="Intern">Intern</option>
                   </select>
                 </div>-->
-              </div> 
+              </div>
 
               <div class="filter-footer">
                 <button class="btn-clear" (click)="clearFilters()">
@@ -109,6 +104,7 @@
         <table class="employee-table">
           <thead>
             <tr>
+              <th>S.No</th>
               <th>Employee</th>
               <th>Code</th>
               <th>Department</th>
@@ -120,7 +116,12 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let employee of employees">
+            <tr *ngFor="let employee of employees; let i = index">
+              <!-- SERIAL NUMBER -->
+              <td data-label="S.No">
+                <span class="serial-number">{{ getSerialNumber(i) }}</span>
+              </td>
+
               <!-- EMPLOYEE -->
               <td data-label="Employee">
                 <div class="emp-profile">
@@ -155,35 +156,23 @@
 
               <!-- ACTIONS -->
               <td data-label="Actions" class="action-col">
-                <button
-                  class="icon-btn"
-                  (click)="showDetailsModal(employee.id!)"
-                  title="View"
-                >
+                <button class="icon-btn view" (click)="showDetailsModal(employee.id!)" title="View">
                   <span class="material-icons md-18">visibility</span>
                 </button>
 
-                <button
-                  class="icon-btn"
-                  (click)="showEditModal(employee.id!)"
-                  title="Edit"
-                >
+                <button class="icon-btn edit" (click)="showEditModal(employee.id!)" title="Edit">
                   <span class="material-icons md-18">edit</span>
                 </button>
 
-                <button
-                  class="icon-btn delete"
-                  (click)="onDelete(employee.id)"
-                  title="Delete"
-                >
-                  <span class="material-icons md-18 md-delete">delete</span>
+                <button class="icon-btn delete" (click)="onDelete(employee.id)" title="Delete">
+                  <span class="material-icons md-18">delete</span>
                 </button>
               </td>
             </tr>
 
             <!-- EMPTY STATE -->
             <tr *ngIf="employees.length === 0">
-              <td colspan="7" class="empty-state">No employees found.</td>
+              <td colspan="8" class="empty-state">No employees found.</td>
             </tr>
           </tbody>
         </table>
@@ -191,19 +180,13 @@
 
       <!-- PAGINATION -->
       <div class="pagination-controls">
-        <button
-          (click)="onPageChange(currentPage - 1)"
-          [disabled]="currentPage === 1"
-        >
+        <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
           &laquo; Previous
         </button>
 
         <span>Page {{ currentPage }} of {{ totalPages }}</span>
 
-        <button
-          (click)="onPageChange(currentPage + 1)"
-          [disabled]="currentPage === totalPages"
-        >
+        <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">
           Next &raquo;
         </button>
       </div>

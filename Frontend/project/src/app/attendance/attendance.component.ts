@@ -112,9 +112,9 @@ export class AttendanceComponent implements OnInit, OnDestroy {
       (err) => this.showToast("Unable to get location: " + err.message, "error")
     );
   }
- onRequestLeave() {
-  this.router.navigate(['/leave']);
-}
+  onRequestLeave() {
+    this.router.navigate(["/leave"], { queryParams: { action: "apply" } });
+  }
   onLogin() {
     this.getLocationAndCall("login");
   }

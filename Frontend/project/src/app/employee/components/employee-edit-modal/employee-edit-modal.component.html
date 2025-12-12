@@ -1,12 +1,12 @@
 <div class="modal-header">
-   <div class="title-box">
+  <div class="title-box">
     <h2>Edit Employee</h2>
-    <p>Editing <span>{{employee?.displayName}}</span> employee details</p>
+    <p class="sub-title">
+      Editing <span>{{employee?.displayName}}</span> employee details
+    </p>
   </div>
-  <button (click)="onCancel()">
-    <span class="material-icons">close</span>
-  </button>
 </div>
+
 
 <div class="modal-body">
   <div *ngIf="isLoading" class="loading">Loading employee details...</div>

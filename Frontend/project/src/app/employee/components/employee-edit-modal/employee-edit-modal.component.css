@@ -20,17 +20,6 @@
   flex-direction: column;
 }
 
-.title-box p {
-  margin: 4px 0 0 0;
-  font-size: 0.875rem;
-  color: #cccccc;
-}
-
-.title-box span {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #f3f3ea;
-}
 .close-btn {
   background: transparent;
   border: none;
@@ -46,6 +35,19 @@
 .material-icons:hover {
   color: #c21313;
 }
+
+.sub-title {
+  margin: 4px 0 0 0;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #ffd166;
+}
+
+.sub-title span {
+  font-weight: 600;
+  color: #ffd166;
+}
+
 
 .modal-body {
   padding: 24px;

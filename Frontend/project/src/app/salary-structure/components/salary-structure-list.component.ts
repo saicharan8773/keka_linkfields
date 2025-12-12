@@ -43,7 +43,7 @@ export class SalaryStructureListComponent implements OnInit {
   constructor(
     private salaryStructureService: SalaryStructureService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadSalaryStructures();
@@ -99,6 +99,10 @@ export class SalaryStructureListComponent implements OnInit {
 
   get totalPages(): number {
     return Math.ceil(this.filteredSalaryStructures.length / this.itemsPerPage);
+  }
+
+  getSerialNumber(index: number): number {
+    return (this.currentPage - 1) * this.itemsPerPage + index + 1;
   }
 
   calculateTotal(structure: SalaryStructure): number {

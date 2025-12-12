@@ -69,6 +69,16 @@ namespace Keka.Clone.Persistence.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Employee>> GetAllAsync()
+        {
+            return await _db.Employees
+                .Include(e => e.Department)
+                .Include(e => e.Designation)
+                .Include(e => e.Manager)
+                .Include(e => e.Location)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<ManagerDto>> GetManagersAsync()
         {
             // Join Users with Employees on Email
