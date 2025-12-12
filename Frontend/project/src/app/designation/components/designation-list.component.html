@@ -35,6 +35,7 @@
             <tr>
               <th>Title</th>
               <th>Department</th>
+              <th>Employees</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -43,7 +44,11 @@
             <tr *ngFor="let designation of designations">
               <td data-label="Title">{{ designation.title }}</td>
               <td data-label="Department">{{ designation.departmentName }}</td>
-
+              <td>
+                <span class="employee-count clickable-count" (click)="navigateToEmployees(designation)">
+                  View Employees
+                </span>
+              </td>
               <td data-label="Actions" class="action-col">
                 <button
                   class="icon-btn"

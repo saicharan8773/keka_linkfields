@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using AutoMapper;
 using Keka.Clone.Application.DTOs.Designation;
+using Keka.Clone.Application.DTOs.Employee;
 using Keka.Clone.Application.Interfaces;
 using Keka.Clone.Domain.Entities;
 
@@ -93,7 +94,11 @@ public class DesignationService : IDesignationService
         var entities = await _repo.GetByDepartmentIdAsync(department.Id);
         return _mapper.Map<IEnumerable<DesignationDto>>(entities);
     }
-
+    public async Task<IEnumerable<EmployeeDto>> GetByDesignationIdAsync(Guid designationId)
+    {
+        var employees = await _repo.GetByDesignationIdAsync(designationId);
+        return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
+    }
     public async Task<DesignationDto> EditDesignationAsync(Guid id , Designationupdate entity)
     {
         var designationEntity = await _repo.GetByIdAsync(id);

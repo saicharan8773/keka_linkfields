@@ -1,3 +1,174 @@
+/* Employees on leave professional style */
+.on-leave-card .leave-date-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.on-leave-card .employees-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.employees-container {
+  width: 100%;
+}
+.employees-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;      /* allows wrapping to next row if many absentees */
+  align-items: center;
+}
+
+/* Circular avatar with initials */
+.avatar-circle {
+  width: 44px;
+  height: 44px;
+  background: #3c67ff15;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3c67ff;
+  font-size: 16px;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+
+/* Hover effect on avatar */
+.avatar-circle:hover {
+  background: #3c67ff;
+  color: #fff;
+  transform: scale(1.08);
+}
+.leave-date-display {
+  font-size: 12px;
+  color: #64748b;
+}
+/* Employee list item */
+.employee-item.professional {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: 0.22s ease;
+  cursor: pointer;
+}
+.employee-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card hover effect */
+.hover-card:hover {
+  background: #f5f7ff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(80, 100, 255, 0.12);
+}
+.leave-date-display {
+  font-size: 12px;
+  color: #64748b;
+}
+/* Container alignment */
+.leave-date-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Label styling */
+.leave-date-picker label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Interactive date input */
+.leave-date-picker input[type="date"] {
+  padding: 8px 14px;
+  font-size: 14px;
+  border: 1px solid #d4d7e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1e293b;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* On hover */
+.leave-date-picker input[type="date"]:hover {
+  border-color: #3c67ff;
+  box-shadow: 0 2px 6px rgba(60, 103, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+/* On focus */
+.leave-date-picker input[type="date"]:focus {
+  outline: none;
+  border-color: #3c67ff;
+  background: #f5f7ff;
+  box-shadow: 0 0 0 3px rgba(60, 103, 255, 0.15);
+}
+
+/* Small animation when date is changed */
+.leave-date-picker input[type="date"]:active {
+  transform: scale(0.98);
+}
+
+.employee-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.employee-email {
+  font-size: 13px;
+  color: #64748b;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+
+.hover-card:hover .employee-email {
+  opacity: 1;
+}
+/* Reveal email on hover */
+.hover-card:hover .employee-email {
+  opacity: 1;
+}
+
+.professional-avatar {
+  width: 40px;
+  height: 40px;
+  background: #e0e7ef;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #283a4d;
+}
+.employee-info {
+  display: flex;
+  flex-direction: column;
+}
+.employees-list-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+.employee-avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
 .dashboard-container {
   display: flex;
   width: 100%;
@@ -53,7 +224,7 @@
 }
 
 .time-card {
-  background: linear-gradient(135deg,#8e7cc3,#a58bd6);
+  background: linear-gradient(135deg, #8e7cc3, #a58bd6);
   color: white;
 }
 
@@ -66,7 +237,7 @@
 .time-body {
   display: flex;
   justify-content: space-between;
-  color:black;
+  color: black;
   align-items: center;
   margin-top: 12px;
 }

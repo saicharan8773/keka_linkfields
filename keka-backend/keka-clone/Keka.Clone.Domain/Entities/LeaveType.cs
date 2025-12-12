@@ -7,4 +7,5 @@ public class LeaveType
     public string Name { get; set; } = null!;  // Sick, Casual, etc.
     public int DefaultDays { get; set; }
     public bool IsUnlimited { get; set; }
+    public ICollection<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();
 }

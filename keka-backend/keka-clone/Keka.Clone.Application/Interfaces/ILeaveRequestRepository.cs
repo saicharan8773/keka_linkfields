@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Keka.Clone.Application.DTOs;
 using Keka.Clone.Domain.Entities;
 
 namespace Keka.Clone.Application.Interfaces
@@ -14,6 +15,8 @@ namespace Keka.Clone.Application.Interfaces
         Task<List<LeaveRequest>> GetEmployeeHistoryAsync(Guid employeeId);
 
         Task<List<LeaveRequest>> GetPendingRequestsAsync();
+
+        Task<IEnumerable<LeaveRequest>> GetApprovedLeaveRequestsForDateAsync(DateTime date);
 
         Task AddAsync(LeaveRequest request);
         Task UpdateAsync(LeaveRequest request);

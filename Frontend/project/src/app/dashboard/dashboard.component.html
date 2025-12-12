@@ -11,7 +11,7 @@
       <section class="card time-card">
         <div class="time-header">
           <div>
-            <h3>Time Today - {{ currentTime | date: 'EEE, dd MMM yyyy' }}</h3>
+            <h3>Time Today - {{ currentTime | date : "EEE, dd MMM yyyy" }}</h3>
           </div>
           <a class="view-all" href="#">View All</a>
         </div>
@@ -19,10 +19,10 @@
         <div class="time-body">
           <div class="current-time">
             <div class="time-large">
-              {{ currentTime | date: 'hh:mm' }}
-              <span class="seconds">{{ currentTime | date: 'ss' }}</span>
+              {{ currentTime | date : "hh:mm" }}
+              <span class="seconds">{{ currentTime | date : "ss" }}</span>
             </div>
-            <div class="ampm">{{ currentTime | date: 'a' }}</div>
+            <div class="ampm">{{ currentTime | date : "a" }}</div>
           </div>
           <div class="time-actions">
             <button class="btn">Work From Home</button>
@@ -45,7 +45,7 @@
 
           <div class="balance-item">
             <div class="circle">
-              <div class="value">{{ leaveBalances?.lop ?? '∞' }}</div>
+              <div class="value">{{ leaveBalances?.lop ?? "∞" }}</div>
             </div>
             <div class="label">LOP</div>
           </div>
@@ -73,19 +73,49 @@
       </section>
       <!-- On Leave Today -->
       <section class="card on-leave-card">
-        <h2>On Leave Today</h2>
-        <div class="employees-list">
-          <div *ngIf="employeesOnLeaveToday.length === 0" class="empty-state">
-            <p>No employees on leave today</p>
-          </div>
-          <div *ngFor="let emp of employeesOnLeaveToday" class="employee-item">
-            <div class="avatar" [style.background-color]="emp.avatarColor">
-              {{ emp.initials }}
-            </div>
-            <span class="employee-name">{{ emp.name }}</span>
-          </div>
+  <h2>Employees On Leave ({{ employeesOnLeave.length }})</h2>
+
+  <div class="employees-container">
+ <div class="leave-date-picker">
+    <label for="leaveDate">Date:</label>
+    <input
+      id="leaveDate"
+      type="date"
+      [(ngModel)]="selectedLeaveDate"
+      (change)="fetchEmployeesOnLeave(selectedLeaveDate)"
+    />
+  </div>
+    <div class="employees-row">
+      <div
+        *ngFor="let emp of employeesOnLeave"
+        class="employee-item professional hover-card"
+      >
+        <div
+          class="avatar-circle"
+          [title]="emp.displayName || (emp.firstName + ' ' + emp.lastName)"
+        >
+          {{ emp.firstName[0] }}{{ emp.lastName[0] }}
         </div>
-      </section>
+
+        <div class="employee-info">
+          <span class="employee-name">
+            {{ emp.displayName || emp.firstName + ' ' + emp.lastName }}
+          </span>
+          <span class="employee-email">
+            {{ emp.workEmail }}
+          </span>
+        </div>
+    
+
+      </div>
+    </div>
+       <div *ngIf="employeesOnLeave.length === 0" class="empty-state">
+      <p>No employees on leave for this date</p>
+    </div>
+  </div>
+</section>
+
+      
 
       <!-- Birthdays & Anniversaries Tabs -->
       <section class="card celebrations-card">
@@ -133,7 +163,9 @@
                     {{ getInitials(emp.name) }}
                   </div>
                   <span class="employee-name">{{ emp.name }}</span>
-                  <span class="date">{{ formatDate(emp.dateOfBirth || '') }}</span>
+                  <span class="date">{{
+                    formatDate(emp.dateOfBirth || "")
+                    }}</span>
                 </div>
               </div>
             </div>
@@ -170,7 +202,9 @@
                     {{ getInitials(emp.name) }}
                   </div>
                   <span class="employee-name">{{ emp.name }}</span>
-                  <span class="date">{{ formatDate(emp.workAnniversaryDate || '') }}</span>
+                  <span class="date">{{
+                    formatDate(emp.workAnniversaryDate || "")
+                    }}</span>
                 </div>
               </div>
             </div>
@@ -205,20 +239,20 @@
 <script>
   function switchTab(tabName) {
     // Hide all tabs
-    const tabs = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => tab.classList.remove('active'));
+    const tabs = document.querySelectorAll(".tab-content");
+    tabs.forEach((tab) => tab.classList.remove("active"));
 
     // Deactivate all buttons
-    const buttons = document.querySelectorAll('.tab-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
+    const buttons = document.querySelectorAll(".tab-btn");
+    buttons.forEach((btn) => btn.classList.remove("active"));
 
     // Show selected tab
     const selectedTab = document.getElementById(tabName);
     if (selectedTab) {
-      selectedTab.classList.add('active');
+      selectedTab.classList.add("active");
     }
 
     // Activate clicked button
-    event.target.classList.add('active');
+    event.target.classList.add("active");
   }
 </script>

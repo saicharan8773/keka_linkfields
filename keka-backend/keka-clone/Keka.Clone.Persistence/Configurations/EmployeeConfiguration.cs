@@ -42,5 +42,6 @@ public class EmployeeConfiguration:IEntityTypeConfiguration<Employee>
             .WithOne(la => la.Employee)
             .HasForeignKey(la => la.EmployeeId)
             .OnDelete(DeleteBehavior.Cascade);
+
     }
 }

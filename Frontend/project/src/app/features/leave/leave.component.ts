@@ -13,6 +13,7 @@ import { LeaveService } from "../../shared/services/leave.service";
 import { AuthService } from "../../shared/services/auth.service";
 import { LeaveRequestModalComponent } from "./leave-request-modal/leave-request-modal.component";
 import { RejectModalComponent } from "./reject-modal/reject-modal.component";
+import { ApproveModalComponent } from "./approve-modal/approve-modal.component";
 import { SidebarComponent } from "../../shared/components/sidebar.component";
 import {
   LeaveTypeAvailabilityDto,
@@ -29,6 +30,7 @@ Chart.register(...registerables);
     CommonModule,
     FormsModule,
     LeaveRequestModalComponent,
+    ApproveModalComponent,
     RejectModalComponent,
     SidebarComponent,
   ],
@@ -41,6 +43,8 @@ export class LeaveComponent implements OnInit, AfterViewInit {
   @ViewChild("monthlyChart") monthlyChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild("requestModal") requestModal!: LeaveRequestModalComponent;
   @ViewChild("rejectModal") rejectModal!: RejectModalComponent;
+  @ViewChild("approveModal") approveModal!: ApproveModalComponent;
+  currentApproveRequestCode: string = "";
 
   // Helper for template
   Math = Math;
@@ -428,29 +432,39 @@ export class LeaveComponent implements OnInit, AfterViewInit {
     });
   }
 
-  approveLeave(requestCode: string) {
-    if (this.loadingRequests.has(requestCode)) return;
+  openApproveModal(requestCode: string) {
+    this.currentApproveRequestCode = requestCode;
+    this.approveModal.open();
+  }
+
+  handleApproveConfirm(message: string) {
+    const requestCode = this.currentApproveRequestCode;
+    if (!requestCode || this.loadingRequests.has(requestCode)) return;
 
     this.loadingRequests.add(requestCode);
-    this.leaveService.approveLeave({ requestCode }).subscribe({
-      next: (response) => {
-        this.loadingRequests.delete(requestCode);
-        // Remove from pending list
-        this.pendingLeaves = this.pendingLeaves.filter(
-          (l) => l.requestCode !== requestCode
-        );
-        this.showToast("Leave Approved", "success");
-        console.log("✅ Leave approved:", response);
-      },
-      error: (err) => {
-        this.loadingRequests.delete(requestCode);
-        console.error("❌ Error approving leave:", err);
-        const errorMsg =
-          err.error?.message ||
-          "Unable to update leave request. Please try again.";
-        this.showToast("❌ " + errorMsg, "error");
-      },
-    });
+    this.leaveService
+      .approveLeave({ requestCode, requestMessage: message })
+      .subscribe({
+        next: (response) => {
+          this.loadingRequests.delete(requestCode);
+          // Remove from pending list
+          this.pendingLeaves = this.pendingLeaves.filter(
+            (l) => l.requestCode !== requestCode
+          );
+          this.showToast("Leave Approved", "success");
+          console.log("✅ Leave approved:", response);
+          this.currentApproveRequestCode = "";
+        },
+        error: (err) => {
+          this.loadingRequests.delete(requestCode);
+          console.error("❌ Error approving leave:", err);
+          const errorMsg =
+            err.error?.message ||
+            "Unable to update leave request. Please try again.";
+          this.showToast("❌ " + errorMsg, "error");
+          this.currentApproveRequestCode = "";
+        },
+      });
   }
 
   openRejectModal(requestCode: string) {
@@ -458,32 +472,32 @@ export class LeaveComponent implements OnInit, AfterViewInit {
     this.rejectModal.open();
   }
 
-  handleRejectConfirm(note: string) {
+  handleRejectConfirm(message: string) {
     const requestCode = this.currentRejectRequestCode;
     if (!requestCode || this.loadingRequests.has(requestCode)) return;
 
     this.loadingRequests.add(requestCode);
-    this.leaveService.rejectLeave({ requestCode, note }).subscribe({
-      next: (response) => {
-        this.loadingRequests.delete(requestCode);
-        // Remove from pending list
-        this.pendingLeaves = this.pendingLeaves.filter(
-          (l) => l.requestCode !== requestCode
-        );
-        this.showToast("Leave Rejected", "success");
-        console.log("✅ Leave rejected:", response);
-        this.currentRejectRequestCode = "";
-      },
-      error: (err) => {
-        this.loadingRequests.delete(requestCode);
-        console.error("❌ Error rejecting leave:", err);
-        const errorMsg =
-          err.error?.message ||
-          "Unable to update leave request. Please try again.";
-        this.showToast("❌ " + errorMsg, "error");
-        this.currentRejectRequestCode = "";
-      },
-    });
+    this.leaveService
+      .rejectLeave({ requestCode, requestMessage: message })
+      .subscribe({
+        next: (response) => {
+          this.loadingRequests.delete(requestCode);
+          // Remove from pending list
+          this.pendingLeaves = this.pendingLeaves.filter(
+            (l) => l.requestCode !== requestCode
+          );
+          this.showToast("Leave Rejected", "success");
+          this.currentRejectRequestCode = "";
+        },
+        error: (err) => {
+          this.loadingRequests.delete(requestCode);
+          const errorMsg =
+            err.error?.message ||
+            "Unable to update leave request. Please try again.";
+          this.showToast("❌ " + errorMsg, "error");
+          this.currentRejectRequestCode = "";
+        },
+      });
   }
 
   isRequestLoading(requestCode: string): boolean {

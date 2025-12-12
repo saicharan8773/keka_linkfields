@@ -6,6 +6,7 @@ using Keka.Clone.Application.Interfaces;
 using Keka.Clone.Application.Mappings;
 using Keka.Clone.Application.Services;
 using Keka.Clone.Application.Validators;
+using Keka.Clone.Infrastructure.Email;
 using Keka.Clone.Persistence;
 using Keka.Clone.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,6 +66,7 @@ builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddAutoMapper(typeof(MasterDataProfile));
 builder.Services.AddScoped<ILeaveService, LeaveService>();
 builder.Services.AddScoped<INotificationService, Keka.Clone.Infrastructure.Services.NotificationService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 var jwtSection = builder.Configuration.GetSection("Jwt");
 var keyBytes = Encoding.UTF8.GetBytes(jwtSection["Key"]!);
 
