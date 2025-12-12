@@ -25,6 +25,12 @@ export class LeaveService {
   private apiUrl = "https://localhost:7225/api";
   constructor(private http: HttpClient, private authService: AuthService) {}
 
+  getEmployeesOnLeave(date: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      `https://localhost:7225/api/Leave/EmployeesOnLeave?date=${date}`
+    );
+  }
+
   applyLeave(payload: LeaveApplicationPayload): Observable<void> {
     return this.http.post<void>(this.LEAVE_REQUESTS_URL, payload);
   }

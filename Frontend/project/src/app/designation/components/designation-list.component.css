@@ -161,6 +161,23 @@
   background-color: #f9f9f9;
 }
 
+.clickable-count {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.clickable-count:hover {
+  background-color: #bbdefb;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* AVATAR + NAME + EMAIL */
 .emp-profile {
   display: flex;

@@ -3,11 +3,12 @@
 
   <main class="main-content">
     <div class="leave-page">
-
       <div class="flex justify-between items-center mb-2">
         <div>
           <h1 class="text-xl font-bold text-gray-800">Me</h1>
-          <p class="text-xs text-gray-500 mt-1 uppercase tracking-wider">My Leave Dashboard</p>
+          <p class="text-xs text-gray-500 mt-1 uppercase tracking-wider">
+            My Leave Dashboard
+          </p>
         </div>
         <button class="primary" (click)="openRequestModal()">
           + Apply Leave
@@ -17,19 +18,30 @@
       <div>
         <h2 class="text-lg font-semibold text-gray-700 mb-4">My Leave Stats</h2>
         <div class="stats-grid">
-
           <div class="stat-card">
             <div class="stat-header">
               <h4>Weekly Pattern</h4>
               <button class="ghost" aria-label="Weekly pattern info">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
                 </svg>
               </button>
             </div>
             <div class="flex-1 relative p-2 min-h-0 chart-container">
-              <canvas #weeklyChart aria-label="Weekly leave pattern chart"></canvas>
+              <canvas
+                #weeklyChart
+                aria-label="Weekly leave pattern chart"
+              ></canvas>
             </div>
           </div>
 
@@ -37,17 +49,33 @@
             <div class="stat-header">
               <h4>Consumed Leave Types</h4>
               <button class="ghost" aria-label="Consumed leave info">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
                 </svg>
               </button>
             </div>
-            <div class="flex-1 flex justify-center items-center p-2 relative min-h-0">
+            <div
+              class="flex-1 flex justify-center items-center p-2 relative min-h-0"
+            >
               <div class="chart-small">
-                <canvas #consumedChart aria-label="Consumed leave types"></canvas>
+                <canvas
+                  #consumedChart
+                  aria-label="Consumed leave types"
+                ></canvas>
                 <div class="donut-center" aria-hidden="true">
-                  <span class="text-xs font-bold text-brand leading-tight">Leave<br>Types</span>
+                  <span class="text-xs font-bold text-brand leading-tight"
+                    >Leave<br />Types</span
+                  >
                 </div>
               </div>
             </div>
@@ -57,9 +85,18 @@
             <div class="stat-header">
               <h4>Monthly Stats</h4>
               <button class="ghost" aria-label="Monthly stats info">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
                 </svg>
               </button>
             </div>
@@ -67,7 +104,6 @@
               <canvas #monthlyChart aria-label="Monthly leave chart"></canvas>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -75,34 +111,69 @@
         <h2 class="text-lg font-semibold text-gray-700 mb-2">Leave Balances</h2>
         <div class="leave-types-grid">
           <div class="leave-cards">
-
             <div class="leave-card" *ngFor="let balance of leaveBalances">
-
               <div class="leave-card-top">
                 <span class="leave-title">{{ balance.leaveTypeName }}</span>
-                <a href="javascript:void(0)" class="view-details">View details</a>
+                <a href="javascript:void(0)" class="view-details"
+                  >View details</a
+                >
               </div>
 
               <div class="leave-donut-row">
                 <ng-container
-                  *ngIf="balance.leaveTypeName === 'Comp Offs' && balance.remainingDays === 0; else showRing">
-                  <div class="text-sm text-gray-400 py-8">No data available</div>
+                  *ngIf="
+                    balance.leaveTypeName === 'Comp Offs' &&
+                      balance.remainingDays === 0;
+                    else showRing
+                  "
+                >
+                  <div class="text-sm text-gray-400 py-8">
+                    No data available
+                  </div>
                 </ng-container>
 
                 <ng-template #showRing>
-                  <div class="donut" role="img"
-                    [attr.aria-label]="balance.leaveTypeName + ' remaining ' + (balance.remainingDays || 0) + ' days'">
+                  <div
+                    class="donut"
+                    role="img"
+                    [attr.aria-label]="
+                      balance.leaveTypeName +
+                      ' remaining ' +
+                      (balance.remainingDays || 0) +
+                      ' days'
+                    "
+                  >
                     <!-- Outer base ring -->
-                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 140 140" role="presentation"
-                      focusable="false">
-                      <circle cx="70" cy="70" r="60" stroke="#e6eef6" stroke-width="10" fill="transparent" />
-                      <circle cx="70" cy="70" r="60" [attr.stroke]="getBalanceColor(balance.leaveTypeName)"
-                        stroke-width="10" fill="transparent" stroke-linecap="round"
+                    <svg
+                      class="w-full h-full transform -rotate-90"
+                      viewBox="0 0 140 140"
+                      role="presentation"
+                      focusable="false"
+                    >
+                      <circle
+                        cx="70"
+                        cy="70"
+                        r="60"
+                        stroke="#e6eef6"
+                        stroke-width="10"
+                        fill="transparent"
+                      />
+                      <circle
+                        cx="70"
+                        cy="70"
+                        r="60"
+                        [attr.stroke]="getBalanceColor(balance.leaveTypeName)"
+                        stroke-width="10"
+                        fill="transparent"
+                        stroke-linecap="round"
                         [attr.stroke-dasharray]="donutCircumference"
-                        [attr.stroke-dashoffset]="getDonutOffset(balance)" />
+                        [attr.stroke-dashoffset]="getDonutOffset(balance)"
+                      />
                     </svg>
                     <div class="donut-center" aria-hidden="true">
-                      <span class="donut-value">{{ balance.isUnlimited ? '∞' : balance.remainingDays }}</span>
+                      <span class="donut-value">{{
+                        balance.isUnlimited ? "∞" : balance.remainingDays
+                      }}</span>
                       <span class="donut-label">Available</span>
                     </div>
                   </div>
@@ -119,7 +190,6 @@
                   <span class="meta-value">{{ balance.annualQuota }}</span>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -129,20 +199,37 @@
       <div *ngIf="isManagerOrHR" class="card">
         <div class="card-header">
           <h3 class="card-title">Pending Leave Requests</h3>
-          <span class="text-xs text-gray-500">{{ pendingLeaves.length }} pending request{{ pendingLeaves.length !== 1 ?
-            's' : '' }}</span>
+          <span class="text-xs text-gray-500"
+            >{{ pendingLeaves.length }} pending request{{
+              pendingLeaves.length !== 1 ? "s" : ""
+            }}</span
+          >
         </div>
 
         <div *ngIf="pendingLeaves.length === 0" class="empty-state">
-          <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          <svg
+            class="w-12 h-12 mx-auto mb-3 text-gray-300"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
           </svg>
-          <p class="text-gray-400 text-center text-sm">No pending leave requests.</p>
+          <p class="text-gray-400 text-center text-sm">
+            No pending leave requests.
+          </p>
         </div>
 
         <div class="table-wrapper" *ngIf="pendingLeaves.length > 0">
-          <table class="responsive-table" aria-label="Pending leave requests table">
+          <table
+            class="responsive-table"
+            aria-label="Pending leave requests table"
+          >
             <thead>
               <tr>
                 <th>Request Code</th>
@@ -160,62 +247,141 @@
               <tr *ngFor="let request of pendingLeaves">
                 <td data-label="Request Code">
                   <div class="cell-main">
-                    <span class="title font-mono text-xs">{{ request.requestCode }}</span>
+                    <span class="title font-mono text-xs">{{
+                      request.requestCode
+                    }}</span>
                   </div>
                 </td>
                 <td data-label="Leave Type">
-                  <div class="cell-main"><span class="title">{{ request.leaveType }}</span></div>
+                  <div class="cell-main">
+                    <span class="title">{{ request.leaveType }}</span>
+                  </div>
                 </td>
                 <td data-label="Start Date">
-                  <div class="cell-main"><span class="title">{{ request.startDate | date:'d MMM y' }}</span></div>
+                  <div class="cell-main">
+                    <span class="title">{{
+                      request.startDate | date : "d MMM y"
+                    }}</span>
+                  </div>
                 </td>
                 <td data-label="End Date">
-                  <div class="cell-main"><span class="title">{{ request.endDate | date:'d MMM y' }}</span></div>
+                  <div class="cell-main">
+                    <span class="title">{{
+                      request.endDate | date : "d MMM y"
+                    }}</span>
+                  </div>
                 </td>
                 <td data-label="Total Days">
-                  <div class="cell-main"><span class="title text-[#283a4d] font-semibold">{{ request.totalDays }}</span>
+                  <div class="cell-main">
+                    <span class="title text-[#283a4d] font-semibold">{{
+                      request.totalDays
+                    }}</span>
                   </div>
                 </td>
                 <td data-label="Requested By">
-                  <div class="cell-main"><span class="title">{{ request.requestedBy }}</span></div>
+                  <div class="cell-main">
+                    <span class="title">{{ request.requestedBy }}</span>
+                  </div>
                 </td>
                 <td data-label="Requested On">
-                  <div class="cell-main"><span class="title">{{ request.requestedOn | date:'d MMM y' }}</span></div>
+                  <div class="cell-main">
+                    <span class="title">{{
+                      request.requestedOn | date : "d MMM y"
+                    }}</span>
+                  </div>
                 </td>
                 <td data-label="Note">
-                  <div class="cell-main max-w-xs"><small class="line-clamp-2" title="{{ request.note }}">{{ request.note
-                      || '-' }}</small></div>
+                  <div class="cell-main max-w-xs">
+                    <small class="line-clamp-2" title="{{ request.note }}">{{
+                      request.note || "-"
+                    }}</small>
+                  </div>
                 </td>
                 <td data-label="Actions">
-                  <div class="flex gap-1 justify-center flex-wrap">
-                    <button class="btn-approve" (click)="approveLeave(request.requestCode)"
-                      [disabled]="isRequestLoading(request.requestCode)" title="Approve Leave">
-                      <svg *ngIf="!isRequestLoading(request.requestCode)" class="w-4 h-4" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  <div
+                    class="flex gap-2 justify-center items-center flex-nowrap"
+                  >
+                    <button
+                      class="btn-approve"
+                      (click)="openApproveModal(request.requestCode)"
+                      [disabled]="isRequestLoading(request.requestCode)"
+                      title="Approve Leave"
+                    >
+                      <svg
+                        *ngIf="!isRequestLoading(request.requestCode)"
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 13l4 4L19 7"
+                        ></path>
                       </svg>
-                      <svg *ngIf="isRequestLoading(request.requestCode)" class="w-4 h-4 animate-spin" fill="none"
-                        viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
-                        </path>
+                      <svg
+                        *ngIf="isRequestLoading(request.requestCode)"
+                        class="w-4 h-4 animate-spin"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          class="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          class="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        ></path>
                       </svg>
                       <span class="hidden sm:inline">Approve</span>
                     </button>
-                    <button class="btn-reject" (click)="openRejectModal(request.requestCode)"
-                      [disabled]="isRequestLoading(request.requestCode)" title="Reject Leave">
-                      <svg *ngIf="!isRequestLoading(request.requestCode)" class="w-4 h-4" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
+                    <button
+                      class="btn-reject"
+                      (click)="openRejectModal(request.requestCode)"
+                      [disabled]="isRequestLoading(request.requestCode)"
+                      title="Reject Leave"
+                    >
+                      <svg
+                        *ngIf="!isRequestLoading(request.requestCode)"
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"
+                        ></path>
                       </svg>
-                      <svg *ngIf="isRequestLoading(request.requestCode)" class="w-4 h-4 animate-spin" fill="none"
-                        viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
-                        </path>
+                      <svg
+                        *ngIf="isRequestLoading(request.requestCode)"
+                        class="w-4 h-4 animate-spin"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          class="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          class="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        ></path>
                       </svg>
                       <span class="hidden sm:inline">Reject</span>
                     </button>
@@ -232,8 +398,11 @@
           <h3 class="card-title">Leave History</h3>
 
           <div class="flex gap-2">
-            <select [(ngModel)]="selectedStatusFilter" (change)="applyFilters()"
-              class="text-xs border border-gray-300 rounded p-1.5 focus:outline-none focus:border-[#283a4d]">
+            <select
+              [(ngModel)]="selectedStatusFilter"
+              (change)="applyFilters()"
+              class="text-xs border border-gray-300 rounded p-1.5 focus:outline-none focus:border-[#283a4d]"
+            >
               <option value="All">All Status</option>
               <option value="Approved">Approved</option>
               <option value="Pending">Pending</option>
@@ -257,23 +426,34 @@
               <tr *ngFor="let item of paginatedHistory">
                 <td>
                   <div class="cell-main">
-                    <span class="title">{{ item.startDate | date:'d MMM y' }}</span>
-                    <small *ngIf="item.startDate !== item.endDate">To {{ item.endDate | date:'d MMM y' }}</small>
-                    <small class="text-[#283a4d] font-semibold mt-1">{{ item.totalDays }} Day{{ item.totalDays > 1 ? 's'
-                      : '' }}</small>
+                    <span class="title">{{
+                      item.startDate | date : "d MMM y"
+                    }}</span>
+                    <small *ngIf="item.startDate !== item.endDate"
+                      >To {{ item.endDate | date : "d MMM y" }}</small
+                    >
+                    <small class="text-[#283a4d] font-semibold mt-1"
+                      >{{ item.totalDays }} Day{{
+                        item.totalDays > 1 ? "s" : ""
+                      }}</small
+                    >
                   </div>
                 </td>
 
                 <td>
                   <div class="cell-main">
                     <span class="title">{{ item.leaveType }}</span>
-                    <small>Applied on {{ item.requestedOn | date:'d MMM' }}</small>
+                    <small
+                      >Applied on {{ item.requestedOn | date : "d MMM" }}</small
+                    >
                   </div>
                 </td>
 
                 <td>
                   <div class="cell-main max-w-xs">
-                    <small class="line-clamp-2" title="{{ item.note }}">{{ item.note || '-' }}</small>
+                    <small class="line-clamp-2" title="{{ item.note }}">{{
+                      item.note || "-"
+                    }}</small>
                   </div>
                 </td>
 
@@ -286,38 +466,75 @@
 
                 <td class="text-right">
                   <button class="ghost" aria-label="more actions">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z">
-                      </path>
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                      ></path>
                     </svg>
                   </button>
                 </td>
               </tr>
               <tr *ngIf="paginatedHistory.length === 0">
-                <td colspan="5" class="text-center py-8 text-gray-400 text-sm">No leave history found</td>
+                <td colspan="5" class="text-center py-8 text-gray-400 text-sm">
+                  No leave history found
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
-          <span class="text-xs text-gray-500">Showing {{ paginatedHistory.length }} records</span>
+        <div
+          class="flex justify-between items-center mt-4 pt-4 border-t border-gray-100"
+        >
+          <span class="text-xs text-gray-500"
+            >Showing {{ paginatedHistory.length }} records</span
+          >
           <div class="flex gap-2">
-            <button (click)="prevPage()" [disabled]="currentPage === 1"
-              class="ghost text-xs border border-gray-200 px-3 py-1 rounded">Prev</button>
-            <button (click)="nextPage()" [disabled]="currentPage === totalPages"
-              class="ghost text-xs border border-gray-200 px-3 py-1 rounded">Next</button>
+            <button
+              (click)="prevPage()"
+              [disabled]="currentPage === 1"
+              class="ghost text-xs border border-gray-200 px-3 py-1 rounded"
+            >
+              Prev
+            </button>
+            <button
+              (click)="nextPage()"
+              [disabled]="currentPage === totalPages"
+              class="ghost text-xs border border-gray-200 px-3 py-1 rounded"
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>
-
     </div>
-    <app-leave-request-modal #requestModal (submitted)="onRequestSubmitted()"></app-leave-request-modal>
-    <app-reject-modal #rejectModal (confirmed)="handleRejectConfirm($event)"></app-reject-modal>
+    <app-leave-request-modal
+      #requestModal
+      (submitted)="onRequestSubmitted()"
+    ></app-leave-request-modal>
+    <app-approve-modal
+      #approveModal
+      (confirmed)="handleApproveConfirm($event)"
+    ></app-approve-modal>
+    <app-reject-modal
+      #rejectModal
+      (confirmed)="handleRejectConfirm($event)"
+    ></app-reject-modal>
 
     <!-- Toast Notification -->
-    <div class="toast" [class.show]="toastVisible" [ngClass]="'toast-' + toastType">
+    <div
+      class="toast"
+      [class.show]="toastVisible"
+      [ngClass]="'toast-' + toastType"
+    >
       {{ toastMessage }}
     </div>
   </main>

@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Keka.Clone.Infrastructure.Email
 {
@@ -15,11 +16,13 @@ namespace Keka.Clone.Infrastructure.Email
     {
         private readonly IConfiguration _config;
         private readonly IWebHostEnvironment _env;
+        private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IConfiguration config, IWebHostEnvironment env)
+        public EmailService(IConfiguration config, IWebHostEnvironment env, ILogger<EmailService> logger)
         {
             _config = config;
             _env = env;
+            _logger = logger;
         }
 
         public async Task SendTemplateAsync(
@@ -43,27 +46,36 @@ namespace Keka.Clone.Infrastructure.Email
 
         private async Task SendEmailAsync(string to, string subject, string bodyHtml)
         {
-            var settings = _config.GetSection("EmailSettings");
-
-            using var smtp = new SmtpClient
+            try
             {
-                Host = settings["Host"]!,
-                Port = int.Parse(settings["Port"]!),
-                EnableSsl = bool.Parse(settings["EnableSSL"]!),
-                Credentials = new NetworkCredential(settings["Username"], settings["Password"])
-            };
+                var settings = _config.GetSection("EmailSettings");
 
-            var msg = new MailMessage
+                using var smtp = new SmtpClient
+                {
+                    Host = settings["Host"]!,
+                    Port = int.Parse(settings["Port"]!),
+                    EnableSsl = bool.Parse(settings["EnableSSL"]!),
+                    Credentials = new NetworkCredential(settings["Username"], settings["Password"])
+                };
+
+                var msg = new MailMessage
+                {
+                    From = new MailAddress(settings["Username"]!),
+                    Subject = subject,
+                    Body = bodyHtml,
+                    IsBodyHtml = true
+                };
+
+                msg.To.Add(to);
+
+                _logger.LogInformation("Sending email to {To} with subject {Subject}", to, subject);
+                await smtp.SendMailAsync(msg);
+                _logger.LogInformation("Email sent successfully to {To}", to);
+            }
+            catch (Exception ex)
             {
-                From = new MailAddress(settings["Username"]!),
-                Subject = subject,
-                Body = bodyHtml,
-                IsBodyHtml = true
-            };
-
-            msg.To.Add(to);
-
-            await smtp.SendMailAsync(msg);
+                _logger.LogError(ex, "Error sending email to {To} with subject {Subject}", to, subject);
+            }
         }
     }
 }
