@@ -187,6 +187,10 @@ export class EmployeeListComponent implements OnInit {
     return Math.ceil(this.filteredEmployees.length / this.itemsPerPage);
   }
 
+  getSerialNumber(index: number): number {
+    return (this.currentPage - 1) * this.itemsPerPage + index + 1;
+  }
+
   showDetailsModal(id: string) {
     this.selectedEmployeeId = id;
     this.showDetailsEmployeeModal = true;

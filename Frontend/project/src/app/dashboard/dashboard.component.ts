@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
 import { SidebarComponent } from "../shared/components/sidebar.component";
 // import { WeeklyPatternChartComponent } from "../shared/components/weekly-pattern-chart.component";
 import { LeaveService } from "../shared/services/leave.service";
@@ -25,7 +26,7 @@ interface Employee {
 @Component({
   selector: "app-dashboard",
   standalone: true,
-  imports: [CommonModule, SidebarComponent],
+  imports: [CommonModule, SidebarComponent, RouterModule],
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.css"],
 })

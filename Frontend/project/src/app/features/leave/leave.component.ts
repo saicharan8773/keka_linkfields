@@ -435,7 +435,6 @@ export class LeaveComponent implements OnInit, AfterViewInit {
     this.leaveService.approveLeave({ requestCode }).subscribe({
       next: (response) => {
         this.loadingRequests.delete(requestCode);
-        // Remove from pending list
         this.pendingLeaves = this.pendingLeaves.filter(
           (l) => l.requestCode !== requestCode
         );

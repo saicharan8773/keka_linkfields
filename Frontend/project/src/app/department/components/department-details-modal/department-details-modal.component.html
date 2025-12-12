@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h2>Department Details</h2>
-  <button class="close-btn" (click)="onClose()">
-    <span class="material-icons">close</span>
+  <button class="icon-btn close" (click)="onClose()" title="Close">
+    <span class="material-icons md-20">close</span>
   </button>
 </div>
 
@@ -16,8 +16,8 @@
 
   <div *ngIf="!isLoading && department" class="details-grid">
     <div class="detail-item">
-      <span class="detail-label">Name :   </span>
-        <span class="detail-value">{{ department.name }}</span>
+      <span class="detail-label">Name : </span>
+      <span class="detail-value">{{ department.name }}</span>
     </div>
 
     <div class="detail-item">

@@ -14,12 +14,7 @@
       <!-- Search and Add Button -->
       <div class="search-add-row">
         <div class="search-box">
-          <input
-            type="text"
-            placeholder="Search designations…"
-            [(ngModel)]="searchText"
-            (input)="onSearch()"
-          />
+          <input type="text" placeholder="Search designations…" [(ngModel)]="searchText" (input)="onSearch()" />
         </div>
 
         <button class="btn-add-gold" (click)="showAddDesignationModal = true">
@@ -33,6 +28,7 @@
         <table class="employee-table">
           <thead>
             <tr>
+              <th>S.No</th>
               <th>Title</th>
               <th>Department</th>
               <th>Actions</th>
@@ -40,41 +36,24 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let designation of designations">
+            <tr *ngFor="let designation of designations; let i = index">
+              <td data-label="S.No">
+                <span class="serial-number">{{ getSerialNumber(i) }}</span>
+              </td>
               <td data-label="Title">{{ designation.title }}</td>
               <td data-label="Department">{{ designation.departmentName }}</td>
 
               <td data-label="Actions" class="action-col">
-                <button
-                  class="icon-btn"
-                  (click)="showDetailsModal(designation.id!)"
-                  title="View"
-                >
-                  <span class="material-icons" style="font-size: 18px"
-                    >visibility</span
-                  >
+                <button class="icon-btn view" (click)="showDetailsModal(designation.id!)" title="View">
+                  <span class="material-icons md-18">visibility</span>
                 </button>
 
-                <button
-                  class="icon-btn"
-                  (click)="showEditModal(designation.id!)"
-                  title="Edit"
-                >
-                  <span class="material-icons" style="font-size: 18px"
-                    >edit</span
-                  >
+                <button class="icon-btn edit" (click)="showEditModal(designation.id!)" title="Edit">
+                  <span class="material-icons md-18">edit</span>
                 </button>
 
-                <button
-                  class="icon-btn delete"
-                  (click)="onDelete(designation.id)"
-                  title="Delete"
-                >
-                  <span
-                    class="material-icons"
-                    style="font-size: 18px; color: #c33"
-                    >delete</span
-                  >
+                <button class="icon-btn delete" (click)="onDelete(designation.id)" title="Delete">
+                  <span class="material-icons md-18">delete</span>
                 </button>
               </td>
             </tr>
@@ -84,68 +63,51 @@
 
       <!-- PAGINATION -->
       <div class="pagination-controls">
-        <button
-          (click)="onPageChange(currentPage - 1)"
-          [disabled]="currentPage === 1"
-        >
+        <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
           &laquo; Previous
         </button>
 
         <span>Page {{ currentPage }} of {{ totalPages }}</span>
 
-        <button
-          (click)="onPageChange(currentPage + 1)"
-          [disabled]="currentPage === totalPages"
-        >
+        <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">
           Next &raquo;
         </button>
       </div>
 
       <!-- EMPTY STATE -->
       <tr *ngIf="designations.length === 0">
-        <td colspan="3" class="empty-state">No designations found.</td>
+        <td colspan="4" class="empty-state">No designations found.</td>
       </tr>
 
       <!-- Add Modal -->
       <div *ngIf="showAddDesignationModal" class="modal-overlay">
         <div class="modal-card">
-          <app-designation-create
-            (closeModal)="showAddDesignationModal = false"
-            (designationAdded)="onDesignationAdded()"
-          ></app-designation-create>
+          <app-designation-create (closeModal)="showAddDesignationModal = false"
+            (designationAdded)="onDesignationAdded()"></app-designation-create>
         </div>
       </div>
 
       <!-- Edit Modal -->
       <div *ngIf="showEditDesignationModal" class="modal-overlay">
         <div class="modal-card">
-          <app-designation-edit-modal
-            [designationId]="selectedDesignationId"
+          <app-designation-edit-modal [designationId]="selectedDesignationId"
             (closeModal)="showEditDesignationModal = false"
-            (designationUpdated)="onDesignationUpdated()"
-          ></app-designation-edit-modal>
+            (designationUpdated)="onDesignationUpdated()"></app-designation-edit-modal>
         </div>
       </div>
 
       <!-- Details Modal -->
       <div *ngIf="showDetailsDesignationModal" class="modal-overlay">
         <div class="modal-card">
-          <app-designation-details-modal
-            [designationId]="selectedDesignationId"
+          <app-designation-details-modal [designationId]="selectedDesignationId"
             (closeModal)="showDetailsDesignationModal = false"
-            (editDesignation)="showEditModalFromDetails($event)"
-          ></app-designation-details-modal>
+            (editDesignation)="showEditModalFromDetails($event)"></app-designation-details-modal>
         </div>
       </div>
 
       <!-- Delete Confirmation Modal -->
-      <app-delete-confirmation-modal
-        *ngIf="showDeleteModal"
-        message="Are you sure you want to delete this designation?"
-        [isDeleting]="isDeleting"
-        (confirm)="confirmDelete()"
-        (cancel)="cancelDelete()"
-      ></app-delete-confirmation-modal>
+      <app-delete-confirmation-modal *ngIf="showDeleteModal" message="Are you sure you want to delete this designation?"
+        [isDeleting]="isDeleting" (confirm)="confirmDelete()" (cancel)="cancelDelete()"></app-delete-confirmation-modal>
 
       <!-- Toast -->
       <app-toast></app-toast>

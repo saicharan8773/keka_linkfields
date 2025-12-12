@@ -51,7 +51,7 @@ export class DesignationListComponent implements OnInit {
     private designationService: DesignationService,
     private router: Router,
     private toastService: ToastService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadDesignations();
@@ -111,6 +111,10 @@ export class DesignationListComponent implements OnInit {
       1,
       Math.ceil(this.filteredDesignations.length / this.itemsPerPage)
     );
+  }
+
+  getSerialNumber(index: number): number {
+    return (this.currentPage - 1) * this.itemsPerPage + index + 1;
   }
 
   showDetailsModal(designationId: string): void {

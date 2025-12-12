@@ -264,11 +264,11 @@ tr:last-child td {
 .status.approved {
   background: #ecfdf5;
   color: #047857;
-  border: 1px solid #a7f3d0;
+  border: 1px solid #000000;
 }
 
 .status.approved .status-dot {
-  background-color: #10b981;
+  background-color: #10f1a6;
 }
 
 .status.rejected {

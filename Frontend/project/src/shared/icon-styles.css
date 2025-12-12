@@ -1,0 +1,235 @@
+/* Shared Icon Styles - Used across all components */
+
+/* Material Icons Base Styles */
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+/* Icon Size Variants */
+.material-icons.md-18 {
+  font-size: 18px;
+}
+
+.material-icons.md-20 {
+  font-size: 20px;
+}
+
+.material-icons.md-24 {
+  font-size: 24px;
+}
+
+.material-icons.md-28 {
+  font-size: 28px;
+}
+
+.material-icons.md-32 {
+  font-size: 32px;
+}
+
+/* Icon Color Variants */
+.material-icons.color-primary {
+  color: #283a4d;
+}
+
+.material-icons.color-success {
+  color: #28a745;
+}
+
+.material-icons.color-danger {
+  color: #dc3545;
+}
+
+.material-icons.color-warning {
+  color: #ffc107;
+}
+
+.material-icons.color-info {
+  color: #17a2b8;
+}
+
+.material-icons.color-muted {
+  color: #999;
+}
+
+.material-icons.color-gold {
+  color: #ffd166;
+}
+
+/* ========================================
+   ACTION ICONS (View, Edit, Delete, Close)
+   ======================================== */
+
+/* Icon Button Base Styles */
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  position: relative;
+  font-size: 0;
+}
+
+.icon-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.icon-btn:hover:not(:disabled) {
+  transform: scale(1.15);
+  background-color: rgba(40, 58, 77, 0.08);
+}
+
+/* View Icon */
+.icon-btn.view,
+.icon-btn.view .material-icons {
+  color: #0096c7;
+}
+
+.icon-btn.view:hover:not(:disabled) {
+  background-color: rgba(0, 150, 199, 0.12);
+}
+
+.icon-btn.view:hover:not(:disabled) .material-icons {
+  color: #0078a1;
+}
+
+/* Edit Icon */
+.icon-btn.edit,
+.icon-btn.edit .material-icons {
+  color: #1e2d3d;
+}
+
+.icon-btn.edit:hover:not(:disabled) {
+  background-color: rgba(30, 45, 61, 0.12);
+}
+
+.icon-btn.edit:hover:not(:disabled) .material-icons {
+  color: #0f1825;
+}
+
+/* Delete Icon */
+.icon-btn.delete,
+.icon-btn.delete .material-icons {
+  color: #ff0000 !important; /* Stronger red */
+}
+
+.icon-btn.delete:hover:not(:disabled) {
+  background-color: rgba(230, 0, 0, 0.15) !important;
+}
+
+.icon-btn.delete:hover:not(:disabled) .material-icons {
+  color: #cc0000 !important; /* Darker red on hover */
+}
+
+
+/* Close Icon (for modals) */
+.icon-btn.close,
+.icon-btn.close .material-icons {
+  color: #999;
+  font-size: 20px;
+}
+
+.icon-btn.close:hover:not(:disabled) {
+  background-color: rgba(153, 153, 153, 0.12);
+}
+
+.icon-btn.close:hover:not(:disabled) .material-icons {
+  color: #c21313;
+}
+
+/* SVG Icon Styles within buttons */
+.icon-btn svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2;
+}
+
+.icon-btn.view svg {
+  stroke: #0096c7;
+}
+
+.icon-btn.view:hover:not(:disabled) svg {
+  stroke: #0078a1;
+}
+
+.icon-btn.edit svg {
+  stroke: #1e2d3d;
+}
+
+.icon-btn.edit:hover:not(:disabled) svg {
+  stroke: #0f1825;
+}
+
+.icon-btn.delete svg {
+  stroke: #e60000 !important;
+}
+
+.icon-btn.delete:hover:not(:disabled) svg {
+  stroke: #cc0000 !important;
+}
+
+.icon-btn.close svg {
+  stroke: #999;
+}
+
+.icon-btn.close:hover:not(:disabled) svg {
+  stroke: #c21313;
+}
+
+/* Action Column Layout */
+.action-col {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Utility Classes */
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-with-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .icon-btn {
+    padding: 6px;
+  }
+
+  .icon-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .action-col {
+    gap: 8px;
+  }
+}

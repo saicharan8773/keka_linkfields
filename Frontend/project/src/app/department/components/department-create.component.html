@@ -1,47 +1,48 @@
-<div class="modal-header">
-  <h2>Add New Department</h2>
-  <button class="close-btn" (click)="onCancel()">
-    <span class="material-icons">close</span>
-  </button>
+<div class="modal-overlay">
+  <div class="modal-card">
+    <!-- FIXED HEADER -->
+    <div class="modal-header-fixed">
+      <div class="modal-header">
+        <h2>Add New Department</h2>
+        <button class="close-btn" (click)="onCancel()">×</button>
+      </div>
+      <p class="subtitle">Fill in the details to add a new department.</p>
+    </div>
+
+    <!-- SCROLLABLE CONTENT -->
+    <div class="modal-body-scrollable">
+      <form (ngSubmit)="onSubmit()" #f="ngForm">
+        <div *ngIf="errorMessage" class="alert alert-error">
+          {{ errorMessage }}
+        </div>
+
+        <h3 class="section-title">Department Details</h3>
+
+        <div class="row">
+          <div class="col">
+            <label for="name">Department Name <span class="required">*</span></label>
+            <input type="text" id="name" name="name" [(ngModel)]="department.name" required
+              placeholder="e.g. Engineering" #nm="ngModel" />
+            <div class="error" *ngIf="nm.invalid && nm.touched">Department name is required</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="code">Department Code <span class="required">*</span></label>
+            <input type="text" id="code" name="code" [(ngModel)]="department.code" required placeholder="e.g. ENG"
+              #cd="ngModel" />
+            <div class="error" *ngIf="cd.invalid && cd.touched">Department code is required</div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- FIXED FOOTER -->
+    <div class="modal-footer-fixed">
+      <button type="button" class="btn cancel" (click)="onCancel()">Cancel</button>
+      <button class="btn primary" [disabled]="f.invalid || isLoading">{{ isLoading ? 'Creating...' : 'Create Department'
+        }}</button>
+    </div>
+  </div>
 </div>
-
-<form (ngSubmit)="onSubmit()">
-  <div class="modal-body">
-    <div *ngIf="errorMessage" class="alert alert-error">
-      {{ errorMessage }}
-    </div>
-
-    <div class="form-group">
-      <label for="name">Department Name <span class="required">*</span></label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        [(ngModel)]="department.name"
-        required
-        placeholder="e.g. Engineering"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="code">Department Code <span class="required">*</span></label>
-      <input
-        type="text"
-        id="code"
-        name="code"
-        [(ngModel)]="department.code"
-        required
-        placeholder="e.g. ENG"
-      />
-    </div>
-  </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="onCancel()">
-      Cancel
-    </button>
-    <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-      {{ isLoading ? "Creating..." : "Create Department" }}
-    </button>
-  </div>
-</form>

@@ -16,11 +16,22 @@
   color: #ffd166;
 }
 
-.modal-header p {
-  display: block;
+.title-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-box p {
   margin: 4px 0 0 0;
-  font-size: 0.95rem;
-  color: #ffd166;
+  font-size: 0.875rem;
+  color: #00eb10;
+}
+
+.title-box span {
+  font-size: 1.5rem;
+  font-weight: 500;
+  /* color: #f3f3ea; */
+    color: #ffd166;
 }
 
 .material-icons:hover {
@@ -51,7 +62,13 @@
   text-align: center;
   padding: 60px 20px;
 }
+.sub-title-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #ffd166;
 
+}
 .alert-error {
   background-color: #fdecea;
   color: #c53030;
