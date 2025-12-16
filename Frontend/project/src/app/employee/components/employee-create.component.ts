@@ -30,21 +30,21 @@ export class EmployeeCreateComponent {
     employeeCode: "",
     firstName: "",
     lastName: "",
-    displayName: "",
+    displayName: null,
     workEmail: "",
-    mobileNumber: "",
-    dateOfBirth: "",
-    gender: "",
-    nationality: "",
+    mobileNumber: null,
+    dateOfBirth: null,
+    gender: null,
+    nationality: null,
     joiningDate: "",
-    role:"",
-    designationId: "",
-    departmentId: "",
-    managerId: "",
-    locationId: "",
-    employmentType: "",
-    timeType: "",
-    salaryStructureId: "",
+    role: "",
+    designationId: null,
+    departmentId: null,
+    managerId: null,
+    locationId: null,
+    employmentType: null,
+    timeType: null,
+    salaryStructureId: null,
   };
 
   onCancel() {
@@ -57,7 +57,7 @@ export class EmployeeCreateComponent {
     private router: Router,
     private master: DropdownService
   ) {
-   }
+  }
 
   ngOnInit() {
     this.loadMasters();
@@ -72,7 +72,7 @@ export class EmployeeCreateComponent {
 
   onDepartmentChange() {
     // Reset designation field when department changes
-    this.employee.designationId = "";
+    this.employee.designationId = null;
     this.designations = [];
 
     // Load designations for the selected department
@@ -105,7 +105,24 @@ export class EmployeeCreateComponent {
       return;
     };
 
-    this.employeeService.createEmployee(this.employee).subscribe({
+    // Convert empty strings to null for optional fields
+    const payload = {
+      ...this.employee,
+      displayName: this.employee.displayName || null,
+      mobileNumber: this.employee.mobileNumber || null,
+      dateOfBirth: this.employee.dateOfBirth || null,
+      gender: this.employee.gender || null,
+      nationality: this.employee.nationality || null,
+      designationId: this.employee.designationId || null,
+      departmentId: this.employee.departmentId || null,
+      managerId: this.employee.managerId || null,
+      locationId: this.employee.locationId || null,
+      employmentType: this.employee.employmentType || null,
+      timeType: this.employee.timeType || null,
+      salaryStructureId: this.employee.salaryStructureId || null,
+    };
+
+    this.employeeService.createEmployee(payload).subscribe({
       next: (res: any) => {
         if (res && res.message === "Employee created successfully") {
           this.isLoading = false;

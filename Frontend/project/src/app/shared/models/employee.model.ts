@@ -114,21 +114,21 @@ export interface EmployeeCreatePayload {
   employeeCode: string;
   firstName: string;
   lastName: string;
-  displayName: string;
+  displayName?: string | null;
   workEmail: string;
-  mobileNumber: string;
-  dateOfBirth: string;
-  gender: string;
-  nationality: string;
+  mobileNumber?: string | null;
+  dateOfBirth?: string | null;
+  gender?: string | null;
+  nationality?: string | null;
   joiningDate: string;
   role: string;
-  designationId: string;
-  departmentId: string;
-  managerId: string;
-  locationId: string;
-  employmentType: string;
-  timeType: string;
-  salaryStructureId: string;
+  designationId?: string | null;
+  departmentId?: string | null;
+  managerId?: string | null;
+  locationId?: string | null;
+  employmentType?: string | null;
+  timeType?: string | null;
+  salaryStructureId?: string | null;
 }
 
 // Update Payload matching C# UpdateEmployeeRequest DTO

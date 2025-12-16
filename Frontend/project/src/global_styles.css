@@ -17,6 +17,7 @@ body {
 html,
 body {
   height: 100%;
+  overflow-x: auto;
 }
 
 :root {
@@ -38,6 +39,7 @@ html {
 body {
   color: #222;
   line-height: 1.45;
+  overflow-x: auto;
 }
 
 .dashboard-container {
@@ -46,11 +48,9 @@ body {
   min-height: 100vh;
   align-items: stretch;
   background: var(--bg);
+  overflow-x: auto;
 }
 
-/* Sidebar wrapper controlled by component - use fixed flex-basis for predictable layout */
-
-/* Make the sidebar fixed to the viewport so it stays constant while main content scrolls */
 .dashboard-container app-sidebar {
   position: fixed;
   left: 0;
@@ -80,7 +80,6 @@ body {
   transition: margin-left 0.24s ease;
 }
 
-/* When the sidebar host has the closed class, reduce the margin-left accordingly */
 .dashboard-container app-sidebar.sidebar-closed+.main-content,
 .dashboard-container app-sidebar.sidebar-closed~.main-content {
   margin-left: var(--sidebar-collapsed);
@@ -95,6 +94,7 @@ body {
   flex-direction: column;
   height: 100vh;
   overflow-y: auto;
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 

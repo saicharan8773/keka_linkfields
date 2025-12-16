@@ -175,7 +175,7 @@ export class EmployeeListComponent implements OnInit {
   updatePaginatedEmployees(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.employees = this.filteredEmployees.slice(startIndex, endIndex);
+    this.employees = this.filteredEmployees.slice(startIndex, endIndex+1);
   }
 
   onPageChange(page: number) {

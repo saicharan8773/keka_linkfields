@@ -54,8 +54,7 @@
 }
 
 .employee-container {
-  padding: 30px 30px 0 30px;
-  /* Removing bottom padding to allow table to sit flush or handle its own spacing */
+  /* padding: 30px 30px 0 30px; */
   font-family: Inter, sans-serif;
   height: 100%;
   display: flex;
@@ -68,7 +67,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  /* margin-bottom: 25px; */
   flex-shrink: 0;
 }
 
@@ -85,18 +84,19 @@
 
 /* SEARCH BOX */
 .search-box {
- position: relative;
+  position: relative;
 }
 
 .search-box input {
   top: 100px;
   width: 400px;
- padding: 14px 18px 14px 42px;
+  padding: 14px 18px 14px 42px;
   border-radius: 10px;
   border: 1px solid #d8d8d8;
   font-size: 15px;
   background: #f9fbfd;
 }
+
 .search-box .search-icon {
   position: absolute;
   left: 14px;
@@ -105,6 +105,7 @@
   font-size: 20px;
   color: #131212;
 }
+
 .plus-sign {
   font-size: 18px;
   font-weight: bold;
@@ -113,14 +114,13 @@
 /* TABLE */
 .table-wrapper {
   background: white;
-  border-radius: 12px 12px 0 0;
-  /* Rounded top corners only if it touches bottom, or keep all if there's padding */
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
+  overflow: auto;
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: auto;
   min-height: 0;
 }
 
@@ -140,7 +140,7 @@
 
 .employee-table th {
   padding: 16px;
-  font-size: 13px;
+  font-size: 12px;
   color: #666;
   text-transform: uppercase;
   font-weight: 600;
@@ -148,7 +148,7 @@
 }
 
 .employee-table td {
-  padding: 18px;
+  padding: 14px;
   border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
   text-align: center;
@@ -224,39 +224,39 @@
 
 /* ACTION BUTTONS */
 .action-col {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .pagination-controls {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 12px;
-    margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .pagination-controls button {
-    padding: 6px 16px;
-    border-radius: 6px;
-    border: none;
-    background: #f7f9fb;
-    color: #232e3c;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #f7f9fb;
+  color: #232e3c;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .pagination-controls button.active,
 .pagination-controls button:focus {
-    background: #232e3c;
-    color: #fff;
+  background: #232e3c;
+  color: #fff;
 }
 
 .pagination-controls button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Icon button styles are now in global_styles.css */
@@ -303,6 +303,7 @@
 }
 
 @media screen and (max-width: 992px) {
+
   .employee-table th:nth-child(5),
   .employee-table td:nth-child(5),
   .employee-table th:nth-child(6),
@@ -375,8 +376,8 @@
   /* Ensure it respects the max height */
 }
 
-.modal-card.modal-fixed > app-employee-details-modal,
-.modal-card.modal-fixed > app-employee-edit-modal {
+.modal-card.modal-fixed>app-employee-details-modal,
+.modal-card.modal-fixed>app-employee-edit-modal {
   display: flex;
   flex-direction: column;
   height: 100%;
