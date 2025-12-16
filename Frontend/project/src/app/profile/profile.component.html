@@ -2,23 +2,26 @@
   <app-sidebar></app-sidebar>
   <main class="main-content">
     <div class="profile-container">
-      <div class="header">
-        <div class="header-content">
+      <div class="page-header">
+        <div>
           <h1>Profile</h1>
+          <p class="subtitle">View and manage your profile</p>
         </div>
       </div>
       <div class="content">
         <div class="profile-card">
-          <div class="profile-avatar">
-            <img src="https://ui-avatars.com/api/?name=John+Doe&background=283a4d&color=ffd166&size=128"
-              alt="Profile Avatar" />
-          </div>
-          <div class="profile-info">
-            <h2>John Doe</h2>
-            <p>Email: johndoe</p>
-            <p>Role: Employee</p>
-            <p>Department: Engineering</p>
-            <p>Designation: Software Engineer</p>
+          <div class="profile-layout">
+            <div class="profile-avatar">
+              <img [src]="user?.photoURL || 'https://ui-avatars.com/api/?name=' + (user?.displayName || 'User') + '&background=283a4d&color=ffd166&size=128'" alt="Profile Avatar" />
+            </div>
+            <div class="profile-info">
+              <h2>{{ user?.displayName }}</h2>
+              <p><strong>Email:</strong> {{ user?.workEmail }}</p>
+              <p><strong>Phone:</strong> {{ user?.mobileNumber }}</p>
+              <p><strong>Role:</strong> {{ user?.role }}</p>
+              <p><strong>Department:</strong> {{ user.departmentName }}</p>
+              <p><strong>Designation:</strong> {{ user.designationTitle }}</p>
+            </div>
           </div>
         </div>
       </div>

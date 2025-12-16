@@ -16,7 +16,7 @@
 .employees-row {
   display: flex;
   gap: 20px;
-  flex-wrap: wrap;      /* allows wrapping to next row if many absentees */
+  flex-wrap: wrap; /* allows wrapping to next row if many absentees */
   align-items: center;
 }
 
@@ -34,7 +34,6 @@
   font-weight: 700;
   transition: 0.2s;
 }
-
 
 /* Hover effect on avatar */
 .avatar-circle:hover {
@@ -533,6 +532,16 @@
 .sidebar-icon {
   margin-right: 8px;
   vertical-align: middle;
+}
+
+/* Add or update in your dashboard.component.css or celebrations card CSS */
+.avatar-list {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 12px;
 }
 
 @media (max-width: 1200px) {

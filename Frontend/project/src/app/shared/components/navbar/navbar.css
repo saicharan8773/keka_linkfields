@@ -1,0 +1,125 @@
+.navbar {
+  background: rgb(36, 26, 223);
+  background-size: 400% 400%;
+  padding: 15px 30px;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: gradient 15s ease infinite;
+  border-bottom: 1px solid rgb(26, 16, 213);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand { 
+  flex: 1;
+} 
+
+.navbar-brand .navbar-logo {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.navbar-brand .navbar-logo img {
+  max-height: 40px;
+  vertical-align: middle;
+}
+
+.navbar-search {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-left: 220px;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 16px 10px 44px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgba(17, 230, 245, 0.338);
+  color: #ffffff;
+  font-size: 1em;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffff;
+  pointer-events: none;
+}
+
+.search-input:hover {
+  background-color: rgba(0, 229, 255, 0.5);
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-input:focus {
+  background-color: rgba(245, 241, 241, 0.3);
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  margin-top: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.search-results button {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: #283a4d;
+}
+
+.search-results button:hover {
+  background-color: #f0f4ff;
+}
+
+.navbar-user {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.user-name {
+  margin-left: 10px;
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.user-profile:hover {
+  transform: scale(1.1);
+}
