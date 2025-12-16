@@ -76,9 +76,13 @@ export class EmployeeListComponent implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       this.departmentId = params["departmentId"] || null;
+      const designationId = params["designationId"] || null;
 
       if (this.departmentId) {
         this.filterDepartmentId = this.departmentId;
+      }
+      if (designationId) {
+        this.filterDesignationId = designationId;
       }
 
       this.loadEmployees();

@@ -40,6 +40,13 @@ public class DesignationsController:ControllerBase
         }
         return Ok(await _service.GetAllAsync());
     }
+    [HttpGet("ByDesignation/{designationId:guid}")]
+    public async Task<IActionResult> GetByDesignation(Guid designationId)
+    {
+        var employees = await _service.GetByDesignationIdAsync(designationId);
+        return Ok(employees);
+    }
+
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)

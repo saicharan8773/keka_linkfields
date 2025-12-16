@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Keka.Clone.Application.DTOs;
+using Keka.Clone.Application.DTOs.Employee;
 using Keka.Clone.Application.Interfaces;
 using Keka.Clone.Domain.Entities;
 using Keka.Clone.Domain.Enums;
+using AutoMapper;
 
 namespace Keka.Clone.Application.Services
 {
@@ -15,17 +17,26 @@ namespace Keka.Clone.Application.Services
         private readonly IEmployeeLeaveAllocationRepository _allocationRepo;
         private readonly ILeaveTypeRepository _leaveTypeRepo;
         private readonly INotificationService _notificationService;
+        private readonly IEmailService _emailService;
+        private readonly IEmployeeRepository _employeeRepo;
+        private readonly IMapper _mapper;
 
         public LeaveService(
             ILeaveRequestRepository leaveRequestRepo,
             IEmployeeLeaveAllocationRepository allocationRepo,
             ILeaveTypeRepository leaveTypeRepo,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IEmailService emailService,
+            IEmployeeRepository employeeRepo,
+            IMapper mapper)
         {
             _leaveRequestRepo = leaveRequestRepo;
             _allocationRepo = allocationRepo;
             _leaveTypeRepo = leaveTypeRepo;
             _notificationService = notificationService;
+            _emailService = emailService;
+            _employeeRepo = employeeRepo;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<LeaveTypeAvailabilityDto>> GetLeaveTypesAsync(Guid employeeId)
@@ -91,9 +102,42 @@ namespace Keka.Clone.Application.Services
 
             // Notify Admin
             await _notificationService.NotifyAsync("Admin", "New Leave Request", $"Employee {dto.EmployeeId} has requested leave.");
+
+            // Send Email Notifications
+            var employee = await _employeeRepo.GetByIdAsync(dto.EmployeeId);
+            if (employee != null)
+            {
+                var employeePlaceholders = new Dictionary<string, string>
+                {
+                    { "EmployeeName", $"{employee.FirstName} {employee.LastName}" },
+                    { "LeaveType", leaveType.Name },
+                    { "StartDate", dto.StartDate.ToString("dd MMM yyyy") },
+                    { "EndDate", dto.EndDate.ToString("dd MMM yyyy") },
+                    { "Reason", dto.Reason }
+                };
+                await _emailService.SendTemplateAsync("bharadwajbva10@gmail.com", "Leave Request Submitted", "LeaveRequestEmployeeConfirmation.html", employeePlaceholders);
+
+                if (employee.ManagerId.HasValue)
+                {
+                    var manager = await _employeeRepo.GetByIdAsync(employee.ManagerId.Value);
+                    if (manager != null)
+                    {
+                        var managerPlaceholders = new Dictionary<string, string>
+                        {
+                            { "ManagerName", $"{manager.FirstName} {manager.LastName}" },
+                            { "EmployeeName", $"{employee.FirstName} {employee.LastName}" },
+                            { "LeaveType", leaveType.Name },
+                            { "StartDate", dto.StartDate.ToString("dd MMM yyyy") },
+                            { "EndDate", dto.EndDate.ToString("dd MMM yyyy") },
+                            { "Reason", dto.Reason }
+                        };
+                        await _emailService.SendTemplateAsync(manager.WorkEmail, "New Leave Request", "LeaveRequestManagerNotification.html", managerPlaceholders);
+                    }
+                }
+            }
         }
 
-        public async Task ApproveLeaveAsync(int requestId)
+        public async Task ApproveLeaveAsync(int requestId,string requesttext)
         {
             var request = await _leaveRequestRepo.GetByIdAsync(requestId);
 
@@ -126,12 +170,23 @@ namespace Keka.Clone.Application.Services
 
             await _leaveRequestRepo.UpdateAsync(request);
             await _leaveRequestRepo.SaveChangesAsync();
+            
+            var managerresponce = new Dictionary<string, string>
+            {
+                {"EmployeeName", $"{request.Employee.FirstName} {request.Employee.LastName}" },
+                {"ManagerComment",requesttext },
+            };
+
+            if (request.Employee != null)
+            {
+                await _emailService.SendTemplateAsync("bbharadwaj@linkfields.com", "Leave request approved", "LeaveResponse.html", managerresponce);
+            }
 
             // Notify Employee
             await _notificationService.NotifyAsync(request.EmployeeId.ToString(), "Leave Approved", "Your leave request has been approved.");
         }
 
-        public async Task RejectLeaveAsync(int requestId)
+        public async Task RejectLeaveAsync(int requestId, string managerComment)
         {
             var request = await _leaveRequestRepo.GetByIdAsync(requestId);
 
@@ -146,23 +201,41 @@ namespace Keka.Clone.Application.Services
 
             await _leaveRequestRepo.UpdateAsync(request);
             await _leaveRequestRepo.SaveChangesAsync();
+            
+            var employeeName = "Unknown";
+            if (request.Employee != null)
+            {
+                employeeName = !string.IsNullOrWhiteSpace(request.Employee.DisplayName)
+                    ? request.Employee.DisplayName
+                    : $"{request.Employee.FirstName} {request.Employee.LastName}".Trim();
+            }
+
+            var managerResponce = new Dictionary<string, string>
+            {
+                {"EmployeeName", employeeName},
+                {"ManagerComment", managerComment },
+            };
+
+            if (request.Employee != null)
+            {
+                await _emailService.SendTemplateAsync(request.Employee.WorkEmail, "Leave request rejected", "LeaveResponse.html", managerResponce);
+            }
 
             // Notify Employee
             await _notificationService.NotifyAsync(request.EmployeeId.ToString(), "Leave Rejected", "Your leave request has been rejected.");
         }
 
-        public async Task ApproveLeaveByCodeAsync(string requestCode)
+        public async Task ApproveLeaveByCodeAsync(string requestCode, string requesttext)
         {
             if (string.IsNullOrWhiteSpace(requestCode))
                 throw new Exception("Request code is required.");
 
             var request = await _leaveRequestRepo.GetByRequestCodeAsync(requestCode)
                 ?? throw new Exception("Leave request not found for the given code.");
-
-            await ApproveLeaveAsync(request.Id);
+            await ApproveLeaveAsync(request.Id, requesttext);
         }
 
-        public async Task RejectLeaveByCodeAsync(string requestCode)
+        public async Task RejectLeaveByCodeAsync(string requestCode, string managerComment)
         {
             if (string.IsNullOrWhiteSpace(requestCode))
                 throw new Exception("Request code is required.");
@@ -170,7 +243,7 @@ namespace Keka.Clone.Application.Services
             var request = await _leaveRequestRepo.GetByRequestCodeAsync(requestCode)
                 ?? throw new Exception("Leave request not found for the given code.");
 
-            await RejectLeaveAsync(request.Id);
+            await RejectLeaveAsync(request.Id, managerComment);
         }
 
         public async Task<IEnumerable<LeaveHistoryItemDto>> GetLeaveHistoryAsync(Guid employeeId)
@@ -301,10 +374,17 @@ namespace Keka.Clone.Application.Services
 
             return monthlyCounts.ToList();
         }
+        public async Task<IEnumerable<EmployeeDto>> GetEmployeesOnLeaveAsync(DateTime date)
+        {
+            var leaveRequests = await _leaveRequestRepo.GetApprovedLeaveRequestsForDateAsync(date);
+
+            var employeesOnLeave = leaveRequests.Select(lr => lr.Employee).Where(emp => emp != null).Distinct();
+
+            return _mapper.Map<IEnumerable<EmployeeDto>>(employeesOnLeave);
+        }
 
         private static string GenerateRequestCode(Guid employeeId, int leaveTypeId)
         {
-            // Example format: LR-20251201HHMMSS-EMPxxxx-LTyy-rand
             var empFragment = employeeId.ToString("N")[..6];
             var randomFragment = Guid.NewGuid().ToString("N")[..4];
             return $"LR-{DateTime.UtcNow:yyyyMMddHHmmss}-{empFragment}-LT{leaveTypeId}-{randomFragment}";

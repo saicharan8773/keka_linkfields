@@ -11,7 +11,7 @@ namespace Keka.Clone.Domain.Entities
         public string RequestCode { get; set; } = null!;
 
         public Guid EmployeeId { get; set; }
-        public Employee Employee { get; set; }
+        public Employee Employee { get; set; } = null!;
 
         public int LeaveTypeId { get; set; }
         public LeaveType LeaveType { get; set; } = null!;

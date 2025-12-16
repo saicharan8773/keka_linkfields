@@ -57,7 +57,7 @@ export interface LeaveHistoryItemDto {
   leaveType: string;
   leaveTypeNote: string;
   startDate: string; // ISO string
-  endDate: string;   // ISO string
+  endDate: string; // ISO string
   totalDays: number;
   status: string;
   statusDetail: string;
@@ -80,9 +80,10 @@ export interface PendingLeaveRequest {
 
 export interface ApproveLeavePayload {
   requestCode: string;
+  requestMessage: string;
 }
 
 export interface RejectLeavePayload {
   requestCode: string;
-  note: string;
+  requestMessage: string;
 }

@@ -4,6 +4,7 @@ using Keka.Clone.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Keka.Clone.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251212061147_leave_type")]
+    partial class leave_type
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,6 +372,9 @@ namespace Keka.Clone.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int?>("LeaveRequestId")
+                        .HasColumnType("int");
+
                     b.Property<Guid?>("LocationId")
                         .HasColumnType("uniqueidentifier");
 
@@ -405,6 +411,8 @@ namespace Keka.Clone.Persistence.Migrations
 
                     b.HasIndex("EmployeeCode")
                         .IsUnique();
+
+                    b.HasIndex("LeaveRequestId");
 
                     b.HasIndex("LocationId");
 
@@ -810,12 +818,12 @@ namespace Keka.Clone.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("903c0f30-0785-47d6-8c25-0d07bfe93f94"),
-                            CreatedAt = new DateTime(2025, 12, 12, 11, 34, 54, 156, DateTimeKind.Utc).AddTicks(1443),
+                            Id = new Guid("3b21b957-0bf9-45e0-a29c-fa0ba4ecc668"),
+                            CreatedAt = new DateTime(2025, 12, 12, 6, 11, 46, 43, DateTimeKind.Utc).AddTicks(9891),
                             Email = "admin@keka.com",
                             FullName = "Admin",
                             IsActive = true,
-                            PasswordHash = "AQAAAAIAAYagAAAAEMK9r8wpY2N1ro2dY6l/+PcPcyAUhBXytBWdQoiLvwFHRI+1HtZrnS9UDB0EQAf/Gg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECP+hqSavhwMU1WPTXNWBVLwQdS4uBM7yIq6mouaZQpYbJhB7kTNy8qJVPoXPzdf1w==",
                             Role = "Admin"
                         });
                 });
@@ -842,6 +850,10 @@ namespace Keka.Clone.Persistence.Migrations
                         .WithMany("Employees")
                         .HasForeignKey("DesignationId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Keka.Clone.Domain.Entities.LeaveRequest", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("LeaveRequestId");
 
                     b.HasOne("Keka.Clone.Domain.Entities.Location", "Location")
                         .WithMany("Employees")
@@ -924,6 +936,11 @@ namespace Keka.Clone.Persistence.Migrations
                     b.Navigation("LeaveAllocations");
 
                     b.Navigation("LeaveRequests");
+                });
+
+            modelBuilder.Entity("Keka.Clone.Domain.Entities.LeaveRequest", b =>
+                {
+                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("Keka.Clone.Domain.Entities.LeaveType", b =>

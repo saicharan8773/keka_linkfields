@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
+import { formatDate } from "@angular/common";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { SidebarComponent } from "../shared/components/sidebar.component";
 import { LeaveService } from "../shared/services/leave.service";
 import { EmployeeService } from "../shared/services/employee.service";
+import { FormsModule } from "@angular/forms";
 import { AnalyticsService, EmployeeAnniversary } from "../shared/services/analytics.service";
 
 interface EmployeeOnLeave {
@@ -27,12 +29,13 @@ interface Employee {
 @Component({
   selector: "app-dashboard",
   standalone: true,
-  imports: [CommonModule, SidebarComponent, RouterModule],
+  imports: [CommonModule, SidebarComponent, FormsModule,RouterModule],
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.css"],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  employeesOnLeaveToday: EmployeeOnLeave[] = [];
+  employeesOnLeave: any[] = [];
+  selectedLeaveDate: string = formatDate(new Date(), "yyyy-MM-dd", "en");
   birthdaysToday: Employee[] = [];
   upcomingBirthdays: Employee[] = [];
   workAnniversariesToday: Employee[] = [];
@@ -67,21 +70,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private loadDashboardData(): void {
-    this.leaveService.getEmployeesOnLeaveToday().subscribe({
-      next: (employees) => {
-        this.employeesOnLeaveToday = employees;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.errorMessage = "Failed to load dashboard data";
-        this.isLoading = false;
-      },
-    });
-
+    this.fetchEmployeesOnLeave(this.selectedLeaveDate);
     this.loadBirthdaysFromEmployees();
     this.loadLeaveBalances();
     this.loadServerTime();
     this.loadCelebrations();
+  }
+
+  fetchEmployeesOnLeave(date: string) {
+    this.isLoading = true;
+    this.leaveService.getEmployeesOnLeave(date).subscribe({
+      next: (employees) => {
+        this.employeesOnLeave = employees;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.errorMessage = "Failed to load employees on leave";
+        this.isLoading = false;
+      },
+    });
   }
 
   private loadLeaveBalances(): void {

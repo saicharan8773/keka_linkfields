@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Keka.Clone.Application.DTOs;
 using Keka.Clone.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Keka.Clone.Domain.Entities;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -11,10 +12,14 @@ using Microsoft.AspNetCore.Authorization;
 public class LeaveController : ControllerBase
 {
     private readonly ILeaveService _service;
+    private readonly ILeaveRequestRepository _requestRepository;
+    private readonly ILogger<LeaveController> _logger;
 
-    public LeaveController(ILeaveService service)
+    public LeaveController(ILeaveService service, ILeaveRequestRepository requestRepository, ILogger<LeaveController> logger)
     {
         _service = service;
+        _requestRepository = requestRepository;
+        _logger = logger;
     }
 
     [HttpGet("types/{empId:guid}")]
@@ -37,7 +42,7 @@ public class LeaveController : ControllerBase
         if (request == null || string.IsNullOrWhiteSpace(request.RequestCode))
             return BadRequest(new { message = "RequestCode is required." });
 
-        await _service.ApproveLeaveByCodeAsync(request.RequestCode);
+        await _service.ApproveLeaveByCodeAsync(request.RequestCode,request.RequestMessage);
         return Ok(new { message = "Leave approved successfully.", requestCode = request.RequestCode });
     }
 
@@ -48,7 +53,7 @@ public class LeaveController : ControllerBase
             return BadRequest(new { message = "RequestCode is required." });
 
         // Note: rejection note can be stored if the service supports it
-        await _service.RejectLeaveByCodeAsync(request.RequestCode);
+        await _service.RejectLeaveByCodeAsync(request.RequestCode, request.Note);
         return Ok(new { message = "Leave rejected successfully.", requestCode = request.RequestCode });
     }
 
@@ -72,11 +77,22 @@ public class LeaveController : ControllerBase
     {
         return Ok(await _service.GetRemainingLeavesAsync(empId, leaveTypeId));
     }
+
+    [HttpGet("EmployeesOnLeave")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetOnLeave(DateTime date)
+    {
+        _logger.LogInformation("GetOnLeave endpoint called with date: {Date}", date);
+        var employees = await _service.GetEmployeesOnLeaveAsync(date);
+        _logger.LogInformation("Found {Count} employees on leave for date: {Date}", employees.Count(), date);
+        return Ok(employees);
+    }
 }
 
 public class ApproveLeaveRequest
 {
     public string RequestCode { get; set; }
+    public string RequestMessage { get; set; }
 }
 
 public class RejectLeaveRequest

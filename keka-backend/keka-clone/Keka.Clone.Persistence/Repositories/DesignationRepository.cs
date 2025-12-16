@@ -47,4 +47,14 @@ public class DesignationRepository:IDesignationRepository
     {
         await _db.SaveChangesAsync();
     }
+    public async Task<IEnumerable<Employee>> GetByDesignationIdAsync(Guid designationId)
+    {
+        return await _db.Employees
+            .Where(e => e.DesignationId == designationId)
+            .Include(e => e.Department)
+            .Include(e => e.Designation)
+            .Include(e => e.Manager)
+            .ToListAsync();
+    }
+
 }

@@ -57,6 +57,12 @@ export class DesignationListComponent implements OnInit {
     this.loadDesignations();
   }
 
+  navigateToEmployees(designation: Designation): void {
+    this.router.navigate(['/employees'], {
+      queryParams: { designationId: designation.id },
+    });
+  }
+
   onDesignationAdded() {
     this.showAddDesignationModal = false;
     this.loadDesignations();

@@ -96,10 +96,6 @@ namespace Keka.Clone.Persistence.Repositories
             var result = await query.OrderBy(x => x.FullName).ToListAsync();
             return result;
         }
-
-        // ============================================================
-        //               FINAL UPDATED SEARCH IMPLEMENTATION
-        // ============================================================
         public async Task<(IEnumerable<Employee> Items, int Total)> SearchAsync(
             string? query,
             Guid? departmentId,

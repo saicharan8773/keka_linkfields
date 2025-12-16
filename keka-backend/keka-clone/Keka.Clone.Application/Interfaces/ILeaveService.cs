@@ -1,4 +1,5 @@
 ﻿using Keka.Clone.Application.DTOs;
+using Keka.Clone.Application.DTOs.Employee;
 using Keka.Clone.Domain.Entities;
 using System.Collections.Generic;
 
@@ -9,14 +10,15 @@ public interface ILeaveService
     Task<IEnumerable<LeaveHistoryItemDto>> GetPendingRequestsAsync();
 
     Task ApplyLeaveAsync(LeaveRequestDto dto);
-    Task ApproveLeaveAsync(int requestId);
-    Task RejectLeaveAsync(int requestId);
-    Task ApproveLeaveByCodeAsync(string requestCode);
-    Task RejectLeaveByCodeAsync(string requestCode);
+    Task ApproveLeaveAsync(int requestId, string requesttext);
+    Task RejectLeaveAsync(int requestId, string managerComment);
+    Task ApproveLeaveByCodeAsync(string requestCode,string requesttext);
+    Task RejectLeaveByCodeAsync(string requestCode, string managerComment);
     Task<int> GetRemainingLeavesAsync(Guid employeeId, int leaveTypeId);
     
     // Analytics
     Task<List<int>> GetWeeklyApprovedPatternsAsync(Guid employeeId);
     Task<Dictionary<string, int>> GetConsumedLeaveTypesStatsAsync(Guid employeeId);
     Task<List<int>> GetMonthlyApprovedStatsAsync(Guid employeeId);
+    Task<IEnumerable<EmployeeDto>> GetEmployeesOnLeaveAsync(DateTime date);
 }

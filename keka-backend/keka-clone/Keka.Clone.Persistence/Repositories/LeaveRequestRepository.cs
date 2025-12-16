@@ -17,7 +17,10 @@ namespace Keka.Clone.Persistence.Repositories
         }
         public async Task<LeaveRequest?> GetByIdAsync(int id)
         {
-            return await _db.LeaveRequests.FindAsync(id);
+            return await _db.LeaveRequests
+                .Include(r => r.Employee)
+                .Include(r=>r.LeaveType)
+                .FirstOrDefaultAsync(r=>r.Id == id);
         }
 
         public async Task<LeaveRequest?> GetByRequestCodeAsync(string requestCode)
@@ -30,7 +33,10 @@ namespace Keka.Clone.Persistence.Repositories
 
         public async Task<IEnumerable<LeaveRequest>> GetAllAsync()
         {
-            return await _db.LeaveRequests.ToListAsync();
+            return await _db.LeaveRequests
+                .Include(x => x.Employee)
+                .Include(x => x.LeaveType)
+                .ToListAsync();
         }
 
         public async Task<List<LeaveRequest>> GetEmployeeHistoryAsync(Guid employeeId)
@@ -50,6 +56,19 @@ namespace Keka.Clone.Persistence.Repositories
                 .Include(x => x.LeaveType)
                 .Where(x => x.Status == Domain.Enums.LeaveStatus.Pending)
                 .OrderBy(x => x.RequestedOn)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<LeaveRequest>> GetApprovedLeaveRequestsForDateAsync(DateTime date)
+        {
+            var startOfDay = date.Date; 
+            var endOfDay = startOfDay.AddDays(1);
+
+            return await _db.LeaveRequests
+                .Include(lr => lr.Employee)
+                .Where(lr => lr.Status == Domain.Enums.LeaveStatus.Approved &&
+                             lr.StartDate < endOfDay && 
+                             lr.EndDate >= startOfDay)
                 .ToListAsync();
         }
 
