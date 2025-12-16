@@ -1,0 +1,21 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+    </div>
+    <div class="navbar-search">
+      <span class="material-icons search-icon"> search </span>
+      <input type="text" class="search-input" placeholder="Search For Any Page..." [formControl]="searchControl" />
+      <div class="search-results" *ngIf="searchResults.length > 0">
+        <button *ngFor="let result of searchResults" (click)="navigateTo(result.path)">
+          {{ result.name }}
+        </button>
+      </div>
+    </div>
+    <div class="navbar-user">
+      <a routerLink="/profile" class="user-profile">
+        <span class="material-icons"> account_circle </span>
+        <span class="user-name">{{ userName }}</span>
+      </a>
+    </div>
+  </div>
+</nav>

@@ -216,25 +216,16 @@
         <div id="joiners" class="tab-content" [class.active]="activeTab === 'joiners'">
           <div class="celebrations-section">
             <h3>New joiners (Last 30 Days)</h3>
-            <div class="celebrations-list">
-              <div *ngIf="newJoiners.length === 0" class="empty-state">
-                <p>No new joiners in the last 30 days</p>
-              </div>
-              <div *ngFor="let emp of newJoiners; let i = index" class="celebration-item">
-                <div class="avatar" [style.background-color]="getAvatarColor(i)">
-                  {{ getInitials(emp.name) }}
+            <div class="avatar-list">
+                <div *ngIf="newJoiners.length === 0" class="empty-state">
+                  <p>No new joiners in the last 30 days</p>
                 </div>
-                <div class="employee-info">
-                  <div>
-                    <span class="employee-name">{{ emp.name }}</span>
-                    <div *ngIf="emp.joinDate" style="font-size: 0.85em; color: #666; margin-top: 2px;">
-                      📅 Joined on {{ formatDate(emp.joinDate) }}
-                    </div>
+                <div *ngFor="let emp of newJoiners; let i = index" class="avatar-item" [title]="emp.name">
+                  <div class="avatar" [style.background-color]="getAvatarColor(i)">
+                    {{ getInitials(emp.name) }}
                   </div>
-                  <a href="#" class="wish-btn">Welcome</a>
                 </div>
               </div>
-            </div>
           </div>
         </div>
       </section>
