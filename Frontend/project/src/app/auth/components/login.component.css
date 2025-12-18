@@ -18,6 +18,7 @@
   position: relative;
   z-index: 1;
 }
+
 ngx-particles {
   position: absolute;
   top: 0;
@@ -27,6 +28,7 @@ ngx-particles {
   height: 100%;
   z-index: 0;
 }
+
 .auth-header {
   text-align: center;
   margin-bottom: 30px;
@@ -140,15 +142,26 @@ ngx-particles {
 }
 
 @media (max-width: 480px) {
+  .auth-container {
+    align-items: flex-start;
+    padding-top: 5vh;
+  }
   .auth-card {
     padding: 30px 20px;
+    max-width: none;
+    border-radius: 12px;
   }
 
   .auth-header h1 {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .auth-header h2 {
-    font-size: 20px;
+    font-size: 18px;
+  }
+
+  .btn {
+    padding: 12px;
+    font-size: 14px;
   }
 }

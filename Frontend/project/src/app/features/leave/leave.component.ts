@@ -9,6 +9,8 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { Chart, registerables } from "chart.js";
+import { forkJoin, of } from "rxjs";
+import { catchError, map } from "rxjs/operators";
 import { LeaveService } from "../../shared/services/leave.service";
 import { AuthService } from "../../shared/services/auth.service";
 import { LeaveRequestModalComponent } from "./leave-request-modal/leave-request-modal.component";
@@ -80,7 +82,7 @@ export class LeaveComponent implements OnInit, AfterViewInit {
   selectedStatusFilter: string = "All";
   searchTerm: string = "";
   currentPage: number = 1;
-  itemsPerPage: number = 7;
+  itemsPerPage: number = 4;
   totalPages: number = 1;
 
   constructor(
@@ -126,38 +128,66 @@ export class LeaveComponent implements OnInit, AfterViewInit {
 
   loadLeaveBalances() {
     if (!this.employeeId) return;
-    this.leaveService.getLeaveTypes().subscribe({
-      next: (data: any) => {
-        this.leaveBalances = data.map((item: any) => {
-          const quota = this.getLeaveQuota(item.leaveTypeName);
-          // Calculate consumed: Quota - Remaining (if not unlimited)
-          // If remaining > quota (e.g. carry forward), consumed is 0 for this logic, or we can just show 0.
-          const consumed = item.isUnlimited
-            ? 0
-            : Math.max(0, quota - item.remainingDays);
+    const leaveTypes = [
+      { leaveTypeName: "Casual Leave", leaveTypeId: 1 },
+      { leaveTypeName: "Comp Offs", leaveTypeId: 2 },
+      { leaveTypeName: "Earned Leave", leaveTypeId: 3 },
+      { leaveTypeName: "Floater", leaveTypeId: 4 },
+      { leaveTypeName: "Maternity Leave", leaveTypeId: 6 },
+      { leaveTypeName: "Sick Leave", leaveTypeId: 7 },
+      { leaveTypeName: "Paternity Leave", leaveTypeId: 8 },
+      { leaveTypeName: "LOP", leaveTypeId: 5 }, // Added LOP
+    ];
 
-          return {
-            ...item,
-            consumed: consumed,
-            accrued: item.remainingDays,
-            annualQuota: item.isUnlimited ? "∞" : quota,
-          };
-        });
+    const balanceObservables = leaveTypes.map((type) =>
+      this.leaveService
+        .getLeaveBalanceForType(this.employeeId, type.leaveTypeId)
+        .pipe(
+          map((response: any) => {
+            console.log(`Response for ${type.leaveTypeName}:`, response);
+            let remainingDays = 0;
+            if (typeof response === 'number') {
+              remainingDays = response;
+            } else if (response && typeof response.remaining === 'number') {
+              remainingDays = response.remaining;
+            }
 
-        // Ensure Comp Offs exists for UI demo if not in backend
-        if (!this.leaveBalances.find((b) => b.leaveTypeName === "Comp Offs")) {
-          this.leaveBalances.push({
-            leaveTypeName: "Comp Offs",
-            remainingDays: 0,
-            leaveTypeId: 999,
-            isUnlimited: false,
-            consumed: 0,
-            accrued: 0,
-            annualQuota: 15,
-          } as any);
-        }
-      },
-      error: (err) => console.error("Error loading balances", err),
+            const quota = this.getLeaveQuota(type.leaveTypeName);
+            let isUnlimited = false;
+            if (quota === 999) {
+              isUnlimited = true;
+              console.log(`${type.leaveTypeName} is treated as unlimited.`);  
+            }
+            // Adjust if you have logic for unlimited
+            const consumed = isUnlimited
+              ? 0
+              : Math.max(0, quota - remainingDays);
+            return {
+              leaveTypeName: type.leaveTypeName,
+              leaveTypeId: type.leaveTypeId,
+              remainingDays,
+              isUnlimited,
+              consumed,
+              accrued: remainingDays,
+              annualQuota: isUnlimited ? "∞" : quota,
+            };
+          }),
+          catchError(() => {
+            return of({
+              leaveTypeName: type.leaveTypeName,
+              leaveTypeId: type.leaveTypeId,
+              remainingDays: 0,
+              isUnlimited: false,
+              consumed: 0,
+              accrued: 0,
+              annualQuota: this.getLeaveQuota(type.leaveTypeName),
+            });
+          })
+        )
+    );
+
+    forkJoin(balanceObservables).subscribe((results: any[]) => {
+      this.leaveBalances = results;
     });
   }
 
@@ -170,6 +200,7 @@ export class LeaveComponent implements OnInit, AfterViewInit {
     if (name.includes("maternity")) return 182;
     if (name.includes("sick")) return 10;
     if (name.includes("paternity")) return 14;
+    if (name.includes("lop")) return 999; // Added LOP quota
     return 0;
   }
 
@@ -402,6 +433,21 @@ export class LeaveComponent implements OnInit, AfterViewInit {
   nextPage() {
     if (this.currentPage < this.totalPages) this.currentPage++;
   }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  get pages(): number[] {
+    const pages = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+
 
   openRequestModal() {
     this.requestModal.open();

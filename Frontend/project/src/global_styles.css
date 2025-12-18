@@ -17,7 +17,7 @@ body {
 html,
 body {
   height: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 :root {
@@ -32,14 +32,12 @@ body {
 }
 
 html {
-  font-size: 16px;
-  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   color: #222;
   line-height: 1.45;
-  overflow-x: auto;
 }
 
 .dashboard-container {
@@ -48,7 +46,6 @@ body {
   min-height: 100vh;
   align-items: stretch;
   background: var(--bg);
-  overflow-x: auto;
 }
 
 .dashboard-container app-sidebar {
@@ -92,9 +89,8 @@ body {
   background: transparent;
   display: flex;
   flex-direction: column;
-  height: 100vh;
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -149,11 +145,6 @@ body {
   }
 }
 
-/* ========================================
-   SHARED ICON STYLES - Used across all components
-   ======================================== */
-
-/* Material Icons Base Styles */
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;

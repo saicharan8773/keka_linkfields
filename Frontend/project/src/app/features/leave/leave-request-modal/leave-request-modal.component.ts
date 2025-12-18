@@ -39,9 +39,9 @@ export class LeaveRequestModalComponent implements OnInit {
   ngOnInit(): void {
     this.loadLeaveTypes();
   }
-
+  userid = this.authService.getUserId() || "";
   loadLeaveTypes() {
-    this.leaveService.getLeaveTypes().subscribe({
+    this.leaveService.getLeaveTypesByGuid(this.userid).subscribe({
       next: (types) => (this.leaveTypes = types),
       error: (err) => console.error("Error loading leave types", err),
     });
