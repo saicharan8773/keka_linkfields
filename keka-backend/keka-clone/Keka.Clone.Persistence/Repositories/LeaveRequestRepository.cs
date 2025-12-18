@@ -84,9 +84,9 @@ namespace Keka.Clone.Persistence.Repositories
             await Task.CompletedTask;
         }
 
-        public async Task DeleteAsync(LeaveRequest request)
+        public async Task DeleteAsync(LeaveRequest requesties)
         {
-            _db.LeaveRequests.Remove(request);
+            _db.LeaveRequests.Remove(requesties);
             await Task.CompletedTask;
         }
 

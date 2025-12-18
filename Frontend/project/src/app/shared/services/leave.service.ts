@@ -55,25 +55,18 @@ export class LeaveService {
   }
 
   getLeaveTypes(): Observable<LeaveType[]> {
-    const id = this.authService.getEmployeeId() || "";
-    if (!id) {
-      console.warn(
-        "No employee id found in token — calling token-scoped endpoint as fallback."
-      );
-      // return this.http.get<LeaveType[]>(`${this.API_URL}/types`)
-    }
-    return this.http.get<LeaveType[]>(`${this.API_URL}/types/${id}`);
+    return this.http.get<LeaveType[]>(`${this.API_URL}/types`);
   }
 
   /**
    * Fetch leave types using an explicit policy/company GUID.
    * Example: GET /api/Leave/types/{policyGuid}
    */
-  getLeaveTypesByGuid(policyId: string): Observable<LeaveType[]> {
-    if (!policyId) {
+  getLeaveTypesByGuid(empId: string): Observable<LeaveType[]> {
+    if (!empId) {
       return this.getLeaveTypes();
     }
-    return this.http.get<LeaveType[]>(`${this.API_URL}/types/${policyId}`);
+    return this.http.get<LeaveType[]>(`${this.API_URL}/types/${empId}`);
   }
 
   /**
@@ -107,11 +100,11 @@ export class LeaveService {
   getLeaveBalanceForType(
     empId: string,
     leaveTypeId: number
-  ): Observable<number> {
+  ): Observable<any> {
     console.log("Getting balance for type:", leaveTypeId);
     console.log("Employee ID:", empId);
     console.log("API URL:", `${this.API_URL}/balance/${empId}/${leaveTypeId}`);
-    return this.http.get<number>(
+    return this.http.get<any>(
       `${this.API_URL}/balance/${empId}/${leaveTypeId}`
     );
   }

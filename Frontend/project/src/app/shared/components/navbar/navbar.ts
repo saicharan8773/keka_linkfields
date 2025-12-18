@@ -14,7 +14,7 @@ interface SearchablePage {
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, AsyncPipe, CommonModule, ReactiveFormsModule],
+  imports: [RouterLink, CommonModule, ReactiveFormsModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css' 
 })
@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.employeeService.getEmployeeById(this.auth.getUserId()).subscribe(employee => {
+    this.employeeService.getEmployeeById(this.auth.getEmployeeId()).subscribe(employee => {
       if (employee && employee.displayName) {
         this.userName = employee.displayName;
       }

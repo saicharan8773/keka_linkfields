@@ -401,13 +401,14 @@
             <select
               [(ngModel)]="selectedStatusFilter"
               (change)="applyFilters()"
-              class="text-xs border border-gray-300 rounded p-1.5 focus:outline-none focus:border-[#283a4d]"
+              class="status-filter-select"
             >
               <option value="All">All Status</option>
               <option value="Approved">Approved</option>
               <option value="Pending">Pending</option>
               <option value="Rejected">Rejected</option>
             </select>
+            <span class="material-icons md-18 logo">filter_list</span>
           </div>
         </div>
 
@@ -505,6 +506,15 @@
             >
               Prev
             </button>
+            <ng-container *ngFor="let page of pages">
+              <button
+                (click)="goToPage(page)"
+                [class.active]="page === currentPage"
+                class="ghost text-xs border border-gray-200 px-3 py-1 rounded"
+              >
+                {{ page }}
+              </button>
+            </ng-container>
             <button
               (click)="nextPage()"
               [disabled]="currentPage === totalPages"
