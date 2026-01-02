@@ -2,22 +2,27 @@
   display: block;
   background-color: #f8fafc; /* Equivalent to bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 */
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .dashboard-container {
   display: flex;
+  min-height: 100vh;
 }
 
 .main-content {
-  flex: 1;
-  padding: 24px;
-  transition: margin-left 0.3s ease-in-out;
+  /* Styles are now handled in global_styles.css */
+}
+
+.dashboard-container.sidebar-closed .main-content {
+  /* Styles are now handled in global_styles.css */
 }
 
 .hr-dashboard {
-  max-width: 1120px; 
-   margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .dashboard-header {
@@ -112,18 +117,30 @@
   color: white;
 }
 
-.icon-container.blue { background: linear-gradient(to right, #3b82f6, #60a5fa); }
-.icon-container.purple { background: linear-gradient(to right, #8b5cf6, #a78bfa); }
-.icon-container.green { background: linear-gradient(to right, #22c55e, #4ade80); }
-.icon-container.orange { background: linear-gradient(to right, #f97316, #fb923c); }
+.icon-container.blue {
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+}
+.icon-container.purple {
+  background: linear-gradient(to right, #8b5cf6, #a78bfa);
+}
+.icon-container.green {
+  background: linear-gradient(to right, #22c55e, #4ade80);
+}
+.icon-container.orange {
+  background: linear-gradient(to right, #f97316, #fb923c);
+}
 
 .trend {
   font-size: 0.875rem; /* 14px */
   font-weight: 600;
 }
 
-.trend.positive { color: #16a34a; }
-.trend.negative { color: #dc2626; }
+.trend.positive {
+  color: #16a34a;
+}
+.trend.negative {
+  color: #dc2626;
+}
 
 .card-title {
   color: #6b7280;
@@ -203,15 +220,38 @@
 
 .avatar-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 12px 4px 16px 4px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.avatar-list::-webkit-scrollbar {
+  height: 6px;
+}
+
+.avatar-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.avatar-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.avatar-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 .avatar-list.horizontal {
   flex-wrap: nowrap;
   overflow-x: auto;
   padding-bottom: 8px;
-  gap: 24px;
+  gap: 6px;
 }
 
 .avatar-item-container {
@@ -219,37 +259,164 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 6px;
+  border-radius: 10px;
+  min-width: 70px;
+  flex-shrink: 0;
+}
+
+.avatar-item-container:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  transform: translateY(-4px);
 }
 
 .avatar-circle {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background-color: #e5e7eb;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
   flex-shrink: 0;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  position: relative;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-circle::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.avatar-circle:hover::before {
+  opacity: 1;
 }
 
 .avatar-circle:hover {
-  transform: scale(1.1);
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.avatar-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.avatar-circle.new-joinee .avatar-ring {
+  border-color: #3b82f6;
+  animation: pulse-blue 2s infinite;
+}
+
+.avatar-circle.birthday .avatar-ring {
+  border-color: #ec4899;
+  animation: pulse-pink 2s infinite;
+}
+
+.avatar-circle.anniversary .avatar-ring {
+  border-color: #8b5cf6;
+  animation: pulse-purple 2s infinite;
+}
+
+@keyframes pulse-blue {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pulse-pink {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pulse-purple {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+.birthday-badge,
+.anniversary-badge {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  border: 2px solid white;
+}
+
+.birthday-badge {
+  background: linear-gradient(135deg, #ec4899, #f472b6);
+  font-size: 0.75rem;
+}
+
+.anniversary-badge {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  color: white;
+  font-size: 0.5rem;
 }
 
 .avatar-name {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #1f2937;
+  margin-top: 4px;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .avatar-subtitle {
-  font-size: 0.75rem;
+  font-size: 0.625rem;
   color: #6b7280;
+  margin-top: 2px;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .events-grid {
@@ -266,24 +433,67 @@
 
 .event-card {
   background-color: #ffffff;
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   padding: 24px;
   overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.event-card:hover {
+  box-shadow: 0 12px 24px -4px rgb(0 0 0 / 0.15);
+  transform: translateY(-2px);
+}
+
+.event-card.new-joinee-card:hover {
+  border-color: #3b82f6;
+}
+
+.event-card.birthday-card:hover {
+  border-color: #ec4899;
+}
+
+.event-card.anniversary-card:hover {
+  border-color: #8b5cf6;
 }
 
 .event-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 20px;
 }
+
+.event-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-icon-wrapper.new-joinee-icon {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+.event-icon-wrapper.birthday-icon {
+  background: linear-gradient(135deg, #ec4899, #f472b6);
+}
+
+.event-icon-wrapper.anniversary-icon {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+
 .event-header .icon {
-  font-size: 24px;
+  font-size: 20px;
+  color: white;
 }
 
 .event-title {
-  font-size: 1.25rem; /* 20px */
+  font-size: 1.25rem;
   font-weight: 700;
   color: #1f2937;
 }
@@ -308,20 +518,37 @@
   color: white;
 }
 
-.metric-icon { font-size: 32px; margin-bottom: 12px; display: block; }
-.metric-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 8px; }
-.metric-value { font-size: 1.875rem; font-weight: 700; }
+.metric-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  display: block;
+}
+.metric-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.metric-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+}
 
-.blue-gradient { background: linear-gradient(to right, #3b82f6, #60a5fa); }
-.green-gradient { background: linear-gradient(to right, #22c55e, #4ade80); }
-.purple-gradient { background: linear-gradient(to right, #8b5cf6, #a78bfa); }
+.blue-gradient {
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+}
+.green-gradient {
+  background: linear-gradient(to right, #22c55e, #4ade80);
+}
+.purple-gradient {
+  background: linear-gradient(to right, #8b5cf6, #a78bfa);
+}
 
 .material-icons.icon {
   color: white;
 }
 
 .event-header .material-icons.icon {
-    color: #4b5563;
+  color: #4b5563;
 }
 
 .metric-card .material-icons.metric-icon {

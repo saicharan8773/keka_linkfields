@@ -120,6 +120,10 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     // Here you would typically refetch data based on the selected period
   }
 
+  onEventClick(person: any, eventType: string): void {
+    console.log(`${eventType} clicked:`, person);
+  }
+
   createEmployeeGrowthChart() {
     const canvas = <HTMLCanvasElement>document.getElementById('employeeGrowthChart');
     if(canvas){
