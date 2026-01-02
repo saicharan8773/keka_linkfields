@@ -105,54 +105,80 @@
       </div>
 
       <div class="events-grid">
-        <div class="event-card">
+        <div class="event-card new-joinee-card">
           <div class="event-header">
-            <i class="material-icons icon">person_add</i>
+            <div class="event-icon-wrapper new-joinee-icon">
+              <i class="material-icons icon">person_add</i>
+            </div>
             <h3 class="event-title">New Joinees</h3>
           </div>
-          <div class="avatar-list horizontal">
+          <div class="avatar-list">
             <div
               *ngFor="let person of newJoinees"
               class="avatar-item-container"
+              (click)="onEventClick(person, 'New Joinee')"
             >
-              <div class="avatar-circle" [style.background-color]="'#2980b9'">
+              <div
+                class="avatar-circle new-joinee"
+                [style.background-color]="getAvatarBackgroundColor(person.name)"
+              >
                 {{ getInitials(person.name) }}
+                <div class="avatar-ring"></div>
               </div>
-              <p class="avatar-name">{{ person.name }}</p>
-              <p class="avatar-subtitle">{{ person.role }}</p>
+              <span class="avatar-name">{{ person.name.split(" ")[0] }}</span>
+              <span class="avatar-subtitle">{{ person.role }}</span>
             </div>
           </div>
         </div>
-        <div class="event-card">
+        <div class="event-card birthday-card">
           <div class="event-header">
-            <i class="material-icons icon">cake</i>
+            <div class="event-icon-wrapper birthday-icon">
+              <i class="material-icons icon">cake</i>
+            </div>
             <h3 class="event-title">Upcoming Birthdays</h3>
           </div>
-          <div class="avatar-list horizontal">
-            <div *ngFor="let person of birthdays" class="avatar-item-container">
-              <div class="avatar-circle" [style.background-color]="'#27ae60'">
+          <div class="avatar-list">
+            <div
+              *ngFor="let person of birthdays"
+              class="avatar-item-container"
+              (click)="onEventClick(person, 'Upcoming Birthday')"
+            >
+              <div
+                class="avatar-circle birthday"
+                [style.background-color]="getAvatarBackgroundColor(person.name)"
+              >
                 {{ getInitials(person.name) }}
+                <div class="birthday-badge">🎂</div>
+                <div class="avatar-ring"></div>
               </div>
-              <p class="avatar-name">{{ person.name }}</p>
-              <p class="avatar-subtitle">{{ person.date }}</p>
+              <span class="avatar-name">{{ person.name.split(" ")[0] }}</span>
+              <span class="avatar-subtitle">{{ person.date }}</span>
             </div>
           </div>
         </div>
-        <div class="event-card">
+        <div class="event-card anniversary-card">
           <div class="event-header">
-            <i class="material-icons icon">emoji_events</i>
+            <div class="event-icon-wrapper anniversary-icon">
+              <i class="material-icons icon">emoji_events</i>
+            </div>
             <h3 class="event-title">Work Anniversaries</h3>
           </div>
-          <div class="avatar-list horizontal">
+          <div class="avatar-list">
             <div
               *ngFor="let person of anniversaries"
               class="avatar-item-container"
+              (click)="onEventClick(person, 'Work Anniversary')"
             >
-              <div class="avatar-circle" [style.background-color]="'#8e44ad'">
+              <div
+                class="avatar-circle anniversary"
+                [style.background-color]="getAvatarBackgroundColor(person.name)"
+              >
                 {{ getInitials(person.name) }}
+                <div class="anniversary-badge">{{ person.years }}Y</div>
+                <div class="avatar-ring"></div>
               </div>
-              <p class="avatar-name">{{ person.name }}</p>
-              <p class="avatar-subtitle">{{ person.years }} years</p>
+              <span class="avatar-name">{{ person.name.split(" ")[0] }}</span>
+              <span class="avatar-subtitle">{{ person.years }} years</span>
             </div>
           </div>
         </div>

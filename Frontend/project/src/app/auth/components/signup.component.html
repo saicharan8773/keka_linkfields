@@ -5,6 +5,7 @@
     (particlesLoaded)="particlesLoaded($event)"
   ></ngx-particles>
   <div class="auth-card">
+    <app-spinner *ngIf="isLoading"></app-spinner>
     <div class="auth-header">
       <h1>KEKA Clone</h1>
       <h2>Create Your Account</h2>

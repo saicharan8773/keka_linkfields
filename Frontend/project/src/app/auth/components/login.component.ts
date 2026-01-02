@@ -9,11 +9,12 @@ import { NgxParticlesModule } from "@tsparticles/angular";
 import { NgParticlesService } from "@tsparticles/angular";
 import { MoveDirection, OutMode } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
+import { SpinnerComponent } from "../../shared/components/spinner.component";
 
 @Component({
   selector: "app-login",
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, NgxParticlesModule],
+  imports: [CommonModule, FormsModule, RouterModule, NgxParticlesModule, SpinnerComponent],
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"],
 })
@@ -154,8 +155,7 @@ export class LoginComponent {
   }
 
   particlesLoaded(container: any): void {
-    // You can add custom logic here if needed
-    // console.log(container);
+    container.refresh();
   }
 
   onLogin(): void {

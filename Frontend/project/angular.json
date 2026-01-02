@@ -32,7 +32,8 @@
             "outputPath": "dist/demo",
             "polyfills": ["zone.js"],
             "scripts": [],
-            "styles": ["src/global_styles.css"],
+            "styles": ["src/global_styles.css",
+          "node_modules/ngx-spinner/animations/pacman.css"],
             "tsConfig": "tsconfig.app.json"
           }
         },
