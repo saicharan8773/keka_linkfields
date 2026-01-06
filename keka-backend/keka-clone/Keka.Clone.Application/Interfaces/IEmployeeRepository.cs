@@ -29,6 +29,7 @@ namespace Keka.Clone.Application.Interfaces
         Task<IEnumerable<Employee>> GetAllAsync();
         
         Task<IEnumerable<ManagerDto>> GetManagersAsync();
+        Task<IEnumerable<Employee>> GetByTeamIdAsync(Guid teamId);
 
         Task SaveChangesAsync();
     }

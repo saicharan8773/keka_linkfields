@@ -1,0 +1,92 @@
+<div class="modal-header">
+    <h2>Job Details</h2>
+    <button class="close-btn" (click)="onClose()" type="button">
+        <span class="material-icons">close</span>
+    </button>
+</div>
+
+<div class="modal-body" *ngIf="!isLoading && job">
+    <div class="details-section">
+        <div class="job-header">
+            <div>
+                <h3>{{ job.title }}</h3>
+                <p class="job-code">{{ job.jobCode }}</p>
+            </div>
+            <span class="status-badge" [ngClass]="getStatusClass(job.status)">{{ job.status }}</span>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail-item">
+                <label>Department</label>
+                <p>{{ job.departmentName || 'N/A' }}</p>
+            </div>
+
+            <div class="detail-item">
+                <label>Designation</label>
+                <p>{{ job.designationTitle || 'N/A' }}</p>
+            </div>
+
+            <div class="detail-item">
+                <label>Employment Type</label>
+                <p>{{ job.employmentType }}</p>
+            </div>
+
+            <div class="detail-item">
+                <label>Experience Level</label>
+                <p>{{ job.experienceLevel }}</p>
+            </div>
+
+            <div class="detail-item">
+                <label>Location</label>
+                <p>{{ job.location }}</p>
+            </div>
+
+            <div class="detail-item">
+                <label>Openings</label>
+                <p>{{ job.openings }}</p>
+            </div>
+
+            <div class="detail-item" *ngIf="job.salaryMin || job.salaryMax">
+                <label>Salary Range</label>
+                <p>
+                    <span *ngIf="job.salaryMin">₹{{ job.salaryMin | number }}</span>
+                    <span *ngIf="job.salaryMin && job.salaryMax"> - </span>
+                    <span *ngIf="job.salaryMax">₹{{ job.salaryMax | number }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="detail-item full-width">
+            <label>Job Description</label>
+            <p class="description">{{ job.description }}</p>
+        </div>
+
+        <div class="detail-item full-width" *ngIf="job.skills && job.skills.length > 0">
+            <label>Skills Required</label>
+            <div class="skills-list">
+                <span *ngFor="let skill of job.skills" class="skill-tag">{{ skill }}</span>
+            </div>
+        </div>
+
+        <div class="detail-item full-width">
+            <label>Created By</label>
+            <p>{{ job.createdByName }} on {{ job.createdOn | date: 'MMM dd, yyyy' }}</p>
+        </div>
+
+        <div class="detail-item full-width" *ngIf="job.updatedByName">
+            <label>Last Updated</label>
+            <p>{{ job.updatedByName }} on {{ job.updatedOn | date: 'MMM dd, yyyy' }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="loading-state" *ngIf="isLoading">
+    <p>Loading job details...</p>
+</div>
+
+<div class="modal-footer" *ngIf="!isLoading && job">
+    <button type="button" class="btn-cancel" (click)="onClose()">Close</button>
+    <button type="button" class="btn-edit" (click)="onEdit()" *ngIf="job.status !== 'Closed'">
+        <span class="material-icons">edit</span> Edit Job
+    </button>
+</div>

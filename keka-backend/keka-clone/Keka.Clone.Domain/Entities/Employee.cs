@@ -25,6 +25,8 @@ namespace Keka.Clone.Domain.Entities
         public User? Manager { get; set; }
         public Guid? LocationId { get; set; }
         public Location? Location { get; set; }
+        public Guid? TeamId { get; set; }
+        public Team? Team { get; set; }
         public string EmploymentType { get; set; } = "FullTime"; // Worker type
         public string? TimeType { get; set; }
         public ICollection<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();

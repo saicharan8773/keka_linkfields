@@ -55,6 +55,18 @@ export const routes: Routes = [
     loadComponent: () => import('./salary-structure/components/salary-structure-list.component').then(m => m.SalaryStructureListComponent),
     canActivate: [AuthGuard],
   },
+  // Team Routes
+  {
+    path: "teams",
+    loadComponent: () => import('./team/components/team-list.component').then(m => m.TeamListComponent),
+    canActivate: [AuthGuard],
+  },
+  // Job Routes
+  {
+    path: "jobs",
+    loadComponent: () => import('./jobs/components/job-list.component').then(m => m.JobListComponent),
+    canActivate: [AuthGuard],
+  },
   {
     path: "leave",
     loadComponent: () => import('./features/leave/leave.component').then(m => m.LeaveComponent),

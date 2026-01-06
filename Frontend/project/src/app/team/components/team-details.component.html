@@ -1,0 +1,184 @@
+<div class="modal-header">
+    <h2>Team Details</h2>
+    <button class="close-btn" (click)="onClose()" type="button">
+        <span class="material-icons">close</span>
+    </button>
+</div>
+
+<div class="modal-body" *ngIf="!isLoading && team">
+    <!-- Team Information -->
+    <div class="team-info-section">
+        <div class="info-header">
+            <div class="team-title">
+                <span class="material-icons team-icon">groups</span>
+                <h3>{{ team.name }}</h3>
+            </div>
+            <button class="btn-edit" (click)="onEdit()">
+                <span class="material-icons">edit</span>
+                Edit Team
+            </button>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Team Name</label>
+                <p>{{ team.teamName }}</p>
+            </div>
+
+            <div class="info-item">
+                <label>Created Date</label>
+                <p>{{ team.createdAt | date: 'MMM dd, yyyy' }}</p>
+            </div>
+
+            <div class="info-item">
+                <label>Total Employees</label>
+                <p class="employee-count-badge">{{ team.employeeCount || 0 }}</p>
+            </div>
+
+            <div class="info-item full-width" *ngIf="team.description">
+                <label>Description</label>
+                <p>{{ team.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee List Section -->
+    <div class="employees-section">
+        <div class="section-header">
+            <h3>Team Members</h3>
+            <button class="btn-assign" (click)="openAssignModal()">
+                <span class="material-icons">person_add</span>
+                Assign Employee
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="isLoadingEmployees" class="loading-state">
+            <p>Loading employees...</p>
+        </div>
+
+        <!-- Employee Table -->
+        <div class="employee-table-wrapper" *ngIf="!isLoadingEmployees">
+            <table class="employee-table">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Designation</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let employee of teamEmployees">
+                        <td data-label="Employee ID">
+                            <span class="code-tag">{{ employee.employeeCode }}</span>
+                        </td>
+                        <td data-label="Employee Name">
+                            <div class="employee-name">
+                                <div class="avatar">
+                                    {{ employee.displayName?.charAt(0) || 'E' }}
+                                </div>
+                                <strong>{{ employee.displayName }}</strong>
+                            </div>
+                        </td>
+                        <td data-label="Email">{{ employee.workEmail }}</td>
+                        <td data-label="Department">
+                            {{ employee.departmentName || 'N/A' }}
+                        </td>
+                        <td data-label="Designation">
+                            {{ employee.designationTitle || 'N/A' }}
+                        </td>
+                        <td data-label="Actions">
+                            <button class="icon-btn delete" (click)="confirmRemoveEmployee(employee.id)"
+                                title="Remove from team">
+                                <span class="material-icons">person_remove</span>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Empty State -->
+                    <tr *ngIf="teamEmployees.length === 0">
+                        <td colspan="6" class="empty-state">
+                            <div class="empty-content">
+                                <span class="material-icons empty-icon">group_off</span>
+                                <p>No employees in this team</p>
+                                <p class="empty-subtitle">Assign employees to get started</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Loading State for Team Details -->
+<div class="modal-body" *ngIf="isLoading">
+    <div class="loading-state">
+        <p>Loading team details...</p>
+    </div>
+</div>
+
+<!-- Assign Employee Modal -->
+<div *ngIf="showAssignModal" class="overlay">
+    <div class="assign-modal">
+        <div class="assign-header">
+            <h3>Assign Employee to Team</h3>
+            <button class="close-btn" (click)="closeAssignModal()">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+
+        <div class="assign-body">
+            <div class="form-group">
+                <label for="employee-select">Select Employee</label>
+                <select id="employee-select" [(ngModel)]="selectedEmployeeId" class="employee-select">
+                    <option value="">-- Select an employee --</option>
+                    <option *ngFor="let emp of availableEmployees" [value]="emp.id">
+                        {{ emp.displayName }} ({{ emp.employeeCode }})
+                    </option>
+                </select>
+            </div>
+
+            <div class="assign-actions">
+                <button class="btn-cancel" (click)="closeAssignModal()" [disabled]="isAssigning">
+                    Cancel
+                </button>
+                <button class="btn-save" (click)="assignEmployee()" [disabled]="isAssigning || !selectedEmployeeId">
+                    <span *ngIf="!isAssigning">Assign</span>
+                    <span *ngIf="isAssigning">
+                        <span class="spinner"></span>
+                        Assigning...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove Confirmation Modal -->
+<div *ngIf="showRemoveConfirm" class="overlay">
+    <div class="confirm-modal">
+        <div class="confirm-header">
+            <span class="material-icons warning-icon">warning</span>
+            <h3>Remove Employee</h3>
+        </div>
+        <div class="confirm-body">
+            <p>Are you sure you want to remove this employee from the team?</p>
+        </div>
+        <div class="confirm-actions">
+            <button class="btn-cancel" (click)="cancelRemove()" [disabled]="isRemoving">
+                Cancel
+            </button>
+            <button class="btn-delete" (click)="removeEmployee()" [disabled]="isRemoving">
+                <span *ngIf="!isRemoving">Remove</span>
+                <span *ngIf="isRemoving">
+                    <span class="spinner"></span>
+                    Removing...
+                </span>
+            </button>
+        </div>
+    </div>
+</div>

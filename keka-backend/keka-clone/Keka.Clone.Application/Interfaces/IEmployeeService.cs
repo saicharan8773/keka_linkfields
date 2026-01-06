@@ -14,4 +14,6 @@ public interface IEmployeeService
     Task<IEnumerable<EmployeeAnniversaryDto>> GetTodayAnniversariesAsync();
     Task<IEnumerable<EmployeeAnniversaryDto>> GetUpcomingAnniversariesAsync(int daysAhead = 15);
     Task<IEnumerable<EmployeeDto>> GetNewJoineesAsync(int daysBack = 30);
+    Task<IEnumerable<EmployeeDto>> GetByTeamIdAsync(Guid teamId);
+    Task<EmployeeDto> AssignToTeamAsync(Guid employeeId, Guid teamId);
 }

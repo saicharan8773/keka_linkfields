@@ -1,0 +1,205 @@
+<div class="dashboard-container">
+    <app-sidebar></app-sidebar>
+
+    <main class="main-content">
+        <div class="job-container">
+            <!-- Header -->
+            <div class="page-header">
+                <div>
+                    <h1>Jobs</h1>
+                    <p class="subtitle">Manage job postings and openings</p>
+                </div>
+            </div>
+
+            <!-- Search, Filters, and Add Button -->
+            <div class="search-filter-row">
+                <div class="search-box">
+                    <span class="material-icons md-18 search-icon">search</span>
+                    <input type="text" placeholder="Search jobs…" [(ngModel)]="searchText" (input)="onSearch()" />
+                </div>
+
+                <div class="filters">
+                    <select [(ngModel)]="selectedStatus" (change)="onFilterChange()" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+
+                    <select [(ngModel)]="selectedLocation" (change)="onFilterChange()" class="filter-select">
+                        <option value="">All Locations</option>
+                        <option value="Onsite">Onsite</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Remote">Remote</option>
+                    </select>
+
+                    <select [(ngModel)]="selectedEmploymentType" (change)="onFilterChange()" class="filter-select">
+                        <option value="">All Types</option>
+                        <option value="FullTime">Full-time</option>
+                        <option value="PartTime">Part-time</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Internship">Internship</option>
+                    </select>
+                </div>
+
+                <button class="btn-add-gold" (click)="openCreateModal()">
+                    <span class="plus-sign">+</span> Add Job
+                </button>
+            </div>
+
+            <!-- Loading State -->
+            <div *ngIf="isLoading" class="loading-state">
+                <p>Loading jobs...</p>
+            </div>
+
+            <!-- Jobs Table -->
+            <div class="table-wrapper" *ngIf="!isLoading">
+                <table class="job-table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Job Title</th>
+                            <th>Department</th>
+                            <th>Location</th>
+                            <th>Experience</th>
+                            <th>Status</th>
+                            <th>Openings</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let job of jobs; let i = index">
+                            <!-- Serial Number -->
+                            <td data-label="S.No">
+                                <span class="serial-number">{{ getSerialNumber(i) }}</span>
+                            </td>
+
+                            <!-- Job Title -->
+                            <td data-label="Job Title">
+                                <div class="job-title">
+                                    <span class="material-icons md-18 job-icon">work</span>
+                                    <div>
+                                        <strong>{{ job.title }}</strong>
+                                        <div class="job-code">{{ job.jobCode }}</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Department -->
+                            <td data-label="Department">
+                                <span>{{ job.departmentName || 'N/A' }}</span>
+                            </td>
+
+                            <!-- Location -->
+                            <td data-label="Location">
+                                <span class="location-badge">{{ job.location }}</span>
+                            </td>
+
+                            <!-- Experience -->
+                            <td data-label="Experience">
+                                {{ job.experienceLevel }}
+                            </td>
+
+                            <!-- Status -->
+                            <td data-label="Status">
+                                <span class="status-badge" [ngClass]="getStatusClass(job.status)">
+                                    {{ job.status }}
+                                </span>
+                            </td>
+
+                            <!-- Openings -->
+                            <td data-label="Openings">
+                                <span class="openings-badge">{{ job.openings }}</span>
+                            </td>
+
+                            <!-- Actions -->
+                            <td data-label="Actions" class="action-col">
+                                <button class="icon-btn view" (click)="openDetailsModal(job.id)" title="View Details">
+                                    <span class="material-icons md-18">visibility</span>
+                                </button>
+
+                                <button class="icon-btn edit" (click)="openEditModal(job)" title="Edit Job"
+                                    *ngIf="job.status !== 'Closed'">
+                                    <span class="material-icons md-18">edit</span>
+                                </button>
+
+                                <button class="icon-btn close" (click)="onCloseJob(job.id)" title="Close Job"
+                                    *ngIf="job.status === 'Active'">
+                                    <span class="material-icons md-18">block</span>
+                                </button>
+
+                                <button class="icon-btn delete" (click)="onDelete(job.id)" title="Delete Job">
+                                    <span class="material-icons md-18">delete</span>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Empty State -->
+                        <tr *ngIf="jobs.length === 0">
+                            <td colspan="8" class="empty-state">
+                                <div class="empty-state-content">
+                                    <span class="material-icons empty-icon">work_off</span>
+                                    <p>No jobs found.</p>
+                                    <p class="empty-subtitle">Create your first job posting to get started</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-controls" *ngIf="!isLoading && jobs.length > 0">
+                <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
+                    &laquo; Previous
+                </button>
+
+                <span>Page {{ currentPage }} of {{ totalPages }}</span>
+
+                <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">
+                    Next &raquo;
+                </button>
+            </div>
+        </div>
+
+        <!-- Create Job Modal -->
+        <div *ngIf="showCreateModal" class="modal-overlay">
+            <div class="modal-card modal-large">
+                <app-job-create-edit [job]="null" (closeModal)="closeCreateModal()"
+                    (jobSaved)="onJobCreated()"></app-job-create-edit>
+            </div>
+        </div>
+
+        <!-- Edit Job Modal -->
+        <div *ngIf="showEditModal" class="modal-overlay">
+            <div class="modal-card modal-large">
+                <app-job-create-edit [job]="selectedJob" (closeModal)="closeEditModal()"
+                    (jobSaved)="onJobUpdated()"></app-job-create-edit>
+            </div>
+        </div>
+
+        <!-- Job Details Modal -->
+        <div *ngIf="showDetailsModal" class="modal-overlay">
+            <div class="modal-card modal-large">
+                <app-job-details [jobId]="selectedJobId" (closeModal)="closeDetailsModal()"
+                    (editJob)="openEditModal($event)"></app-job-details>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <app-delete-confirmation-modal *ngIf="showDeleteModal"
+            message="Are you sure you want to delete this job? This action cannot be undone." [isDeleting]="isDeleting"
+            (confirm)="confirmDelete()" (cancel)="cancelDelete()">
+        </app-delete-confirmation-modal>
+
+        <!-- Close Job Confirmation Modal -->
+        <app-delete-confirmation-modal *ngIf="showCloseModal"
+            message="Are you sure you want to close this job? Closed jobs will not accept applications."
+            [isDeleting]="isClosing" (confirm)="confirmCloseJob()" (cancel)="cancelCloseJob()">
+        </app-delete-confirmation-modal>
+
+        <!-- Toast Notifications -->
+        <app-toast></app-toast>
+    </main>
+</div>

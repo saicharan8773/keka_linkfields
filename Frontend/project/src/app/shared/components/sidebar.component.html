@@ -2,55 +2,22 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <ng-container *ngIf="isOpen; else logoOnly">
-        <img
-          src="/assets/logo.svg"
-          alt="Logo"
-          class="sidebar-logo-large"
-          (error)="this.src = 'assets/logo.svg'"
-        />
+        <img src="/assets/logo.svg" alt="Logo" class="sidebar-logo-large" (error)="this.src = 'assets/logo.svg'" />
       </ng-container>
 
       <ng-template #logoOnly>
-        <img
-          src="/assets/logo.svg"
-          alt="Logo"
-          class="sidebar-logo-collapsed"
-          (error)="this.src = 'assets/logo.svg'"
-        />
+        <img src="/assets/logo.svg" alt="Logo" class="sidebar-logo-collapsed" (error)="this.src = 'assets/logo.svg'" />
       </ng-template>
 
-      <button
-        type="button"
-        class="toggle-btn"
-        (click)="toggleSidebar()"
-        [attr.aria-label]="isOpen ? 'Close sidebar' : 'Open sidebar'"
-        [attr.aria-expanded]="isOpen"
-      >
-        <svg
-          *ngIf="isOpen"
-          width="20"
-          height="20"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          viewBox="0 0 24 24"
-        >
+      <button type="button" class="toggle-btn" (click)="toggleSidebar()"
+        [attr.aria-label]="isOpen ? 'Close sidebar' : 'Open sidebar'" [attr.aria-expanded]="isOpen">
+        <svg *ngIf="isOpen" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
 
-        <svg
-          *ngIf="!isOpen"
-          width="20"
-          height="20"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          viewBox="0 0 24 24"
-        >
+        <svg *ngIf="!isOpen" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
       </button>
@@ -109,6 +76,24 @@
               <span class="material-icons md-20">badge</span>
             </span>
             <span class="sidebar-label" *ngIf="isOpen">Designations</span>
+          </a>
+        </li>
+
+        <li class="icons" *ngIf="canManageOrg">
+          <a routerLink="/teams" routerLinkActive="active">
+            <span class="sidebar-icon">
+              <span class="material-icons md-20">groups</span>
+            </span>
+            <span class="sidebar-label" *ngIf="isOpen">Teams</span>
+          </a>
+        </li>
+
+        <li class="icons" *ngIf="canManageOrg">
+          <a routerLink="/jobs" routerLinkActive="active">
+            <span class="sidebar-icon">
+              <span class="material-icons md-20">work</span>
+            </span>
+            <span class="sidebar-label" *ngIf="isOpen">Jobs</span>
           </a>
         </li>
 

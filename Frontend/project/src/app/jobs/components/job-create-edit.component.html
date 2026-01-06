@@ -1,0 +1,159 @@
+<div class="modal-header">
+    <h2>{{ isEditMode ? 'Edit Job' : 'Create New Job' }}</h2>
+    <button class="close-btn" (click)="onClose()" type="button">
+        <span class="material-icons">close</span>
+    </button>
+</div>
+
+<form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="modal-body">
+    <div class="form-scroll">
+        <!-- Job Title -->
+        <div class="form-group">
+            <label for="title">Job Title <span class="required">*</span></label>
+            <input type="text" id="title" formControlName="title" class="form-control"
+                placeholder="e.g., Frontend Developer" />
+            <div *ngIf="f['title'].invalid && f['title'].touched" class="error-message">
+                <span *ngIf="f['title'].errors?.['required']">Job title is required</span>
+                <span *ngIf="f['title'].errors?.['maxlength']">Title cannot exceed 200 characters</span>
+            </div>
+        </div>
+
+        <!-- Job Code -->
+        <div class="form-group">
+            <label for="jobCode">Job Code</label>
+            <input type="text" id="jobCode" formControlName="jobCode" class="form-control"
+                placeholder="Leave blank for auto-generation" />
+            <small class="form-hint">Leave blank to auto-generate (e.g., JOB-2026-001)</small>
+        </div>
+
+        <!-- Department and Designation -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="departmentId">Department</label>
+                <select id="departmentId" formControlName="departmentId" class="form-control">
+                    <option value="">Select Department</option>
+                    <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="designationId">Designation</label>
+                <select id="designationId" formControlName="designationId" class="form-control">
+                    <option value="">Select Designation</option>
+                    <option *ngFor="let desig of filteredDesignations" [value]="desig.id">{{ desig.title }}</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Employment Type and Experience Level -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="employmentType">Employment Type <span class="required">*</span></label>
+                <select id="employmentType" formControlName="employmentType" class="form-control">
+                    <option value="FullTime">Full-time</option>
+                    <option value="PartTime">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="experienceLevel">Experience Level <span class="required">*</span></label>
+                <select id="experienceLevel" formControlName="experienceLevel" class="form-control">
+                    <option value="Fresher">Fresher</option>
+                    <option value="1-3">1-3 years</option>
+                    <option value="3-5">3-5 years</option>
+                    <option value="5+">5+ years</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+            <label for="location">Location <span class="required">*</span></label>
+            <select id="location" formControlName="location" class="form-control">
+                <option value="Onsite">Onsite</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Remote">Remote</option>
+            </select>
+        </div>
+
+        <!-- Salary Range -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="salaryMin">Minimum Salary</label>
+                <input type="number" id="salaryMin" formControlName="salaryMin" class="form-control"
+                    placeholder="e.g., 600000" />
+                <div *ngIf="f['salaryMin'].invalid && f['salaryMin'].touched" class="error-message">
+                    <span *ngIf="f['salaryMin'].errors?.['min']">Salary must be positive</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="salaryMax">Maximum Salary</label>
+                <input type="number" id="salaryMax" formControlName="salaryMax" class="form-control"
+                    placeholder="e.g., 900000" />
+                <div *ngIf="f['salaryMax'].invalid && f['salaryMax'].touched" class="error-message">
+                    <span *ngIf="f['salaryMax'].errors?.['min']">Salary must be positive</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Openings -->
+        <div class="form-group">
+            <label for="openings">Number of Openings <span class="required">*</span></label>
+            <input type="number" id="openings" formControlName="openings" class="form-control" placeholder="e.g., 3" />
+            <div *ngIf="f['openings'].invalid && f['openings'].touched" class="error-message">
+                <span *ngIf="f['openings'].errors?.['required']">Number of openings is required</span>
+                <span *ngIf="f['openings'].errors?.['min']">Openings must be at least 1</span>
+            </div>
+        </div>
+
+        <!-- Job Description -->
+        <div class="form-group">
+            <label for="description">Job Description <span class="required">*</span></label>
+            <textarea id="description" formControlName="description" class="form-control" rows="6"
+                placeholder="Describe the job role, responsibilities, and requirements..."></textarea>
+            <div *ngIf="f['description'].invalid && f['description'].touched" class="error-message">
+                <span *ngIf="f['description'].errors?.['required']">Job description is required</span>
+                <span *ngIf="f['description'].errors?.['maxlength']">Description cannot exceed 5000 characters</span>
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="form-group">
+            <label for="skills">Skills Required</label>
+            <div class="skills-input-wrapper">
+                <input type="text" [(ngModel)]="skillsInput" [ngModelOptions]="{standalone: true}" class="form-control"
+                    placeholder="Type a skill and press Enter" (keyup.enter)="addSkill()" />
+                <button type="button" class="add-skill-btn" (click)="addSkill()">Add</button>
+            </div>
+            <div class="skills-list" *ngIf="skillsList.length > 0">
+                <span *ngFor="let skill of skillsList" class="skill-tag">
+                    {{ skill }}
+                    <button type="button" class="remove-skill" (click)="removeSkill(skill)">&times;</button>
+                </span>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="form-group">
+            <label for="status">Job Status <span class="required">*</span></label>
+            <select id="status" formControlName="status" class="form-control">
+                <option value="Draft">Draft</option>
+                <option value="Active">Active</option>
+                <option value="Closed">Closed</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Sticky Footer -->
+    <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="onClose()" [disabled]="isSaving">
+            Cancel
+        </button>
+        <button type="submit" class="btn-save" [disabled]="isSaving">
+            {{ isSaving ? 'Saving...' : (isEditMode ? 'Update Job' : 'Create Job') }}
+        </button>
+    </div>
+</form>

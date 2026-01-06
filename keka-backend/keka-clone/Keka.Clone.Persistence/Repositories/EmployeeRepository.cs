@@ -96,6 +96,19 @@ namespace Keka.Clone.Persistence.Repositories
             var result = await query.OrderBy(x => x.FullName).ToListAsync();
             return result;
         }
+
+        public async Task<IEnumerable<Employee>> GetByTeamIdAsync(Guid teamId)
+        {
+            return await _db.Employees
+                .Where(e => e.TeamId == teamId)
+                .Include(e => e.Department)
+                .Include(e => e.Designation)
+                .Include(e => e.Manager)
+                .Include(e => e.Location)
+                .Include(e => e.Team)
+                .ToListAsync();
+        }
+
         public async Task<(IEnumerable<Employee> Items, int Total)> SearchAsync(
             string? query,
             Guid? departmentId,

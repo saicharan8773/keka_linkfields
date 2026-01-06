@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { EmployeeService } from '../../services/employee.service';
+import { HttpClient } from '@angular/common/http';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -16,7 +17,7 @@ interface SearchablePage {
   standalone: true,
   imports: [RouterLink, CommonModule, ReactiveFormsModule],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css' 
+  styleUrl: './navbar.css'
 })
 export class NavbarComponent implements OnInit {
   userName: string = 'User';
@@ -30,13 +31,15 @@ export class NavbarComponent implements OnInit {
     { name: 'Employees', path: '/employees' },
     { name: 'Departments', path: '/departments' },
     { name: 'Designations', path: '/designations' },
+    { name: 'Teams', path: '/teams' },
     { name: 'Salary Structures', path: '/salary-structures' },
     { name: 'Leave', path: '/leave' },
   ];
 
   constructor(
-    private employeeService: EmployeeService, 
+    private employeeService: EmployeeService,
     private auth: AuthService,
+    private http: HttpClient,
     private router: Router
   ) { }
 
@@ -51,11 +54,11 @@ export class NavbarComponent implements OnInit {
       debounceTime(300),
       distinctUntilChanged()
     ).subscribe(query => {
-      if(query === '') {
+      if (query === '') {
         this.searchResults = [];
         return;
       }
-      this.searchResults = this.pages.filter(page => 
+      this.searchResults = this.pages.filter(page =>
         page.name.toLowerCase().includes(query.toLowerCase())
       );
     });

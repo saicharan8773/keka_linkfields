@@ -16,11 +16,14 @@ namespace Keka.Clone.Persistence
         public DbSet<Designation> Designations => Set<Designation>();
         public DbSet<Location> Locations => Set<Location>();
         public DbSet<SalaryStructure> SalaryStructures => Set<SalaryStructure>();
+        public DbSet<Team> Teams => Set<Team>();
 
         public DbSet<LeaveType> LeaveTypes => Set<LeaveType>();
         public DbSet<EmployeeLeaveAllocation> EmployeeLeaveAllocations => Set<EmployeeLeaveAllocation>();
         public DbSet<LeaveRequest> LeaveRequests => Set<LeaveRequest>();
         public DbSet<Attendance> Attendances => Set<Attendance>();
+        public DbSet<Job> Jobs => Set<Job>();
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -47,6 +50,24 @@ namespace Keka.Clone.Persistence
                 entity.Property(x => x.OtherAllowances).HasPrecision(18, 2);
                 entity.Property(x => x.Deductions).HasPrecision(18, 2);
             });
+
+            // Configure Job entity
+            modelBuilder.Entity<Job>(entity =>
+            {
+                entity.Property(x => x.SalaryMin).HasPrecision(18, 2);
+                entity.Property(x => x.SalaryMax).HasPrecision(18, 2);
+                
+                entity.HasOne(x => x.CreatedByUser)
+                    .WithMany()
+                    .HasForeignKey(x => x.CreatedBy)
+                    .OnDelete(DeleteBehavior.Restrict);
+                
+                entity.HasOne(x => x.UpdatedByUser)
+                    .WithMany()
+                    .HasForeignKey(x => x.UpdatedBy)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
             // Seed default leave types
             modelBuilder.Entity<LeaveType>().HasData(
                 new LeaveType { Id = 1, Code = "CL", Name = "Casual Leave", DefaultDays = 8, IsUnlimited = false },

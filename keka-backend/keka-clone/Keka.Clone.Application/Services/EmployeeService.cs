@@ -313,7 +313,30 @@ namespace Keka.Clone.Application.Services
                 .OrderByDescending(emp => emp.JoiningDate)
                 .ToList();
 
+
             return _mapper.Map<IEnumerable<EmployeeDto>>(newJoinees);
+        }
+
+        public async Task<IEnumerable<EmployeeDto>> GetByTeamIdAsync(Guid teamId)
+        {
+            var employees = await _repo.GetByTeamIdAsync(teamId);
+            return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
+        }
+
+        public async Task<EmployeeDto> AssignToTeamAsync(Guid employeeId, Guid teamId)
+        {
+            var employee = await _repo.GetByIdAsync(employeeId);
+            if (employee == null)
+                throw new Exception("Employee not found.");
+
+            // Note: We're not validating if the team exists here
+            // The database foreign key constraint will handle that
+            employee.TeamId = teamId;
+
+            await _repo.UpdateAsync(employee);
+            await _repo.SaveChangesAsync();
+
+            return _mapper.Map<EmployeeDto>(employee);
         }
     }
 }

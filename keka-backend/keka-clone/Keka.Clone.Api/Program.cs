@@ -37,7 +37,7 @@ builder.Services.AddLogging();
 builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation(o => o.DisableDataAnnotationsValidation = true);
 builder.Services.AddValidatorsFromAssemblyContaining<CreateEmployeeRequestValidator>();
-builder.Services.AddAutoMapper(typeof(EmployeeProfile));
+builder.Services.AddAutoMapper(typeof(EmployeeProfile), typeof(JobProfile));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -61,6 +61,15 @@ builder.Services.AddScoped<ISalaryStructureService, SalaryStructureService>();
 // Locations
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<ILocationService, LocationService>();
+
+// Teams
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<ITeamService, TeamService>();
+
+// Jobs
+builder.Services.AddScoped<IJobRepository, JobRepository>();
+builder.Services.AddScoped<IJobService, JobService>();
+
 
 // Mappings
 builder.Services.AddAutoMapper(typeof(MasterDataProfile));

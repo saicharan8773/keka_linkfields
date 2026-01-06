@@ -6,8 +6,6 @@
   box-shadow: 0 4px 24px rgba(40, 58, 77, 0.12);
   overflow: hidden;
 }
-
-/* OVERLAY */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -21,7 +19,6 @@
   z-index: 1000;
 }
 
-/* MODAL CARD */
 .modal-card {
   width: 700px;
   max-height: 90vh;
@@ -34,7 +31,6 @@
   overflow: hidden;
 }
 
-/* FIXED HEADER */
 .modal-header-fixed {
   flex-shrink: 0;
   padding: 15px 25px;
@@ -69,14 +65,12 @@
   color: #ffd166;
 }
 
-/* SCROLLABLE BODY */
 .modal-body-scrollable {
   flex: 1;
   overflow-y: auto;
   padding: 20px 35px;
 }
 
-/* FIXED FOOTER */
 .modal-footer-fixed {
   flex-shrink: 0;
   padding: 15px 25px;
@@ -87,7 +81,6 @@
   gap: 12px;
 }
 
-/* BUTTONS */
 .btn {
   padding: 10px 20px;
   font-size: 0.95rem;
@@ -110,7 +103,6 @@
   background: #e3b34c;
 }
 
-/* FORM GRID */
 .row {
   display: flex;
   gap: 20px;
@@ -121,7 +113,6 @@
   flex: 1;
 }
 
-/* LABEL + INPUT */
 label {
   font-size: 0.9rem;
   font-weight: 500;
@@ -138,21 +129,18 @@ textarea {
   border-radius: 6px;
 }
 
-/* ERROR MESSAGE */
 .error {
   color: #d9534f;
   font-size: 0.8rem;
   margin-top: 4px;
 }
 
-/* SECTION TITLE */
 .section-title {
   margin-top: 20px;
   font-weight: 600;
   color: #666;
 }
 
-/* ANIMATION */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -165,7 +153,6 @@ textarea {
   }
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .modal-card {
     width: 95%;
